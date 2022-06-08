@@ -1,8 +1,11 @@
+
 import styled from "styled-components";
 import { useState } from "react";
-import { login } from "../../helpers/account/login";
+import Cookies from "js-cookie";
+
 
 const LoginForm = () => {
+  const contentType = "application/json";
   const [loginValue, setLoginValues] = useState({
     username: "",
     password: "",
@@ -18,14 +21,33 @@ const LoginForm = () => {
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    login(loginValue)
+    fetch("/api/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": contentType,
+      },
+      body: JSON.stringify(loginValue),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data && data.error) {
+          console.log("FAILED LOGIN");
+        }
+        if (data && data.token) {
+          console.log("Success");
+          Cookies.set("token", data.token, { expires: 1 });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-
 
   return (
     <FormWrapper>
-     
-      <Form onSubmit={handleLoginSubmit} method="POST">
+      <Form method="POST">
         <Input
           value={loginValue.username}
           type="text"
@@ -40,15 +62,15 @@ const LoginForm = () => {
           placeholder="Password"
           onChange={(e) => handleLoginChange(e)}
         />
-        <LoginButton type="submit">Login</LoginButton>
+        <LoginButton type="button" onClick={handleLoginSubmit}>
+          Login
+        </LoginButton>
       </Form>
     </FormWrapper>
   );
 };
 
 export default LoginForm;
-
-
 
 const FormWrapper = styled.div`
   display: flex;

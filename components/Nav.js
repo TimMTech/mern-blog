@@ -1,22 +1,36 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import { useState, useEffect } from "react"
+import dynamic from "next/dynamic";
+
+
 
 const Nav = () => {
+  const [isAuth, setIsAuth] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const [user, setUser] = useState(null)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const getUser = async () => {
+    const res = await fetch("/api/me");
+    const json = await res.json();
+    setUser(json);
+  };
 
   useEffect(() => {
-    if (user === null) {
-      setIsLoggedIn(false)
-      setUser(JSON.parse(localStorage.getItem("user")));
+    if (user === null || user.message === "FAILED AUTH") {
+      setIsAuth(false);
     } else {
-      setIsLoggedIn(true)
+      setIsAuth(true);
     }
-  }, [user])
+  }, [user]);
 
- 
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const logout = () => {
+  
+  };
+
   return (
     <NavWrapper>
       <Home href="/">
@@ -25,17 +39,22 @@ const Nav = () => {
         </StyledE>
       </Home>
       <NavLinkWrapper>
-        {isLoggedIn ? (
-          <h1>{user.username}</h1>
+        {isAuth ? (
+          <LoggedIn>
+            <Username>{user.username}</Username>
+            <LogoutButton href="/account/login">
+              <Logout onClick={logout}>Log Out</Logout>
+            </LogoutButton>
+          </LoggedIn>
         ) : (
-          <>
+          <LoggedOut>
             <LoginButton href="/account/login">
               <LogIn>Log In</LogIn>
             </LoginButton>
             <SignUpButton href="/account/signup">
               <SignUp>Sign Up</SignUp>
             </SignUpButton>
-          </>
+          </LoggedOut>
         )}
       </NavLinkWrapper>
     </NavWrapper>
@@ -44,8 +63,6 @@ const Nav = () => {
 
 export default Nav;
 
-
-
 const NavWrapper = styled.nav`
   display: flex;
   justify-content: space-between;
@@ -53,8 +70,8 @@ const NavWrapper = styled.nav`
   padding: 0 1.5rem;
   position: fixed;
   width: 100%;
-  background-color: rgb(255,255,255);
-  border-bottom: 0.05rem solid rgb(0,0,0);
+  background-color: rgb(255, 255, 255);
+  border-bottom: 0.05rem solid rgb(0, 0, 0);
 `;
 
 const StyledE = styled.a`
@@ -75,7 +92,19 @@ const NavLinkWrapper = styled.div`
   gap: 1.5rem;
 `;
 
+const Username = styled.h1``;
+
+const LogoutButton = styled(Link)``;
+
+const Logout = styled.a`
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-family: "Prompt", sans-serif;
+  font-weight: 900;
+`;
+
 const LoginButton = styled(Link)``;
+
 const LogIn = styled.a`
   cursor: pointer;
   font-size: 1.2rem;
@@ -93,3 +122,15 @@ const SignUp = styled.a`
 `;
 
 const Home = styled(Link)``;
+
+const LoggedIn = styled.div`
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+`;
+
+const LoggedOut = styled.div`
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+`;

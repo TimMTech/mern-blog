@@ -1,8 +1,10 @@
+
 import styled from "styled-components";
 import { useState } from "react";
-import { signup } from "../../helpers/account/signup";
+import Cookies from "js-cookie";
 
 const SignupForm = () => {
+  const contentType = "application/json";
   const [signUpValue, setSignUpValue] = useState({
     username: "",
     password: "",
@@ -18,13 +20,35 @@ const SignupForm = () => {
   };
 
   const handleSignUpSubmit = (e) => {
-    e.preventDefault()
-    signup(signUpValue);
+    e.preventDefault();
+    fetch("/api/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": contentType,
+      },
+      body: JSON.stringify(signUpValue),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        if (data && data.error) {
+          console.log("SIGN UP ERROR");
+        }
+        if (data && data.token) {
+          console.log("success");
+          Cookies.set("token", data.token, { expires: 1 });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
     <FormWrapper>
-      <Form onSubmit={handleSignUpSubmit} method="POST">
+      <Form method="POST">
         <Input
           value={signUpValue.username}
           type="text"
@@ -46,7 +70,9 @@ const SignupForm = () => {
           placeholder="Password"
           onChange={(e) => handleSignUpChange(e)}
         />
-        <SignUpButton type="submit">Sign Up</SignUpButton>
+        <SignUpButton type="button" onClick={handleSignUpSubmit}>
+          Sign Up
+        </SignUpButton>
       </Form>
     </FormWrapper>
   );
@@ -64,12 +90,11 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 0 1rem rgba(39,37,37,1);
+  box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
   width: 75%;
   height: 30rem;
   padding: 5rem;
   gap: 2rem;
-  
 `;
 
 const Input = styled.input`

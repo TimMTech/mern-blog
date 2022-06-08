@@ -1,9 +1,9 @@
-import { connectDB } from "../../../database/connectDB";
-const UserTemplate = require("../../../models/UserModel.js");
+import {connectDB} from "../../database/connectDB"
+const UserTemplate = require("../../models/UserModel.js")
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-
-connectDB();
+connectDB()
 
 const signup = async (req, res) => {
   const { method } = req;
@@ -16,25 +16,27 @@ const signup = async (req, res) => {
       email: req.body.email,
       password: securePassword,
     });
+    const token = jwt.sign(
+      {
+        username: user.username,
+        email: user.email,
+      },
+      "secretBlog",
+      {
+        expiresIn: 3000
+      }
+    );
     user
       .save()
       .then((data) => {
-        return res.status(200).json(data);
+        
+        return res.status(200).json({data: data, token: token});
       })
       .catch((error) => {
         return res.status(400).json(error);
       });
   }
-  if (method === "GET") {
-    const user = UserTemplate.find();
-    user
-      .then((data) => {
-        return res.status(200).json(data);
-      })
-      .catch((error) => {
-        return res.status(400).json(error);
-      });
-  }
+  
 };
 
 export default signup;

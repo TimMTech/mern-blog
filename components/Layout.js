@@ -1,5 +1,7 @@
+
 import styled from "styled-components";
 import Nav from "./Nav";
+
 const Layout = ({ children }) => {
   return (
     <>
@@ -11,6 +13,4 @@ const Layout = ({ children }) => {
 
 export default Layout;
 
-const MainWrapper = styled.main`
-
-`;
+const MainWrapper = styled.main``;

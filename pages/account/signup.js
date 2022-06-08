@@ -2,6 +2,7 @@ import SignUpForm from "../../components/account/SignupForm";
 import styled from "styled-components";
 import Link from "next/link";
 
+
 const signup = () => {
   return (
     <SignUpPageWrapper>
@@ -68,4 +69,5 @@ const Login = styled.a`
   padding-right: 2rem;
   color: rgb(52, 97, 235);
   cursor: pointer;
+  background-color: rgb(255,255,255);
 `;

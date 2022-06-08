@@ -2,7 +2,9 @@ import LoginForm from "../../components/account/LoginForm";
 import styled from "styled-components";
 import Link from "next/link";
 
+
 const login = () => {
+  
   return (
     <LoginPageWrapper>
       <LoginHeaderWrapper>
@@ -23,6 +25,8 @@ const login = () => {
     </LoginPageWrapper>
   );
 };
+
+
 
 export default login;
 
@@ -68,4 +72,5 @@ const SignUp = styled.a`
   padding-right: 2rem;
   color: rgb(52, 97, 235);
   cursor: pointer;
+  background-color: rgb(255,255,255);
 `;

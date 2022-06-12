@@ -24,18 +24,19 @@ const login = async (req, res) => {
         {
           username: user.username,
           email: user.email,
+          _id: user._id
         },
         "secretBlog",
         {
           expiresIn: 3000,
         }
-      );
-      return res.status(200).json({ token });
+      ); 
+      return res.status(200).json({ token, _id: user._id });
     } else {
-      res.status(401).json({ error: true, message: "Failed Auth" });
+      return res.status(401).json({ error: true, message: "Failed Auth" });
     }
   } else {
-    res.status(400);
+    return res.status(400).json({error:"POST FAILED"});
   }
 };
 

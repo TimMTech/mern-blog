@@ -1,47 +1,51 @@
-
 import styled from "styled-components";
 import { useState } from "react";
-import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
-
-const LoginForm = () => {
+const SignupForm = () => {
+  const router = useRouter();
   const contentType = "application/json";
-  const [loginValue, setLoginValues] = useState({
+  const [signUpValue, setSignUpValue] = useState({
     username: "",
     password: "",
+    email: "",
   });
 
-  const handleLoginChange = (e) => {
+  const handleSignUpChange = (e) => {
     const { name, value } = e.target;
-    setLoginValues((prevState) => ({
+    setSignUpValue((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleSignUpSubmit = (e) => {
     e.preventDefault();
-    fetch("/api/auth", {
+    fetch("/api/users", {
       method: "POST",
       headers: {
         "Content-Type": contentType,
       },
-      body: JSON.stringify(loginValue),
+      body: JSON.stringify(signUpValue),
     })
       .then((response) => {
+        console.log(response)
         return response.json();
       })
       .then((data) => {
         if (data && data.error) {
-          console.log("FAILED LOGIN");
+          console.log("SIGN UP ERROR");
+          return data.error
         }
-        if (data && data.token) {
-          console.log("Success");
-          Cookies.set("token", data.token, { expires: 1 });
+        if (data) {
+          console.log("success");
+          router.reload();
+          return data
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error)
+        return error
       });
   };
 
@@ -49,28 +53,35 @@ const LoginForm = () => {
     <FormWrapper>
       <Form method="POST">
         <Input
-          value={loginValue.username}
+          value={signUpValue.username}
           type="text"
           name="username"
           placeholder="Username"
-          onChange={(e) => handleLoginChange(e)}
+          onChange={(e) => handleSignUpChange(e)}
         />
         <Input
-          value={loginValue.password}
+          value={signUpValue.email}
+          type="email"
+          name="email"
+          placeholder="Email"
+          onChange={(e) => handleSignUpChange(e)}
+        />
+        <Input
+          value={signUpValue.password}
           type="password"
           name="password"
           placeholder="Password"
-          onChange={(e) => handleLoginChange(e)}
+          onChange={(e) => handleSignUpChange(e)}
         />
-        <LoginButton type="button" onClick={handleLoginSubmit}>
-          Login
-        </LoginButton>
+        <SignUpButton type="button" onClick={handleSignUpSubmit}>
+          Sign Up
+        </SignUpButton>
       </Form>
     </FormWrapper>
   );
 };
 
-export default LoginForm;
+export default SignupForm;
 
 const FormWrapper = styled.div`
   display: flex;
@@ -104,7 +115,7 @@ const Input = styled.input`
   }
 `;
 
-const LoginButton = styled.button`
+const SignUpButton = styled.button`
   cursor: pointer;
   width: 100%;
   height: 5rem;

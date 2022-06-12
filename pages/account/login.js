@@ -1,4 +1,4 @@
-import LoginForm from "../../components/account/LoginForm";
+import LoginForm from "../../components/Forms/LoginForm"
 import styled from "styled-components";
 import Link from "next/link";
 

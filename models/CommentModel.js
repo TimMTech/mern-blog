@@ -13,7 +13,11 @@ const CommentTemplate = new mongoose.Schema({
     postId: {
         type: String,
         required: true
+    },
+    date: {
+        type: Date,
+        default: Date.now
     }
 })
 
-module.exports = mongoose.models.Comment || mongoose.Schema("Comment", CommentTemplate)
+module.exports = mongoose.models.Comment || mongoose.model("Comment", CommentTemplate)

@@ -1,34 +1,42 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-
-
+const cookies = require("js-cookie");
 
 const Nav = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [user, setUser] = useState(null);
 
-  const getUser = async () => {
-    const res = await fetch("/api/me");
-    const json = await res.json();
-    setUser(json);
+  const getUser = () => {
+     fetch("/api/session", {
+      method: "GET",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data)
+        setUser(data);
+        return data
+      })
+      .catch((error) => {
+        console.log(error);
+        return error
+      });
   };
-
+  
   useEffect(() => {
-    if (user === null || user.message === "FAILED AUTH") {
-      setIsAuth(false);
+    setIsAuth(false);
+    if (user === null) {
+      getUser();
     } else {
       setIsAuth(true);
     }
   }, [user]);
 
-  useEffect(() => {
-    getUser();
-  }, []);
-
   const logout = () => {
-  
+    cookies.remove("token");
+    window.location.href = "/account/login";
   };
 
   return (
@@ -38,10 +46,13 @@ const Nav = () => {
           E<StyledBlog>BLOG</StyledBlog>
         </StyledE>
       </Home>
+
       <NavLinkWrapper>
         {isAuth ? (
           <LoggedIn>
-            <Username>{user.username}</Username>
+            <ViewDash href={`/user/${user._id}`}>
+              <Username>{user.username}</Username>
+            </ViewDash>
             <LogoutButton href="/account/login">
               <Logout onClick={logout}>Log Out</Logout>
             </LogoutButton>
@@ -69,6 +80,7 @@ const NavWrapper = styled.nav`
   align-items: center;
   padding: 0 1.5rem;
   position: fixed;
+  z-index: 9;
   width: 100%;
   background-color: rgb(255, 255, 255);
   border-bottom: 0.05rem solid rgb(0, 0, 0);
@@ -92,7 +104,14 @@ const NavLinkWrapper = styled.div`
   gap: 1.5rem;
 `;
 
-const Username = styled.h1``;
+const ViewDash = styled(Link)`
+`
+
+const Username = styled.a`
+  font-size: 1.5rem;
+  font-weight: 900;
+  cursor: pointer;
+`;
 
 const LogoutButton = styled(Link)``;
 

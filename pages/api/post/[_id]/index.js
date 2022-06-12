@@ -1,5 +1,5 @@
-import { connectDB } from "../../../database/connectDB";
-const PostTemplate = require("../../../models/PostModel.js");
+import { connectDB } from "../../../../database/connectDB"
+const PostTemplate = require("../../../../models/PostModel")
 
 connectDB();
 
@@ -11,7 +11,6 @@ const post = async (req, res) => {
 
   if (method === "GET") {
     const post = await PostTemplate.findById(_id).populate("user");
-    
 
     if (!post) {
       return res.status(400).json({ error: "Post Not Found" });

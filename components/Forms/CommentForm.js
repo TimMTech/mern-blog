@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useTranspileTemplateLiterals } from "babel-plugin-styled-components/lib/utils/options";
 
-const CommentForm = () => {
+const CommentForm = ({ setPostComments }) => {
   const { query } = useRouter();
 
   const contentType = "application/json";
@@ -22,30 +23,30 @@ const CommentForm = () => {
 
   const handleCommentSubmit = (e) => {
     e.preventDefault();
+
     fetch("/api/comment", {
       method: "POST",
       headers: {
         "Content-Type": contentType,
       },
-      body: JSON.stringify(commentValue),
+      body: JSON.stringify(useTranspileTemplateLiterals),
     })
       .then((response) => {
         console.log(response);
         return response.json();
       })
       .then((data) => {
+        setPostComments((prevState) => [...prevState, data]);
         console.log(data);
-        return data;
       })
       .catch((error) => {
         console.log(error);
-        return error;
       });
   };
 
   return (
     <FormWrapper>
-      <Form method="POST">
+      <Form method="POST" onSubmit={handleCommentSubmit}>
         <Input
           placeholder="Username"
           type="text"
@@ -60,9 +61,7 @@ const CommentForm = () => {
           value={commentValue.content}
           onChange={(e) => handleCommentChange(e)}
         />
-        <CommentButton type="button" onClick={handleCommentSubmit}>
-          Comment
-        </CommentButton>
+        <CommentButton>Comment</CommentButton>
       </Form>
     </FormWrapper>
   );

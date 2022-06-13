@@ -15,13 +15,13 @@ const Nav = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data)
+        
         setUser(data);
-        return data
+        
       })
       .catch((error) => {
         console.log(error);
-        return error
+        
       });
   };
   

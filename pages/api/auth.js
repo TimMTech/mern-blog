@@ -6,8 +6,11 @@ const jwt = require("jsonwebtoken");
 connectDB();
 
 const login = async (req, res) => {
-  const { method } = req;
+  
+  const { method} = req;
+
   if (method === "POST") {
+    
     const user = await UserTemplate.findOne({
       username: req.body.username,
     });

@@ -15,7 +15,7 @@ const PostTemplate = new mongoose.Schema({
         ref: "User"
     },
     comments: {
-        type: [String],
+        type: [],
         default: []
     },
     published: {

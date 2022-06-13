@@ -1,10 +1,14 @@
 import { connectDB } from "../../../database/connectDB";
 const CommentTemplate = require("../../../models/CommentModel");
+const Post = require("../../../models/PostModel");
 
 connectDB();
 
 const comment = async (req, res) => {
-  const { method } = req;
+  const {
+    method,
+    query: { _id },
+  } = req;
 
   if (method === "POST") {
     const comment = await new CommentTemplate({
@@ -14,7 +18,12 @@ const comment = async (req, res) => {
     });
     comment
       .save()
-      .then((data) => {
+      .then(async (data) => {
+        const post = await Post.findByIdAndUpdate(
+          { _id: _id },
+          { $push: { comments: data } }
+        );
+        post.save();
         return res.status(200).json(data);
       })
       .catch((error) => {

@@ -1,19 +1,16 @@
 import styled from "styled-components";
 import moment from "moment";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+
 import CommentForm from "../../Forms/CommentForm";
 
 const Post = ({ post }) => {
-  const router = useRouter();
-  const contentType = "application/json";
+  console.log(post._id)
   const {
     title,
     content,
     user: { username },
     date,
-    published,
-    likes,
     imageUrl,
   } = post;
 
@@ -21,6 +18,7 @@ const Post = ({ post }) => {
   const [postLikes, setPostLikes] = useState([]);
   const [liked, setLiked] = useState(false);
 
+  
 
   const filteredComments = postComments.filter(
     (comment) => comment.postId === post._id
@@ -34,6 +32,7 @@ const Post = ({ post }) => {
         return response.json();
       })
       .then((data) => {
+        console.log(data)
         setPostLikes((prevState) => [...prevState, data._id])
       })
       .catch((error) => {
@@ -57,7 +56,7 @@ const Post = ({ post }) => {
   }
 
   const getComments = () => {
-    fetch("/api/comment", {
+    fetch(`/api/comment/${post._id}`, {
       method: "GET",
     })
       .then((response) => {

@@ -35,16 +35,16 @@ const PostForm = () => {
         console.log(data)
         if (data && data.error) {
           console.log("FAILED POST");
-          return data.error
+          
         }
         if (data && data.token) {
           console.log("Success");
-          return data;
+          
         }
       })
       .catch((error) => {
         console.log(error);
-        return error;
+        
       });
   };
 

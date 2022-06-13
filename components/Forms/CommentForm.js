@@ -13,6 +13,7 @@ const CommentForm = ({ setPostComments }) => {
     postId: query._id,
   });
 
+
   const handleCommentChange = (e) => {
     const { name, value } = e.target;
     setCommentValue((prevState) => ({
@@ -24,20 +25,20 @@ const CommentForm = ({ setPostComments }) => {
   const handleCommentSubmit = (e) => {
     e.preventDefault();
 
-    fetch("/api/comment", {
+    fetch(`/api/comment/${query._id}`, {
       method: "POST",
       headers: {
         "Content-Type": contentType,
       },
-      body: JSON.stringify(useTranspileTemplateLiterals),
+      body: JSON.stringify(commentValue),
     })
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
-        setPostComments((prevState) => [...prevState, data]);
-        console.log(data);
+        
+        setPostComments((prevState) => [...prevState, data])
+        
       })
       .catch((error) => {
         console.log(error);

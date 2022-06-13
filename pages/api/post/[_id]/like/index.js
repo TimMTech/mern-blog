@@ -39,6 +39,8 @@ const likes = async (req, res) => {
     }
   }
   if (method === "GET") {
+      
+      
       const likes = await PostTemplate.findById(_id)
 
       if (!likes) {

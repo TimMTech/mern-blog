@@ -35,17 +35,17 @@ const SignupForm = () => {
       .then((data) => {
         if (data && data.error) {
           console.log("SIGN UP ERROR");
-          return data.error
+          
         }
         if (data) {
           console.log("success");
           router.reload();
-          return data
+         
         }
       })
       .catch((error) => {
         console.log(error)
-        return error
+        
       });
   };
 

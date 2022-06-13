@@ -4,6 +4,7 @@ const UserTemplate = require("../../../models/UserModel")
 connectDB()
 
 const dashboard = async (req,res) => {
+    
     const {
         query: {_id},
         method,

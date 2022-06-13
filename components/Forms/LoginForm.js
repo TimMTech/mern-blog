@@ -33,18 +33,18 @@ const LoginForm = () => {
       .then((data) => {
         if (data && data.error) {
           console.log("FAILED LOGIN");
-          return data.error;
+          
         }
         if (data && data.token) {
           console.log("Success");
           Cookies.set("token", data.token, { expires: 1 });
           window.location.href = `/user/${data._id}`;
-          return data;
+          
         }
       })
       .catch((error) => {
         console.log(error);
-        return error
+       
       });
   };
 

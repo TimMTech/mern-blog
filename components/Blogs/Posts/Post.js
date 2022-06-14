@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import CommentForm from "../../Forms/CommentForm";
 
 const Post = ({ post }) => {
-  console.log(post._id)
   const {
     title,
     content,
@@ -18,42 +17,59 @@ const Post = ({ post }) => {
   const [postLikes, setPostLikes] = useState([]);
   const [liked, setLiked] = useState(false);
 
-  
-
   const filteredComments = postComments.filter(
     (comment) => comment.postId === post._id
   );
 
+  
+
   const handlePostLike = () => {
+    if (liked) {
+      fetch(`/api/post/${post._id}/dislike`, {
+        method: "PUT",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setPostLikes(data);
+          setLiked(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      fetch(`/api/post/${post._id}/like`, {
+        method: "PUT",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setPostLikes(data);
+          setLiked(true);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
+  const getLikes = () => {
     fetch(`/api/post/${post._id}/like`, {
-      method: "POST",
+      method: "GET",
     })
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data)
-        setPostLikes((prevState) => [...prevState, data._id])
+        setPostLikes(data.post);
+        if (data.post.some((id) => id === data.decoded)) setLiked(true);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
-  const getLikes = () => {
-    fetch(`/api/post/${post._id}/like`, {
-      method: "GET"
-    })
-    .then((response) => {
-      return response.json()
-    })
-    .then((data) => {
-      setPostLikes(data.likes)
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-  }
 
   const getComments = () => {
     fetch(`/api/comment/${post._id}`, {
@@ -72,8 +88,8 @@ const Post = ({ post }) => {
 
   useEffect(() => {
     getComments();
-    getLikes()
-  }, []);
+    getLikes();
+  }, [liked]);
 
   const dateFormat = (date) => {
     return moment(date).format("lll");

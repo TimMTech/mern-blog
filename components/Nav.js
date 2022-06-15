@@ -80,10 +80,11 @@ const NavWrapper = styled.nav`
   align-items: center;
   padding: 0 1.5rem;
   position: fixed;
-  z-index: 9;
+  z-index: 999;
   width: 100%;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(33, 37, 41);
   border-bottom: 0.05rem solid rgb(0, 0, 0);
+  box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
 `;
 
 const StyledE = styled.a`
@@ -95,7 +96,7 @@ const StyledE = styled.a`
 `;
 
 const StyledBlog = styled.span`
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   font-size: 2rem;
 `;
 
@@ -111,6 +112,9 @@ const Username = styled.a`
   font-size: 1.5rem;
   font-weight: 900;
   cursor: pointer;
+  &: hover {
+    transform: scale(1.1, 1.1);
+  }
 `;
 
 const LogoutButton = styled(Link)``;
@@ -120,6 +124,9 @@ const Logout = styled.a`
   font-size: 1.2rem;
   font-family: "Prompt", sans-serif;
   font-weight: 900;
+  &: hover {
+    transform: scale(1.1, 1.1);
+  }
 `;
 
 const LoginButton = styled(Link)``;
@@ -129,6 +136,9 @@ const LogIn = styled.a`
   font-size: 1.2rem;
   font-family: "Prompt", sans-serif;
   font-weight: 900;
+  &: hover {
+    transform:scale(1.1,1.1)
+  }
 `;
 
 const SignUpButton = styled(Link)``;
@@ -138,6 +148,9 @@ const SignUp = styled.a`
   font-size: 1.2rem;
   font-family: "Prompt", sans-serif;
   font-weight: 900;
+  &: hover {
+    transform: scale(1.1, 1.1);
+  }
 `;
 
 const Home = styled(Link)``;
@@ -146,10 +159,13 @@ const LoggedIn = styled.div`
   display: flex;
   gap: 2rem;
   align-items: center;
+  color: rgb(255, 255, 255);
+
 `;
 
 const LoggedOut = styled.div`
   display: flex;
   gap: 2rem;
   align-items: center;
+  color: rgb(255, 255, 255);
 `;

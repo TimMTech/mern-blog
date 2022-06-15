@@ -92,19 +92,19 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
-  width: 75%;
-  height: 40rem;
-  padding: 5rem;
-  gap: 2rem;
+  width: 50%;
+  height: 40em;
+  gap: 3rem;
 `;
 
 const Input = styled.input`
-  width: 100%;
+  width: 75%;
   padding: 1rem;
   border: 0.05rem solid rgb(0, 0, 0);
   border-radius: 0.5rem;
-  height: 5rem;
+  height: 3rem;
   font-size: 1.5rem;
   ::placeholder {
     font-size: 1.5rem;
@@ -115,7 +115,7 @@ const Input = styled.input`
 `;
 
 const TextArea = styled.textarea`
-  width: 100%;
+  width: 75%;
   padding: 1rem;
   border: 0.05rem solid rgb(0, 0, 0);
   border-radius: 0.5rem;
@@ -130,14 +130,14 @@ const TextArea = styled.textarea`
 `;
 
 const CreatePost = styled.button`
-  cursor: pointer;
-  width: 100%;
-  height: 5rem;
-  font-size: 3rem;
-  color: rgb(52, 97, 235);
   font-family: "Prompt", sans-serif;
   font-weight: 900;
+  font-size: 1.5em;
   border: 0.05rem solid rgb(0, 0, 0);
-  border-radius: 0.5rem;
-  background-color: rgb(255, 255, 255);
+  padding-left: 2rem;
+  padding-right: 2rem;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  background-color: rgb(33, 37, 41);
+  border-radius: 0.25rem;
 `;

@@ -63,11 +63,12 @@ const NavLogin = styled(Link)``;
 const Login = styled.a`
   font-family: "Prompt", sans-serif;
   font-weight: 900;
-  font-size: 3rem;
+  font-size: 1.5em;
   border: 0.05rem solid rgb(0, 0, 0);
   padding-left: 2rem;
   padding-right: 2rem;
-  color: rgb(52, 97, 235);
+  color: rgb(255, 255, 255);
   cursor: pointer;
-  background-color: rgb(255,255,255);
+  background-color: rgb(33, 37, 41);
+  border-radius: 0.25rem;
 `;

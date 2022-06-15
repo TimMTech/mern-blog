@@ -13,6 +13,7 @@ const Post = ({ post }) => {
     imageUrl,
   } = post;
 
+  const [user, setUser] = useState(null);
   const [postComments, setPostComments] = useState([]);
   const [postLikes, setPostLikes] = useState([]);
   const [liked, setLiked] = useState(false);
@@ -20,8 +21,6 @@ const Post = ({ post }) => {
   const filteredComments = postComments.filter(
     (comment) => comment.postId === post._id
   );
-
-  
 
   const handlePostLike = () => {
     if (liked) {
@@ -63,8 +62,11 @@ const Post = ({ post }) => {
         return response.json();
       })
       .then((data) => {
-        setPostLikes(data.post);
-        if (data.post.some((id) => id === data.decoded)) setLiked(true);
+        if (data && data.user) {
+          setUser(data.user);
+          setPostLikes(data.post);
+          if (data.post.some((id) => id === data.decoded)) setLiked(true);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -103,7 +105,9 @@ const Post = ({ post }) => {
           <PostImage src={imageUrl} />
         </PostImageWrapper>
         <PostContent>{content}</PostContent>
-        <PostLikes onClick={handlePostLike}>{postLikes.length}</PostLikes>
+        <PostLikes hidden={user ? false : true} onClick={handlePostLike}>
+          {postLikes.length}
+        </PostLikes>
         <PostAuthor>
           by {username} / <PostDate>{dateFormat(date)}</PostDate>
         </PostAuthor>

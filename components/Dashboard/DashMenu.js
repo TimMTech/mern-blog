@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 
-const LeftPanel = () => {
+const DashMenu = () => {
   return (
-    <LeftPanelWrapper>
+    <DashMenuWrapper>
       <CreatePostButton href="/post">
         <CreatePost>Create Post</CreatePost>
       </CreatePostButton>
@@ -14,58 +13,60 @@ const LeftPanel = () => {
       <LogoutButton href="/account/login">
         <Logout>Logout</Logout>
       </LogoutButton>
-    </LeftPanelWrapper>
+    </DashMenuWrapper>
   );
 };
 
-export default LeftPanel;
+export default DashMenu;
 
-const LeftPanelWrapper = styled.nav`
+const DashMenuWrapper = styled.nav`
   font-family: "Prompt", sans-serif;
   font-weight: 900;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
-  width: 20%;
-  background-color: rgba(0, 0, 0, 0.06);
-  box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
-  padding-top: 2rem;
+  border-radius: 1rem;
 `;
 
-const CreatePostButton = styled(Link)`
-`;
+const CreatePostButton = styled(Link)``;
+
+
 const CreatePost = styled.a`
+  color: rgb(255, 255, 255);
   text-align: center;
   font-size: 2rem;
   width: 100%;
   &: hover {
-    background-color: rgb(0, 0, 0);
-    color: rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     cursor: pointer;
   }
 `;
 
 const ViewYourPostsButton = styled(Link)``;
 const ViewPosts = styled.a`
+  color: rgb(255, 255, 255);
   text-align: center;
   font-size: 2rem;
   width: 100%;
   &: hover {
-    background-color: rgb(0, 0, 0);
-    color: rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     cursor: pointer;
   }
 `;
 
 const LogoutButton = styled(Link)``;
 const Logout = styled.a`
+  color: rgb(255, 255, 255);
   text-align: center;
   font-size: 2rem;
   width: 100%;
   &: hover {
-    background-color: rgb(0, 0, 0);
-    color: rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     cursor: pointer;
   }
 `;
+
+

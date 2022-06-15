@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import LeftPanel from "../../components/dashboard/LeftPanel";
-import RightPanel from "../../components/dashboard/RightPanel";
+
+import RightPanel from "../../components/Dashboard/MainDash";
 
 const dashboard = ({ user, posts }) => {
   const { data } = user;
@@ -9,7 +9,7 @@ const dashboard = ({ user, posts }) => {
   return (
     <DashBoardWrapper>
     <Dashboard>
-      <LeftPanel />
+      
       <RightPanel user={data} posts={posts}/>
     </Dashboard>
     </DashBoardWrapper>

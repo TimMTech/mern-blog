@@ -17,10 +17,26 @@ const Post = ({ post }) => {
   const [postComments, setPostComments] = useState([]);
   const [postLikes, setPostLikes] = useState([]);
   const [liked, setLiked] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const filteredComments = postComments.filter(
     (comment) => comment.postId === post._id
   );
+
+  const handleEdit = () => {};
+
+  const handleDelete = () => {
+    fetch(`/api/post/${post._id}/delete`, { 
+      method: "DELETE",
+    })
+    .then((response) => {
+      window.location.href = "/"
+      return response.json()
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  };
 
   const handlePostLike = () => {
     if (liked) {
@@ -100,6 +116,14 @@ const Post = ({ post }) => {
   return (
     <PostWrapper>
       <PostContainer>
+        <EditMode>
+          <EditPost hidden={user ? false : true} onClick={handleEdit}>
+            Edit
+          </EditPost>
+          <DeletePost hidden={user ? false : true} onClick={handleDelete}>
+            Delete
+          </DeletePost>
+        </EditMode>
         <PostTitle>{title}</PostTitle>
         <PostImageWrapper>
           <PostImage src={imageUrl} />
@@ -154,6 +178,40 @@ const PostContainer = styled.div`
   box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
 `;
 
+const EditMode = styled.div`
+  margin: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const EditPost = styled.button`
+  font-family: "Prompt", sans-serif;
+  font-weight: 900;
+  font-size: 1.2em;
+  border: 0.05rem solid rgb(0, 0, 0);
+  padding-left: 2rem;
+  padding-right: 2rem;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  background-color: rgb(33, 37, 41);
+  border-radius: 0.25rem;
+  margin-right: 0.5rem;
+`;
+
+const DeletePost = styled.button`
+  font-family: "Prompt", sans-serif;
+  font-weight: 900;
+  font-size: 1.2em;
+  border: 0.05rem solid rgb(0, 0, 0);
+  padding-left: 2rem;
+  padding-right: 2rem;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  background-color: rgb(33, 37, 41);
+  border-radius: 0.25rem;
+  margin-left: 0.5rem;
+`;
 const PostTitle = styled.h1`
   font-size: 3rem;
   padding-bottom: 2rem;

@@ -4,6 +4,7 @@ import Link from "next/link";
 const DashMenu = () => {
   return (
     <DashMenuWrapper>
+      <MenuTitle>Menu</MenuTitle>
       <CreatePostButton href="/post">
         <CreatePost>Create Post</CreatePost>
       </CreatePostButton>
@@ -26,13 +27,20 @@ const DashMenuWrapper = styled.nav`
   flex-direction: column;
   align-items: center;
   border-radius: 1rem;
+  color: rgb(255, 255, 255);
+`;
+
+const MenuTitle = styled.p`
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 1.5rem;
+  border-bottom: 0.05rem solid rgb(255, 255, 255);
+  width: 75%;
 `;
 
 const CreatePostButton = styled(Link)``;
 
-
 const CreatePost = styled.a`
-  color: rgb(255, 255, 255);
   text-align: center;
   font-size: 2rem;
   width: 100%;
@@ -45,7 +53,6 @@ const CreatePost = styled.a`
 
 const ViewYourPostsButton = styled(Link)``;
 const ViewPosts = styled.a`
-  color: rgb(255, 255, 255);
   text-align: center;
   font-size: 2rem;
   width: 100%;
@@ -58,7 +65,6 @@ const ViewPosts = styled.a`
 
 const LogoutButton = styled(Link)``;
 const Logout = styled.a`
-  color: rgb(255, 255, 255);
   text-align: center;
   font-size: 2rem;
   width: 100%;
@@ -68,5 +74,3 @@ const Logout = styled.a`
     cursor: pointer;
   }
 `;
-
-

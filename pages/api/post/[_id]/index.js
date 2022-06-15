@@ -1,5 +1,6 @@
 import { connectDB } from "../../../../database/connectDB"
 const PostTemplate = require("../../../../models/PostModel")
+const jwt = require("jsonwebtoken")
 
 connectDB();
 

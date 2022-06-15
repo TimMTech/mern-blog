@@ -9,6 +9,13 @@ const MainDash = ({ user, posts }) => {
 
   const filteredMyPosts = posts.filter((post) => post.user._id === user._id);
 
+  const publishedPosts = filteredMyPosts.filter(
+    (post) => post.published === true
+  );
+  const unPublishedPosts = filteredMyPosts.filter(
+    (post) => post.published === false
+  );
+
   const dateFormat = (date) => {
     return moment(date).format("lll");
   };
@@ -33,6 +40,36 @@ const MainDash = ({ user, posts }) => {
     },
   };
 
+  const handleUnpublish = (_id) => {
+    fetch(`/api/post/${_id}/unpublish`, {
+      method: "POST",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handlePublish = (_id) => {
+    fetch(`/api/post/${_id}/publish`, {
+      method: "POST",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <AnimatePresence>
@@ -48,23 +85,22 @@ const MainDash = ({ user, posts }) => {
               exit="closed"
               variants={sideVariants}
             >
-              <MotionA
-                whileHover={{scale: 1.1}}
-                variants={itemVariants}
-              >
+              <MotionA whileHover={{ scale: 1.1 }} variants={itemVariants}>
                 <DashMenu />
               </MotionA>
             </MotionDiv>
           </MotionAside>
         )}
       </AnimatePresence>
-
       <>
         <RightPanelWrapper>
-          <OpenMenuButton onClick={cycleOpen}>{open ? "Close" : "Open"}</OpenMenuButton>
+          <OpenMenuButton onClick={cycleOpen}>
+            {open ? "Close" : "Open"}
+          </OpenMenuButton>
           <Welcome>Welcome to your dashboard, {user.username}</Welcome>
+          <Published>Published Posts</Published>
           <ScrollBar>
-            {filteredMyPosts.map((posts) => {
+            {publishedPosts.map((posts) => {
               const {
                 title,
                 date,
@@ -82,6 +118,37 @@ const MainDash = ({ user, posts }) => {
                     <PostAuthor>
                       By {username} / <PostDate>{dateFormat(date)}</PostDate>
                     </PostAuthor>
+                    <UnpublishButton onClick={() => handleUnpublish(_id)}>
+                      Unpublish
+                    </UnpublishButton>
+                  </Post>
+                </MyPostsWrapper>
+              );
+            })}
+          </ScrollBar>
+          <Unpublished>Unpublished Posts</Unpublished>
+          <ScrollBar>
+            {unPublishedPosts.map((posts) => {
+              const {
+                title,
+                date,
+                _id,
+                imageUrl,
+                user: { username },
+              } = posts;
+              return (
+                <MyPostsWrapper key={_id}>
+                  <Post>
+                    <PostTitle>{title}</PostTitle>
+                    <PostImageWrapper>
+                      <PostImage src={imageUrl} />
+                    </PostImageWrapper>
+                    <PostAuthor>
+                      By {username} / <PostDate>{dateFormat(date)}</PostDate>
+                    </PostAuthor>
+                    <PublishButton onClick={() => handlePublish(_id)}>
+                      Publish
+                    </PublishButton>
                   </Post>
                 </MyPostsWrapper>
               );
@@ -96,16 +163,15 @@ const MainDash = ({ user, posts }) => {
 export default MainDash;
 
 const MotionAside = styled(motion.aside)`
-  background-color: rgb(52, 97, 235);
+  background-color: rgb(52, 60, 85);
   width: 20rem;
-  height: 100vh;
+  min-height: 100vh;
+  box-shadow: inset 0 0 10rem rgba(255, 255, 255, 0.5);
 `;
 
-const MotionDiv = styled(motion.div)`
-  
-`
+const MotionDiv = styled(motion.div)``;
 
-const MotionA = styled(motion.a)``
+const MotionA = styled(motion.a)``;
 
 const RightPanelWrapper = styled.section`
   padding-top: 3rem;
@@ -115,14 +181,28 @@ const RightPanelWrapper = styled.section`
 `;
 
 const Welcome = styled.h1`
-  font-size: 3rem;
+  font-size: 3vw;
   text-align: center;
 `;
 
-const Published = styled.p``;
+const Published = styled.p`
+  font-size: 2rem;
+  border-bottom: 0.05rem solid rgba(0, 0, 0, 0.3);
+  margin: 1.5rem;
+  padding: 1.5rem;
+  width: 100%;
+`;
+
+const Unpublished = styled.p`
+  font-size: 2rem;
+  border-bottom: 0.05rem solid rgba(0, 0, 0, 0.3);
+  margin: 1.5rem;
+  padding: 1.5rem;
+  width: 100%;
+`;
 
 const ScrollBar = styled.section`
-  padding: 4rem;
+  padding: 2rem;
   display: flex;
   overflow: scroll;
 `;
@@ -174,15 +254,41 @@ const PostAuthor = styled.p`
 const PostDate = styled.span``;
 
 const OpenMenuButton = styled.button`
-   margin-left: 3rem;
-   margin-bottom: 3rem;
-   width: 15%;
-  background-color: rgb(255, 255, 255);
-  color: rgb(52, 97, 235);
-  height: 3rem;
-  font-size: 2rem;
-  font-weight: 700;
-  border-radius: 0.5rem;
+  font-family: "Prompt", sans-serif;
+  font-weight: 900;
+  font-size: 1.5em;
+  border: 0.05rem solid rgb(0, 0, 0);
+  margin-left: 2rem;
+  margin-bottom: 2rem;
+  padding: 0 1.5rem;
+  color: rgb(255, 255, 255);
   cursor: pointer;
+  background-color: rgb(33, 37, 41);
+  border-radius: 0.25rem;
 `;
-   
+
+const PublishButton = styled.button`
+  font-family: "Prompt", sans-serif;
+  font-weight: 900;
+  font-size: 1.5em;
+  border: 0.05rem solid rgb(0, 0, 0);
+  margin-bottom: 0.5rem;
+  padding: 0 1.5rem;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  background-color: rgb(33, 37, 41);
+  border-radius: 0.25rem;
+`;
+
+const UnpublishButton = styled.button`
+  font-family: "Prompt", sans-serif;
+  font-weight: 900;
+  font-size: 1.5em;
+  border: 0.05rem solid rgb(0, 0, 0);
+  margin-bottom: 0.5rem;
+  padding: 0 1.5rem;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  background-color: rgb(33, 37, 41);
+  border-radius: 0.25rem;
+`;

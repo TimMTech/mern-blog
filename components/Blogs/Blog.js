@@ -2,12 +2,13 @@ import styled from "styled-components";
 import moment from "moment";
 import Link from "next/link";
 
-
 const Blog = ({ posts }) => {
   const dateFormat = (date) => {
     return moment(date).format("lll");
   };
-  const newPost = posts.map((post) => (
+  const filteredPosts = posts.filter((post) => post.published === true);
+
+  const newPost = filteredPosts.map((post) => (
     <PostWrapper key={post._id}>
       <Link href={`/post/${post._id}`}>
         <Post>

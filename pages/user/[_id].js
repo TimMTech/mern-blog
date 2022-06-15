@@ -9,7 +9,6 @@ const dashboard = ({ user, posts }) => {
   return (
     <DashBoardWrapper>
     <Dashboard>
-      
       <RightPanel user={data} posts={posts}/>
     </Dashboard>
     </DashBoardWrapper>

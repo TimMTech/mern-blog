@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import DashMenu from "./DashMenu";
-
+import { useRouter } from "next/router";
 import { motion, AnimatePresence, useCycle } from "framer-motion";
 import moment from "moment";
 
 const MainDash = ({ user, posts }) => {
+  const router = useRouter();
+
   const [open, cycleOpen] = useCycle(false, true);
 
   const filteredMyPosts = posts.filter((post) => post.user._id === user._id);
@@ -16,9 +18,6 @@ const MainDash = ({ user, posts }) => {
     (post) => post.published === false
   );
 
-  const dateFormat = (date) => {
-    return moment(date).format("lll");
-  };
 
   const itemVariants = {
     closed: { opacity: 0 },
@@ -49,6 +48,7 @@ const MainDash = ({ user, posts }) => {
       })
       .then((data) => {
         console.log(data);
+        router.push(`/user/${user._id}`);
       })
       .catch((error) => {
         console.log(error);
@@ -64,11 +64,16 @@ const MainDash = ({ user, posts }) => {
       })
       .then((data) => {
         console.log(data);
+        router.push(`/user/${user._id}`);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+   const dateFormat = (date) => {
+     return moment(date).format("lll");
+   };
 
   return (
     <>
@@ -85,9 +90,9 @@ const MainDash = ({ user, posts }) => {
               exit="closed"
               variants={sideVariants}
             >
-              <MotionA whileHover={{ scale: 1.1 }} variants={itemVariants}>
+              <MotionItems whileHover={{ scale: 1.1 }} variants={itemVariants}>
                 <DashMenu />
-              </MotionA>
+              </MotionItems>
             </MotionDiv>
           </MotionAside>
         )}
@@ -171,7 +176,7 @@ const MotionAside = styled(motion.aside)`
 
 const MotionDiv = styled(motion.div)``;
 
-const MotionA = styled(motion.a)``;
+const MotionItems = styled(motion.div)``;
 
 const RightPanelWrapper = styled.section`
   padding-top: 3rem;

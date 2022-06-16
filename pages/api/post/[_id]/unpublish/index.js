@@ -21,18 +21,20 @@ const unpublish = async (req, res) => {
     } else {
       return res.status(400).json({ error: "UNABLE TO VERIFY" });
     }
-    const post = await PostTemplate.findByIdAndUpdate(
-      { _id: _id },
-      { published: false }
-    );
-    post
-      .save()
-      .then((data) => {
-        return res.status(200).json(data);
-      })
-      .catch((error) => {
-        return res.status(400).json({ error: "FAILED TO PUBLISH" });
-      });
+    if (decoded) {
+      const post = await PostTemplate.findByIdAndUpdate(
+        { _id: _id },
+        { published: false }
+      );
+      post
+        .save()
+        .then((data) => {
+          return res.status(200).json(data);
+        })
+        .catch((error) => {
+          return res.status(400).json({ error: "FAILED TO PUBLISH" });
+        });
+    }
   }
 };
 

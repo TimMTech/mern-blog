@@ -1,18 +1,21 @@
 import styled from "styled-components";
 import moment from "moment";
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import PostForm from "../../Forms/PostForm";
 
 import CommentForm from "../../Forms/CommentForm";
 
 const Post = ({ post }) => {
   const {
+    _id,
     title,
     content,
     user: { username },
     date,
     imageUrl,
   } = post;
-
+  const router = useRouter()
   const [user, setUser] = useState(null);
   const [postComments, setPostComments] = useState([]);
   const [postLikes, setPostLikes] = useState([]);
@@ -23,24 +26,28 @@ const Post = ({ post }) => {
     (comment) => comment.postId === post._id
   );
 
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    setEditMode(true);
+  };
 
+  
   const handleDelete = () => {
-    fetch(`/api/post/${post._id}`, { 
+    fetch(`/api/post/${post._id}`, {
       method: "DELETE",
     })
-    .then((response) => {
-      if (!response.ok) {
-        console.log("Server Error")
-      }
-      return response.json()
-    })
-    .then((data) => {
-      console.log(data)
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+      .then((response) => {
+        if (!response.ok) {
+          console.log("Server Error");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        router.push("/")
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handlePostLike = () => {
@@ -119,50 +126,67 @@ const Post = ({ post }) => {
   };
 
   return (
-    <PostWrapper>
-      <PostContainer>
-        <EditMode>
-          <EditPost hidden={user ? false : true} onClick={handleEdit}>
-            Edit
-          </EditPost>
-          <DeletePost hidden={user ? false : true} onClick={handleDelete}>
-            Delete
-          </DeletePost>
-        </EditMode>
-        <PostTitle>{title}</PostTitle>
-        <PostImageWrapper>
-          <PostImage src={imageUrl} />
-        </PostImageWrapper>
-        <PostContent>{content}</PostContent>
-        <PostLikes hidden={user ? false : true} onClick={handlePostLike}>
-          {postLikes.length}
-        </PostLikes>
-        <PostAuthor>
-          by {username} / <PostDate>{dateFormat(date)}</PostDate>
-        </PostAuthor>
-        <CommentForm setPostComments={setPostComments} />
-        <PostComments>
-          <ShownComments>Comments ({filteredComments.length})</ShownComments>
-          {filteredComments.map((comment) => {
-            const { _id, user, content, date } = comment;
-            return (
-              <CommentWrapper key={_id}>
-                <Comment>
-                  <CommentUser>
-                    {user} / <CommentDate>{date}</CommentDate>
-                  </CommentUser>
-                  <CommentContent>{content}</CommentContent>
-                </Comment>
-              </CommentWrapper>
-            );
-          })}
-        </PostComments>
-      </PostContainer>
-    </PostWrapper>
+    <>
+      {editMode ? (
+        <EditModeWrapper>
+          <PostForm editMode={editMode} postId={_id} setEditMode={setEditMode} />
+        </EditModeWrapper>
+      ) : (
+        <PostWrapper>
+          <PostContainer>
+            {user === username ? (
+              <EditMode>
+                <EditPost hidden={user ? false : true} onClick={handleEdit}>
+                  Edit
+                </EditPost>
+                <DeletePost hidden={user ? false : true} onClick={handleDelete}>
+                  Delete
+                </DeletePost>
+              </EditMode>
+            ) : null}
+
+            <PostTitle>{title}</PostTitle>
+            <PostImageWrapper>
+              <PostImage src={imageUrl} />
+            </PostImageWrapper>
+            <PostContent>{content}</PostContent>
+            <PostLikes hidden={user ? false : true} onClick={handlePostLike}>
+              {postLikes.length}
+            </PostLikes>
+            <PostAuthor>
+              by {username} / <PostDate>{dateFormat(date)}</PostDate>
+            </PostAuthor>
+            <CommentForm setPostComments={setPostComments} />
+            <PostComments>
+              <ShownComments>
+                Comments ({filteredComments.length})
+              </ShownComments>
+              {filteredComments.map((comment) => {
+                const { _id, user, content, date } = comment;
+                return (
+                  <CommentWrapper key={_id}>
+                    <Comment>
+                      <CommentUser>
+                        {user} / <CommentDate>{date}</CommentDate>
+                      </CommentUser>
+                      <CommentContent>{content}</CommentContent>
+                    </Comment>
+                  </CommentWrapper>
+                );
+              })}
+            </PostComments>
+          </PostContainer>
+        </PostWrapper>
+      )}
+    </>
   );
 };
 
 export default Post;
+
+const EditModeWrapper = styled.main`
+  padding: 2rem;
+`;
 
 const PostWrapper = styled.main`
   min-height: 100vh;

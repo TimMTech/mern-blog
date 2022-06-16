@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import * as Yup from "yup";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { renderSignupError } from "../Validations/SignupError";
 
 const SignupForm = () => {
   const router = useRouter();
@@ -11,6 +14,18 @@ const SignupForm = () => {
     email: "",
   });
 
+  const validationSchema = Yup.object({
+    username: Yup.string()
+      .required("Required!")
+      .min(6, "Must be 6 Characters or More")
+      .max(15, "Must be 15 Characters or Less"),
+    password: Yup.string()
+      .required("Required!")
+      .min(6, "Must be 6 Characters or More")
+      .max(15, "Must be 15 Characters or Less"),
+    email: Yup.string().required("Required").email("Must be a Valid Email "),
+  });
+
   const handleSignUpChange = (e) => {
     const { name, value } = e.target;
     setSignUpValue((prevState) => ({
@@ -19,8 +34,7 @@ const SignupForm = () => {
     }));
   };
 
-  const handleSignUpSubmit = (e) => {
-    e.preventDefault();
+  const handleSignUpSubmit = () => {
     fetch("/api/users", {
       method: "POST",
       headers: {
@@ -29,55 +43,67 @@ const SignupForm = () => {
       body: JSON.stringify(signUpValue),
     })
       .then((response) => {
-        console.log(response)
         return response.json();
       })
       .then((data) => {
         if (data && data.error) {
           console.log("SIGN UP ERROR");
-          
         }
-        if (data) {
+        if (data && data.success) {
+          router.push("/account/login");
           console.log("success");
-          router.reload();
-         
         }
       })
       .catch((error) => {
-        console.log(error)
-        
+        console.log(error);
       });
   };
 
   return (
-    <FormWrapper>
-      <Form method="POST">
-        <Input
-          value={signUpValue.username}
-          type="text"
-          name="username"
-          placeholder="Username"
-          onChange={(e) => handleSignUpChange(e)}
-        />
-        <Input
-          value={signUpValue.email}
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={(e) => handleSignUpChange(e)}
-        />
-        <Input
-          value={signUpValue.password}
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={(e) => handleSignUpChange(e)}
-        />
-        <SignUpButton type="button" onClick={handleSignUpSubmit}>
-          Sign Up
-        </SignUpButton>
-      </Form>
-    </FormWrapper>
+    <Formik
+      initialValues={signUpValue}
+      validationSchema={validationSchema}
+      enableReinitialize
+      onSubmit={handleSignUpSubmit}
+    >
+      {() => (
+        <FormWrapper>
+          <StyledForm method="POST">
+            <FieldWrapper>
+              <StyledField
+                value={signUpValue.username}
+                type="text"
+                name="username"
+                placeholder="Username"
+                onChange={(e) => handleSignUpChange(e)}
+              />
+              <ErrorMessage name="username" render={renderSignupError} />
+            </FieldWrapper>
+            <FieldWrapper>
+              <StyledField
+                value={signUpValue.email}
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={(e) => handleSignUpChange(e)}
+              />
+              <ErrorMessage name="email" render={renderSignupError} />
+            </FieldWrapper>
+            <FieldWrapper>
+              <StyledField
+                value={signUpValue.password}
+                type="password"
+                name="password"
+                placeholder="Password"
+                onChange={(e) => handleSignUpChange(e)}
+              />
+              <ErrorMessage name="password" render={renderSignupError} />
+            </FieldWrapper>
+            <SignUpButton type="submit">Sign Up</SignUpButton>
+          </StyledForm>
+        </FormWrapper>
+      )}
+    </Formik>
   );
 };
 
@@ -89,7 +115,7 @@ const FormWrapper = styled.div`
   padding: 2rem 0;
 `;
 
-const Form = styled.form`
+const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -100,7 +126,16 @@ const Form = styled.form`
   gap: 3rem;
 `;
 
-const Input = styled.input`
+const FieldWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 3rem;
+`;
+
+
+const StyledField = styled(Field)`
   width: 75%;
   padding: 1rem;
   border: 0.05rem solid rgb(0, 0, 0);

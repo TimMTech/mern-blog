@@ -39,22 +39,24 @@ const dislike = async (req, res) => {
     }
   }
   if (method === "GET") {
-     if (!("token" in req.cookies)) {
-       return res.status(401).json({ error: "TOKEN NOT FOUND" });
-     }
-     let decoded;
-     const token = req.cookies.token;
-     if (token) {
-       decoded = jwt.verify(token, "secretBlog");
-     } else {
-       return res.status(400).json({ error: "UNABLE TO VERIFY" });
-     }
-    const post = await PostTemplate.findById(_id);
-
-    if (!post) {
-      return res.status(400).json({ error: "NOT FOUND" });
+    if (!("token" in req.cookies)) {
+      return res.status(401).json({ error: "TOKEN NOT FOUND" });
     }
-    return res.status(200).json({post:post.likes, decoded: decoded._id});
+    let decoded;
+    const token = req.cookies.token;
+    if (token) {
+      decoded = jwt.verify(token, "secretBlog");
+    } else {
+      return res.status(400).json({ error: "UNABLE TO VERIFY" });
+    }
+    if (decoded) {
+      const post = await PostTemplate.findById(_id);
+
+      if (!post) {
+        return res.status(400).json({ error: "NOT FOUND" });
+      }
+      return res.status(200).json({ post: post.likes, decoded: decoded._id });
+    }
   }
 };
 

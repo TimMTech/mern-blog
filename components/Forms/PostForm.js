@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
-const PostForm = () => {
+const PostForm = ({ editMode, postId, setEditMode }) => {
   const contentType = "application/json";
-
+  const router = useRouter();
   const [post, setPost] = useState({
     title: "",
     content: "",
@@ -20,63 +21,88 @@ const PostForm = () => {
 
   const handleSubmitPost = (e) => {
     e.preventDefault();
-    fetch("/api/post", {
-      method: "POST",
-      headers: {
-        "Content-Type": contentType,
-      },
-      body: JSON.stringify(post),
-    })
-      .then((response) => {
-        
-        return response.json();
+    if (editMode) {
+      fetch(`/api/post/${postId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": contentType,
+        },
+        body: JSON.stringify(post),
       })
-      .then((data) => {
-        console.log(data)
-        if (data && data.error) {
-          console.log("FAILED POST");
-          
-        }
-        if (data && data.token) {
-          console.log("Success");
-          
-        }
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data && data.error) {
+            console.log("FAILED EDIT");
+          }
+          if (data) {
+            setEditMode(false);
+            router.push(`/post/${data._id}`);
+            console.log("POST EDITED");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      fetch("/api/post", {
+        method: "POST",
+        headers: {
+          "Content-Type": contentType,
+        },
+        body: JSON.stringify(post),
       })
-      .catch((error) => {
-        console.log(error);
-        
-      });
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data && data.error) {
+            console.log("FAILED POST");
+          }
+          if (data && data.token) {
+            router.push(`/post/${data.postData._id}`);
+            console.log("Success");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   return (
-    <FormWrapper>
-      <Form method="POST">
-        <Input
-          value={post.title}
-          type="text"
-          name="title"
-          placeholder="Title"
-          onChange={(e) => handlePostChange(e)}
-        />
-        <TextArea
-          value={post.content}
-          type="text"
-          name="content"
-          placeholder="Content"
-          onChange={(e) => handlePostChange(e)}
-        />
-        <Input
-          value={post.imageUrl}
-          type="text"
-          name="imageUrl"
-          placeholder="Image URL"
-          onChange={(e) => handlePostChange(e)}
-        />
-        <CreatePost type="button" onClick={handleSubmitPost}>
-          Create Post
-        </CreatePost>
-      </Form>
-    </FormWrapper>
+    <>
+      <FormWrapper>
+        <Form method="POST" onSubmit={handleSubmitPost}>
+          {editMode ? <EditTitle>Edit</EditTitle> : null}
+          <Input
+            value={post.title}
+            type="text"
+            name="title"
+            placeholder="Title"
+            onChange={(e) => handlePostChange(e)}
+          />
+          <TextArea
+            value={post.content}
+            type="text"
+            name="content"
+            placeholder="Content"
+            onChange={(e) => handlePostChange(e)}
+          />
+          <Input
+            value={post.imageUrl}
+            type="text"
+            name="imageUrl"
+            placeholder="Image URL"
+            onChange={(e) => handlePostChange(e)}
+          />
+          <CreatePost type="submit">
+            {editMode ? "Save" : "Create Post"}
+          </CreatePost>
+        </Form>
+      </FormWrapper>
+    </>
   );
 };
 
@@ -86,6 +112,10 @@ const FormWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 2rem 0;
+`;
+
+const EditTitle = styled.p`
+  font-weight: 700;
 `;
 
 const Form = styled.form`

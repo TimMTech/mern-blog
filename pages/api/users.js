@@ -19,7 +19,7 @@ const signup = async (req, res) => {
     user
       .save()
       .then((data) => {
-        return res.status(200).json({data: data});
+        return res.status(200).json({success: data});
       })
       .catch((error) => {
         return res.status(400).json({error: error});

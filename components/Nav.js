@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+
 import styled from "styled-components";
 import Link from "next/link";
 const cookies = require("js-cookie");
@@ -8,23 +9,20 @@ const Nav = () => {
   const [user, setUser] = useState(null);
 
   const getUser = () => {
-     fetch("/api/session", {
+    fetch("/api/session", {
       method: "GET",
     })
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        
         setUser(data);
-        
       })
       .catch((error) => {
         console.log(error);
-        
       });
   };
-  
+
   useEffect(() => {
     setIsAuth(false);
     if (user === null) {
@@ -105,8 +103,7 @@ const NavLinkWrapper = styled.div`
   gap: 1.5rem;
 `;
 
-const ViewDash = styled(Link)`
-`
+const ViewDash = styled(Link)``;
 
 const Username = styled.a`
   font-size: 1.5rem;
@@ -137,7 +134,7 @@ const LogIn = styled.a`
   font-family: "Prompt", sans-serif;
   font-weight: 900;
   &: hover {
-    transform:scale(1.1,1.1)
+    transform: scale(1.1, 1.1);
   }
 `;
 
@@ -160,7 +157,6 @@ const LoggedIn = styled.div`
   gap: 2rem;
   align-items: center;
   color: rgb(255, 255, 255);
-
 `;
 
 const LoggedOut = styled.div`

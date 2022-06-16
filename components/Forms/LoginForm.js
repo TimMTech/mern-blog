@@ -27,30 +27,26 @@ const LoginForm = () => {
       body: JSON.stringify(loginValue),
     })
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((data) => {
         if (data && data.error) {
           console.log("FAILED LOGIN");
-          
         }
         if (data && data.token) {
           console.log("Success");
           Cookies.set("token", data.token, { expires: 1 });
           window.location.href = `/user/${data._id}`;
-          
         }
       })
       .catch((error) => {
         console.log(error);
-       
       });
   };
 
   return (
     <FormWrapper>
-      <Form method="POST">
+      <Form method="POST" onSubmit={handleLoginSubmit}>
         <Input
           value={loginValue.username}
           type="text"
@@ -65,9 +61,7 @@ const LoginForm = () => {
           placeholder="Password"
           onChange={(e) => handleLoginChange(e)}
         />
-        <LoginButton type="button" onClick={handleLoginSubmit}>
-          Login
-        </LoginButton>
+        <LoginButton type="submit">Login</LoginButton>
       </Form>
     </FormWrapper>
   );

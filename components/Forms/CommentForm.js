@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { useTranspileTemplateLiterals } from "babel-plugin-styled-components/lib/utils/options";
 
 const CommentForm = ({ setPostComments }) => {
   const { query } = useRouter();
@@ -12,7 +11,6 @@ const CommentForm = ({ setPostComments }) => {
     content: "",
     postId: query._id,
   });
-
 
   const handleCommentChange = (e) => {
     const { name, value } = e.target;
@@ -36,9 +34,7 @@ const CommentForm = ({ setPostComments }) => {
         return response.json();
       })
       .then((data) => {
-        
-        setPostComments((prevState) => [...prevState, data])
-        
+        setPostComments((prevState) => [...prevState, data]);
       })
       .catch((error) => {
         console.log(error);
@@ -62,7 +58,7 @@ const CommentForm = ({ setPostComments }) => {
           value={commentValue.content}
           onChange={(e) => handleCommentChange(e)}
         />
-        <CommentButton>Comment</CommentButton>
+        <CommentButton type="submit">Comment</CommentButton>
       </Form>
     </FormWrapper>
   );

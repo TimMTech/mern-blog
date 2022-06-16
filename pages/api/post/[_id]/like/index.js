@@ -46,16 +46,23 @@ const likes = async (req, res) => {
     const token = req.cookies.token;
     if (token) {
       decoded = jwt.verify(token, "secretBlog");
-      
     } else {
       return res.status(400).json({ error: "UNABLE TO VERIFY" });
     }
-    const post = await PostTemplate.findById(_id);
+    if (decoded) {
+      const post = await PostTemplate.findById(_id);
 
-    if (!post) {
-      return res.status(400).json({ error: "NOT FOUND" });
+      if (!post) {
+        return res.status(400).json({ error: "NOT FOUND" });
+      }
+      return res
+        .status(200)
+        .json({
+          post: post.likes,
+          decoded: decoded._id,
+          user: decoded.username,
+        });
     }
-    return res.status(200).json({post:post.likes, decoded:decoded._id, user:decoded.username});
   }
 };
 

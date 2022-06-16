@@ -30,7 +30,7 @@ const post = async (req, res) => {
       post
         .save()
         .then((data) => {
-          return res.status(200).json({ data, token: token });
+          return res.status(200).json({ postData: data , token: token });
         })
         .catch((error) => {
           return res.status(400).json(error);

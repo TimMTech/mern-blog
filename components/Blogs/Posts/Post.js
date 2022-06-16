@@ -26,12 +26,17 @@ const Post = ({ post }) => {
   const handleEdit = () => {};
 
   const handleDelete = () => {
-    fetch(`/api/post/${post._id}/delete`, { 
+    fetch(`/api/post/${post._id}`, { 
       method: "DELETE",
     })
     .then((response) => {
-      window.location.href = "/"
+      if (!response.ok) {
+        console.log("Server Error")
+      }
       return response.json()
+    })
+    .then((data) => {
+      console.log(data)
     })
     .catch((error) => {
       console.log(error)

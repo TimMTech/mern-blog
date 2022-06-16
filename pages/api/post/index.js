@@ -25,7 +25,7 @@ const post = async (req, res) => {
         content: req.body.content,
         imageUrl: req.body.imageUrl,
         user: decoded._id,
-        published: true
+        published: true,
       });
       post
         .save()
@@ -40,7 +40,6 @@ const post = async (req, res) => {
     }
   }
   if (method === "GET") {
-    
     const posts = PostTemplate.find();
     posts
       .populate({
@@ -53,6 +52,7 @@ const post = async (req, res) => {
         return res.status(200).json(posts);
       });
   }
+  
 };
 
 export default post;

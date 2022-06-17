@@ -5,4 +5,5 @@ export const renderSignupError = (message) => <SignupError>{message}</SignupErro
 
 const SignupError = styled.p`
   color: rgb(255,0,0);
+  
 `

@@ -16,14 +16,14 @@ const SignupForm = () => {
 
   const validationSchema = Yup.object({
     username: Yup.string()
-      .required("Required!")
-      .min(6, "Must be 6 Characters or More")
-      .max(15, "Must be 15 Characters or Less"),
+      .required("*Required")
+      .min(6, "*Must be 6 Characters or More")
+      .max(15, "*Must be 15 Characters or Less"),
     password: Yup.string()
-      .required("Required!")
-      .min(6, "Must be 6 Characters or More")
-      .max(15, "Must be 15 Characters or Less"),
-    email: Yup.string().required("Required").email("Must be a Valid Email "),
+      .required("*Required")
+      .min(6, "*Must be 6 Characters or More")
+      .max(15, "*Must be 15 Characters or Less"),
+    email: Yup.string().required("*Required").email("*Must be a Valid Email "),
   });
 
   const handleSignUpChange = (e) => {
@@ -69,32 +69,38 @@ const SignupForm = () => {
       {() => (
         <FormWrapper>
           <StyledForm method="POST">
+            <FormTitle>
+              Welcome to{" "}
+              <StyledE>
+                E<StyledBlog>BLOG</StyledBlog>
+              </StyledE>
+            </FormTitle>
             <FieldWrapper>
+              <StyledLabel>Username</StyledLabel>
               <StyledField
                 value={signUpValue.username}
                 type="text"
                 name="username"
-                placeholder="Username"
                 onChange={(e) => handleSignUpChange(e)}
               />
               <ErrorMessage name="username" render={renderSignupError} />
             </FieldWrapper>
             <FieldWrapper>
+              <StyledLabel>Email</StyledLabel>
               <StyledField
                 value={signUpValue.email}
                 type="email"
                 name="email"
-                placeholder="Email"
                 onChange={(e) => handleSignUpChange(e)}
               />
               <ErrorMessage name="email" render={renderSignupError} />
             </FieldWrapper>
             <FieldWrapper>
+              <StyledLabel>Password</StyledLabel>
               <StyledField
                 value={signUpValue.password}
                 type="password"
                 name="password"
-                placeholder="Password"
                 onChange={(e) => handleSignUpChange(e)}
               />
               <ErrorMessage name="password" render={renderSignupError} />
@@ -112,7 +118,25 @@ export default SignupForm;
 const FormWrapper = styled.div`
   display: flex;
   justify-content: center;
-  padding: 2rem 0;
+  width: 70%;
+`;
+
+const FormTitle = styled.p`
+  font-size: 4rem;
+  text-align: center;
+  border-bottom: 0.05rem solid rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+`;
+const StyledE = styled.span`
+  color: rgb(52, 97, 235);
+  font-size: 6rem;
+  cursor: pointer;
+  letter-spacing: 0.8rem;
+`;
+
+const StyledBlog = styled.span`
+  color: rgb(0, 0, 0);
+  font-size: 4rem;
 `;
 
 const StyledForm = styled(Form)`
@@ -120,34 +144,29 @@ const StyledForm = styled(Form)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
-  width: 50%;
-  height: 25em;
-  gap: 3rem;
+  width: 100%;
+  height: auto;
+  gap: 1.5rem;
 `;
 
 const FieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  height: 3rem;
+  justify-content: center;
+  width: 50%;
 `;
 
+const StyledLabel = styled.label`
+  width: 100%;
+`;
 
 const StyledField = styled(Field)`
-  width: 75%;
+  width: 100%;
   padding: 1rem;
   border: 0.05rem solid rgb(0, 0, 0);
-  border-radius: 0.5rem;
   height: 3rem;
   font-size: 1.5rem;
-  ::placeholder {
-    font-size: 1.5rem;
-    display: flex;
-    font-family: "Prompt", sans-serif;
-    font-weight: 200;
-  }
 `;
 
 const SignUpButton = styled.button`

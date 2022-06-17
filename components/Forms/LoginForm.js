@@ -47,20 +47,25 @@ const LoginForm = () => {
   return (
     <FormWrapper>
       <Form method="POST" onSubmit={handleLoginSubmit}>
-        <Input
-          value={loginValue.username}
-          type="text"
-          name="username"
-          placeholder="Username"
-          onChange={(e) => handleLoginChange(e)}
-        />
-        <Input
-          value={loginValue.password}
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={(e) => handleLoginChange(e)}
-        />
+        <FormTitle>Login to Your Account</FormTitle>
+        <FieldWrapper>
+          <StyledLabel>Username</StyledLabel>
+          <Input
+            value={loginValue.username}
+            type="text"
+            name="username"
+            onChange={(e) => handleLoginChange(e)}
+          />
+        </FieldWrapper>
+        <FieldWrapper>
+          <StyledLabel>Password</StyledLabel>
+          <Input
+            value={loginValue.password}
+            type="password"
+            name="password"
+            onChange={(e) => handleLoginChange(e)}
+          />
+        </FieldWrapper>
         <LoginButton type="submit">Login</LoginButton>
       </Form>
     </FormWrapper>
@@ -72,7 +77,13 @@ export default LoginForm;
 const FormWrapper = styled.div`
   display: flex;
   justify-content: center;
-  padding: 2rem 0;
+  width: 70%;
+`;
+const FormTitle = styled.p`
+  font-size: 4rem;
+  text-align: center;
+  border-bottom: 0.05rem solid rgba(0, 0, 0, 0.3);
+  padding: 1rem;
 `;
 
 const Form = styled.form`
@@ -80,25 +91,29 @@ const Form = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
+  width: 100%;
+  height: auto;
+  gap: 1.5rem;
+`;
+
+const FieldWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 50%;
-  height: 25em;
-  gap: 3rem;
+`;
+
+const StyledLabel = styled.label`
+  width: 100%;
 `;
 
 const Input = styled.input`
-  width: 75%;
+  width: 100%;
   padding: 1rem;
   border: 0.05rem solid rgb(0, 0, 0);
-  border-radius: 0.25rem;
   height: 3rem;
   font-size: 1.5rem;
-  ::placeholder {
-    font-size: 1.5rem;
-    display: flex;
-    font-family: "Prompt", sans-serif;
-    font-weight: 200;
-  }
 `;
 
 const LoginButton = styled.button`

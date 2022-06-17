@@ -80,22 +80,23 @@ const NavWrapper = styled.nav`
   position: fixed;
   z-index: 999;
   width: 100%;
-  background-color: rgb(33, 37, 41);
+  background-color: rgb(0, 0, 0);
   border-bottom: 0.05rem solid rgb(0, 0, 0);
   box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
+  
 `;
 
 const StyledE = styled.a`
   color: rgb(52, 97, 235);
   font-weight: 900;
-  font-size: 5rem;
+  font-size: 2.5rem;
   cursor: pointer;
   letter-spacing: 0.8rem;
 `;
 
 const StyledBlog = styled.span`
   color: rgb(255, 255, 255);
-  font-size: 2rem;
+  font-size: 1.5rem;
 `;
 
 const NavLinkWrapper = styled.div`

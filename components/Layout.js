@@ -13,4 +13,6 @@ const Layout = ({ children }) => {
 
 export default Layout;
 
-const MainWrapper = styled.main``;
+const MainWrapper = styled.main`
+  
+`;

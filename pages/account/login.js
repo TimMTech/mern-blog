@@ -7,21 +7,16 @@ const login = () => {
   
   return (
     <LoginPageWrapper>
-      <LoginHeaderWrapper>
-        <LoginTitle>Welcome Back!</LoginTitle>
-        <LoginDescription>
-          Please enter your username and password and continue to read and share
-          ideas from independent voices, world-class publications, and experts
-          from around the globe!
-        </LoginDescription>
+      <LoginForm />
+      <LoginRightWrapper>
+        <LoginTitle>New?</LoginTitle>
         <SignUpDescription>
-          If new, sign up and join our community!
+          Sign up and discover a great amount of stories and ideas!
         </SignUpDescription>
         <NavSignUp href="/account/signup">
           <SignUp>SIGNUP</SignUp>
         </NavSignUp>
-      </LoginHeaderWrapper>
-      <LoginForm />
+      </LoginRightWrapper>
     </LoginPageWrapper>
   );
 };
@@ -31,32 +26,37 @@ const login = () => {
 export default login;
 
 const LoginPageWrapper = styled.main`
+  width: 100%;
+  display: flex;
   min-height: 100vh;
-`
+  
+`;
 
-const LoginHeaderWrapper = styled.div`
-  background-color: rgba(0, 0, 0, 0.06);
-  height: 100%;
-  padding: 5rem;
+const LoginRightWrapper = styled.div`
+  width: 30%;
+  background-image: url("/static/images/FormBG.jpg");
+  background-size: cover;
   border-bottom: 0.05rem solid rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const LoginTitle = styled.h2`
-  text-align: left;
+  text-align: center;
   font-family: "Prompt", sans-serif;
   font-weight: 900;
   font-size: 4rem;
-  margin-top: 5rem;
   max-width: 40rem;
   line-height: 0.8em;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1rem;
 `;
 
-const LoginDescription = styled.p`
-  max-width: 30rem;
-`;
 
 const SignUpDescription = styled.h3`
+text-align: center;
   padding-bottom: 2rem;
   padding-top: 2rem;
 `;

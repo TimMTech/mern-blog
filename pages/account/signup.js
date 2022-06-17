@@ -6,21 +6,16 @@ import Link from "next/link";
 const signup = () => {
   return (
     <SignUpPageWrapper>
-      <SignUpHeaderWrapper>
-        <SignUpTitle>Welcome To Our Community!</SignUpTitle>
-        <SignUpDescription>
-          Please enter a secure username and password. Please provide us a valid
-          email address so you can receive our daily newsletter and most liked
-          blog posts from around the world!
-        </SignUpDescription>
+      <SignUpForm />
+      <SignUpRightWrapper>
+        <SignUpTitle>Already a Member?</SignUpTitle>
         <LoginDescription>
           If you are part of our community, login below!
         </LoginDescription>
         <NavLogin href="/account/login">
           <Login>LOGIN</Login>
         </NavLogin>
-      </SignUpHeaderWrapper>
-      <SignUpForm />
+      </SignUpRightWrapper>
     </SignUpPageWrapper>
   );
 };
@@ -28,32 +23,35 @@ const signup = () => {
 export default signup;
 
 const SignUpPageWrapper = styled.main`
+  width: 100%;
+  display: flex;
   min-height: 100vh;
 `;
 
-const SignUpHeaderWrapper = styled.div`
-  background-color: rgba(0, 0, 0, 0.06);
-  height: 100%;
-  padding: 5rem;
+const SignUpRightWrapper = styled.div`
+  width: 30%;
+  background-image: url("/static/images/FormBG.jpg");
+  background-size: cover;
   border-bottom: 0.05rem solid rgb(0, 0, 0);
+  color: rgb(255,255,255);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const SignUpTitle = styled.h2`
-  text-align: left;
+  text-align: center;
   font-family: "Prompt", sans-serif;
   font-weight: 900;
   font-size: 4rem;
-  margin-top: 5rem;
   max-width: 40rem;
   line-height: 0.8em;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1rem;
 `;
 
-const SignUpDescription = styled.p`
-  max-width: 30rem;
-`
-
 const LoginDescription = styled.h3`
+  text-align: center;
   padding-bottom: 2rem;
   padding-top: 2rem;
 `;

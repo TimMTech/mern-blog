@@ -40,7 +40,7 @@ const HomePageWrapper = styled.main`
 
 const BlogHeaderWrapper = styled.div`
   padding: 2rem;
-  border-bottom: 0.05rem solid rgb(0, 0, 0);
+  border-bottom: 0.08rem solid rgba(0, 0, 0, 0.2);
 `;
 
 const BlogHeader = styled.div`

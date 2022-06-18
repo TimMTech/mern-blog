@@ -18,7 +18,6 @@ const MainDash = ({ user, posts }) => {
     (post) => post.published === false
   );
 
-
   const itemVariants = {
     closed: { opacity: 0 },
     open: { opacity: 1 },
@@ -71,9 +70,9 @@ const MainDash = ({ user, posts }) => {
       });
   };
 
-   const dateFormat = (date) => {
-     return moment(date).format("lll");
-   };
+  const dateFormat = (date) => {
+    return moment(date).format("lll");
+  };
 
   return (
     <>
@@ -104,61 +103,76 @@ const MainDash = ({ user, posts }) => {
           </OpenMenuButton>
           <Welcome>Welcome to your dashboard, {user.username}</Welcome>
           <Published>Published Posts</Published>
-          <ScrollBar>
-            {publishedPosts.map((posts) => {
-              const {
-                title,
-                date,
-                _id,
-                imageUrl,
-                user: { username },
-              } = posts;
-              return (
-                <MyPostsWrapper key={_id}>
-                  <Post>
-                    <PostTitle>{title}</PostTitle>
-                    <PostImageWrapper>
-                      <PostImage src={imageUrl} />
-                    </PostImageWrapper>
-                    <PostAuthor>
-                      By {username} / <PostDate>{dateFormat(date)}</PostDate>
-                    </PostAuthor>
-                    <UnpublishButton onClick={() => handleUnpublish(_id)}>
-                      Unpublish
-                    </UnpublishButton>
-                  </Post>
-                </MyPostsWrapper>
-              );
-            })}
-          </ScrollBar>
+          
+            <ScrollBar>
+              {publishedPosts.map((posts) => {
+                const {
+                  title,
+                  date,
+                  _id,
+                  imageUrl,
+                  user: { username },
+                } = posts;
+                return (
+                  <MyPostsWrapper key={_id}>
+                    <Post>
+                      <PostTitle>{title}</PostTitle>
+                      <PostImageWrapper>
+                        <PostImage
+                          src={
+                            imageUrl ||
+                            "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
+                          }
+                        />
+                      </PostImageWrapper>
+                      <PostAuthor>
+                        By {username} / <PostDate>{dateFormat(date)}</PostDate>
+                      </PostAuthor>
+                      <UnpublishButton onClick={() => handleUnpublish(_id)}>
+                        Unpublish
+                      </UnpublishButton>
+                    </Post>
+                  </MyPostsWrapper>
+                );
+              })}
+            </ScrollBar>
+          
+
           <Unpublished>Unpublished Posts</Unpublished>
-          <ScrollBar>
-            {unPublishedPosts.map((posts) => {
-              const {
-                title,
-                date,
-                _id,
-                imageUrl,
-                user: { username },
-              } = posts;
-              return (
-                <MyPostsWrapper key={_id}>
-                  <Post>
-                    <PostTitle>{title}</PostTitle>
-                    <PostImageWrapper>
-                      <PostImage src={imageUrl} />
-                    </PostImageWrapper>
-                    <PostAuthor>
-                      By {username} / <PostDate>{dateFormat(date)}</PostDate>
-                    </PostAuthor>
-                    <PublishButton onClick={() => handlePublish(_id)}>
-                      Publish
-                    </PublishButton>
-                  </Post>
-                </MyPostsWrapper>
-              );
-            })}
-          </ScrollBar>
+         
+            <ScrollBar>
+              {unPublishedPosts.map((posts) => {
+                const {
+                  title,
+                  date,
+                  _id,
+                  imageUrl,
+                  user: { username },
+                } = posts;
+                return (
+                  <MyPostsWrapper key={_id}>
+                    <Post>
+                      <PostTitle>{title}</PostTitle>
+                      <PostImageWrapper>
+                        <PostImage
+                          src={
+                            imageUrl ||
+                            "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
+                          }
+                        />
+                      </PostImageWrapper>
+                      <PostAuthor>
+                        By {username} / <PostDate>{dateFormat(date)}</PostDate>
+                      </PostAuthor>
+                      <PublishButton onClick={() => handlePublish(_id)}>
+                        Publish
+                      </PublishButton>
+                    </Post>
+                  </MyPostsWrapper>
+                );
+              })}
+            </ScrollBar>
+          
         </RightPanelWrapper>
       </>
     </>
@@ -169,9 +183,9 @@ export default MainDash;
 
 const MotionAside = styled(motion.aside)`
   background-color: rgb(52, 60, 85);
-  width: 20rem;
   min-height: 100vh;
-  box-shadow: inset 0 0 10rem rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 0 5rem rgba(255, 255, 255, 0.5);
+ 
 `;
 
 const MotionDiv = styled(motion.div)``;
@@ -179,10 +193,9 @@ const MotionDiv = styled(motion.div)``;
 const MotionItems = styled(motion.div)``;
 
 const RightPanelWrapper = styled.section`
-  padding-top: 3rem;
   font-family: "Prompt", sans-serif;
   font-weight: 900;
-  width: 100%;
+  overflow: hidden;
 `;
 
 const Welcome = styled.h1`
@@ -196,6 +209,7 @@ const Published = styled.p`
   margin: 1.5rem;
   padding: 1.5rem;
   width: 100%;
+  
 `;
 
 const Unpublished = styled.p`
@@ -206,10 +220,13 @@ const Unpublished = styled.p`
   width: 100%;
 `;
 
+
+
 const ScrollBar = styled.section`
   padding: 2rem;
   display: flex;
-  overflow: scroll;
+  overflow-x: scroll;
+  
 `;
 
 const MyPostsWrapper = styled.div`
@@ -223,7 +240,7 @@ const Post = styled.a`
   align-items: center;
   justify-content: end;
   gap: 1.5rem;
-  box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
+  box-shadow: 0 0 0.5rem rgba(39, 37, 37, 1);
   border-radius: 1rem;
   width: 20rem;
   cursor: pointer;
@@ -243,11 +260,12 @@ const PostImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: auto;
 `;
 
 const PostImage = styled.img`
-  max-width: 100%;
-  height: 10rem;
+  width: 100%;
+  height: auto;
 `;
 
 const PostAuthor = styled.p`
@@ -263,9 +281,9 @@ const OpenMenuButton = styled.button`
   font-weight: 900;
   font-size: 1.5em;
   border: 0.05rem solid rgb(0, 0, 0);
+  padding: 0 1.5rem;
   margin-left: 2rem;
   margin-bottom: 2rem;
-  padding: 0 1.5rem;
   color: rgb(255, 255, 255);
   cursor: pointer;
   background-color: rgb(33, 37, 41);

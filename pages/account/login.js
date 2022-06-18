@@ -1,12 +1,15 @@
 import LoginForm from "../../components/Forms/LoginForm";
 import styled from "styled-components";
 import Link from "next/link";
+import Image from "next/image";
+import formBG from "/public/static/images/formBG.png";
 
 const login = () => {
   return (
     <LoginPageWrapper>
       <LoginForm />
       <LoginRightWrapper>
+        <Image layout="fill" src={formBG} alt="" objectFit="cover" />
         <LoginTitle>New?</LoginTitle>
         <SignUpDescription>
           Sign up and discover a great amount of stories and ideas!
@@ -29,14 +32,13 @@ const LoginPageWrapper = styled.main`
 
 const LoginRightWrapper = styled.div`
   width: 30%;
-  background-image: url("/static/images/FormBG.jpg");
-  background-size: cover;
   border-bottom: 0.05rem solid rgb(0, 0, 0);
   color: rgb(255, 255, 255);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 `;
 
 const LoginTitle = styled.h2`
@@ -47,11 +49,13 @@ const LoginTitle = styled.h2`
   max-width: 40rem;
   line-height: 0.8em;
   padding-bottom: 1rem;
+  position: relative;
 `;
 
 const SignUpDescription = styled.h3`
   text-align: center;
   padding: 1rem;
+  position: relative;
 `;
 
 const NavSignUp = styled(Link)``;
@@ -67,4 +71,5 @@ const SignUp = styled.a`
   cursor: pointer;
   background-color: rgb(33, 37, 41);
   border-radius: 0.25rem;
+  position: relative;
 `;

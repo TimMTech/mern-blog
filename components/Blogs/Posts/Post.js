@@ -3,7 +3,6 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import PostForm from "../../Forms/PostForm";
-
 import CommentForm from "../../Forms/CommentForm";
 
 const Post = ({ post }) => {
@@ -41,7 +40,6 @@ const Post = ({ post }) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         router.push("/");
       })
       .catch((error) => {
@@ -150,7 +148,12 @@ const Post = ({ post }) => {
 
             <PostTitle>{title}</PostTitle>
             <PostImageWrapper>
-              <PostImage src={imageUrl} />
+              <PostImage
+                src={
+                  imageUrl ||
+                  "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
+                }
+              />
             </PostImageWrapper>
             <PostContent>{content}</PostContent>
             <PostLikes hidden={user ? false : true} onClick={handlePostLike}>

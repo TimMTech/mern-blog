@@ -28,6 +28,7 @@ const DashMenuWrapper = styled.nav`
   align-items: center;
   border-radius: 1rem;
   color: rgb(255, 255, 255);
+  
 `;
 
 const MenuTitle = styled.p`

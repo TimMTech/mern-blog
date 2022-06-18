@@ -1,16 +1,13 @@
 import styled from "styled-components";
 
-import RightPanel from "../../components/Dashboard/MainDash";
+import MainDash from "../../components/Dashboard/MainDash";
 
 const dashboard = ({ user, posts }) => {
   const { data } = user;
-  
-  
+
   return (
     <DashBoardWrapper>
-    <Dashboard>
-      <RightPanel user={data} posts={posts}/>
-    </Dashboard>
+      <MainDash user={data} posts={posts} />
     </DashBoardWrapper>
   );
 };
@@ -37,24 +34,18 @@ export const getStaticProps = async (context) => {
   const res = await fetch(`http://localhost:3000/api/user/${_id}`);
   const data = await res.json();
 
-  const resPost = await fetch(`http://localhost:3000/api/post`)
-  const postData = await resPost.json()
+  const resPost = await fetch(`http://localhost:3000/api/post`);
+  const postData = await resPost.json();
 
   return {
-    props: { user: data, posts: postData  },
+    props: { user: data, posts: postData },
   };
 };
 
 const DashBoardWrapper = styled.main`
-  padding-top:7.5rem;
-  
-`
-
-
-const Dashboard = styled.div`
+  padding-top: 4rem;
   display: flex;
-  
-  
+  width: 100%:
 `;
 
 

@@ -40,14 +40,15 @@ const BlogWrapper = styled.section`
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1.8rem;
   padding: 2em;
- 
 `;
 
 const PostWrapper = styled.div`
   width: 100%;
+  
 `;
 
 const Post = styled.a`
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -63,6 +64,7 @@ const Post = styled.a`
 const PostTitle = styled.p`
   font-weight: 500;
   font-size: 1.9vw;
+  
 `;
 
 const PostImageWrapper = styled.div`
@@ -70,7 +72,6 @@ const PostImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: auto;
 `;
 
 const PostImage = styled.img`
@@ -82,6 +83,8 @@ const PostAuthor = styled.p`
   font-size: 1.5vw;
   font-weight: 100;
   padding: 0.5rem;
+  
+  
 `;
 
 const PostDate = styled.span``;

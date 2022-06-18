@@ -14,7 +14,12 @@ const Blog = ({ posts }) => {
         <Post>
           <PostTitle>{post.title}</PostTitle>
           <PostImageWrapper>
-            <PostImage src={post.imageUrl} />
+            <PostImage
+              src={
+                post.imageUrl ||
+                "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
+              }
+            />
           </PostImageWrapper>
           <PostAuthor>
             By {post.user.username} /{" "}
@@ -31,29 +36,25 @@ const Blog = ({ posts }) => {
 export default Blog;
 
 const BlogWrapper = styled.section`
-  display: flex;
-  flex-wrap: wrap;
-  width: 100% !important;
-  padding-left: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1.8rem;
+  padding: 2em;
+ 
 `;
+
 const PostWrapper = styled.div`
-  padding: 1rem;
-  width: 33%;
+  width: 100%;
 `;
 
 const Post = styled.a`
   display: flex;
-  flex: 0 0 auto;
   flex-direction: column;
   align-items: center;
-  justify-content: end;
-  gap: 1.5rem;
   box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
   border-radius: 1rem;
-  width: 100%;
   cursor: pointer;
   transition: 200ms;
-
   &: hover {
     transform: scale(1.1, 1.1);
   }
@@ -61,7 +62,7 @@ const Post = styled.a`
 
 const PostTitle = styled.p`
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: 1.9vw;
 `;
 
 const PostImageWrapper = styled.div`
@@ -69,15 +70,16 @@ const PostImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: auto;
 `;
 
 const PostImage = styled.img`
-  max-width: 100%;
-  height: 10rem;
+  width: 100%;
+  height: auto;
 `;
 
 const PostAuthor = styled.p`
-  font-size: 1rem;
+  font-size: 1.5vw;
   font-weight: 100;
   padding: 0.5rem;
 `;

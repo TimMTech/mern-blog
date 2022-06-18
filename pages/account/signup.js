@@ -30,7 +30,7 @@ const SignUpPageWrapper = styled.main`
 
 const SignUpRightWrapper = styled.div`
   width: 30%;
-  background-image: url("/static/images/FormBG.jpg");
+  background-image: url("/static/images/FormBG.png");
   background-size: cover;
   border-bottom: 0.05rem solid rgb(0, 0, 0);
   color: rgb(255,255,255);
@@ -52,8 +52,7 @@ const SignUpTitle = styled.h2`
 
 const LoginDescription = styled.h3`
   text-align: center;
-  padding-bottom: 2rem;
-  padding-top: 2rem;
+  padding: 1rem;
 `;
 
 const NavLogin = styled(Link)``;

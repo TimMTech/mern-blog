@@ -15,7 +15,7 @@ const Post = ({ post }) => {
     date,
     imageUrl,
   } = post;
-  const router = useRouter()
+  const router = useRouter();
   const [user, setUser] = useState(null);
   const [postComments, setPostComments] = useState([]);
   const [postLikes, setPostLikes] = useState([]);
@@ -30,7 +30,6 @@ const Post = ({ post }) => {
     setEditMode(true);
   };
 
-  
   const handleDelete = () => {
     fetch(`/api/post/${post._id}`, {
       method: "DELETE",
@@ -43,7 +42,7 @@ const Post = ({ post }) => {
       })
       .then((data) => {
         console.log(data);
-        router.push("/")
+        router.push("/");
       })
       .catch((error) => {
         console.log(error);
@@ -129,7 +128,11 @@ const Post = ({ post }) => {
     <>
       {editMode ? (
         <EditModeWrapper>
-          <PostForm editMode={editMode} postId={_id} setEditMode={setEditMode} />
+          <PostForm
+            editMode={editMode}
+            postId={_id}
+            setEditMode={setEditMode}
+          />
         </EditModeWrapper>
       ) : (
         <PostWrapper>

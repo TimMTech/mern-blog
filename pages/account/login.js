@@ -1,10 +1,8 @@
-import LoginForm from "../../components/Forms/LoginForm"
+import LoginForm from "../../components/Forms/LoginForm";
 import styled from "styled-components";
 import Link from "next/link";
 
-
 const login = () => {
-  
   return (
     <LoginPageWrapper>
       <LoginForm />
@@ -21,15 +19,12 @@ const login = () => {
   );
 };
 
-
-
 export default login;
 
 const LoginPageWrapper = styled.main`
   width: 100%;
   display: flex;
   min-height: 100vh;
-  
 `;
 
 const LoginRightWrapper = styled.div`
@@ -54,11 +49,9 @@ const LoginTitle = styled.h2`
   padding-bottom: 1rem;
 `;
 
-
 const SignUpDescription = styled.h3`
-text-align: center;
-  padding-bottom: 2rem;
-  padding-top: 2rem;
+  text-align: center;
+  padding: 1rem;
 `;
 
 const NavSignUp = styled(Link)``;

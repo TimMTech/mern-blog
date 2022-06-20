@@ -76,27 +76,33 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
       <FormWrapper>
         <Form method="POST" onSubmit={handleSubmitPost}>
           {editMode ? <EditTitle>Edit</EditTitle> : null}
-          <Input
-            value={post.title}
-            type="text"
-            name="title"
-            placeholder="Title"
-            onChange={(e) => handlePostChange(e)}
-          />
-          <TextArea
-            value={post.content}
-            type="text"
-            name="content"
-            placeholder="Content"
-            onChange={(e) => handlePostChange(e)}
-          />
-          <Input
-            value={post.imageUrl}
-            type="text"
-            name="imageUrl"
-            placeholder="Image URL"
-            onChange={(e) => handlePostChange(e)}
-          />
+          <FieldWrapper>
+            <StyledLabel>Title</StyledLabel>
+            <Input
+              value={post.title}
+              type="text"
+              name="title"
+              onChange={(e) => handlePostChange(e)}
+            />
+          </FieldWrapper>
+          <FieldWrapper>
+            <StyledLabel>Content</StyledLabel>
+            <TextArea
+              value={post.content}
+              type="text"
+              name="content"
+              onChange={(e) => handlePostChange(e)}
+            />
+          </FieldWrapper>
+          <FieldWrapper>
+            <StyledLabel>Image (Optional)</StyledLabel>
+            <Input
+              value={post.imageUrl}
+              type="text"
+              name="imageUrl"
+              onChange={(e) => handlePostChange(e)}
+            />
+          </FieldWrapper>
           <CreatePost type="submit">
             {editMode ? "Save" : "Create Post"}
           </CreatePost>
@@ -112,10 +118,26 @@ const FormWrapper = styled.div`
   display: flex;
   justify-content: center;
   padding: 2rem 0;
+  width: 100%;
+`;
+
+const FieldWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+`;
+
+const StyledLabel = styled.label`
+  width: 100%;
 `;
 
 const EditTitle = styled.p`
   font-weight: 700;
+  font-size: 2rem;
+  text-align: center;
+  padding-top: 3rem;
 `;
 
 const Form = styled.form`
@@ -123,40 +145,25 @@ const Form = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
-  width: 50%;
-  height: 40em;
-  gap: 3rem;
+  width: 100%;
+  height: auto;
+  gap: 1.5rem;
 `;
 
 const Input = styled.input`
-  width: 75%;
+  width: 100%;
   padding: 1rem;
   border: 0.05rem solid rgb(0, 0, 0);
-  border-radius: 0.5rem;
   height: 3rem;
   font-size: 1.5rem;
-  ::placeholder {
-    font-size: 1.5rem;
-    display: flex;
-    font-family: "Prompt", sans-serif;
-    font-weight: 200;
-  }
 `;
 
 const TextArea = styled.textarea`
-  width: 75%;
+  width: 100%;
   padding: 1rem;
   border: 0.05rem solid rgb(0, 0, 0);
-  border-radius: 0.5rem;
   height: 10rem;
   font-size: 1.5rem;
-  ::placeholder {
-    font-size: 1.5rem;
-    display: flex;
-    font-family: "Prompt", sans-serif;
-    font-weight: 200;
-  }
 `;
 
 const CreatePost = styled.button`

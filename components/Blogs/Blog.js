@@ -13,14 +13,14 @@ const Blog = ({ posts }) => {
       <Link href={`/post/${post._id}`}>
         <Post>
           <PostTitle>{post.title}</PostTitle>
-          <PostImageWrapper>
+          <PostImageContainer>
             <PostImage
               src={
                 post.imageUrl ||
                 "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
               }
             />
-          </PostImageWrapper>
+          </PostImageContainer>
           <PostAuthor>
             By {post.user.username} /{" "}
             <PostDate>{dateFormat(post.date)}</PostDate>
@@ -36,55 +36,51 @@ const Blog = ({ posts }) => {
 export default Blog;
 
 const BlogWrapper = styled.section`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 1.8rem;
-  padding: 2em;
+--masonry-gap: 0.3rem;
+--masonry-brick-width: 300px;
+  column-gap: var(--masonry-gap);
+  column-fill: initial;
+  column-width: var(--masonry-brick-width);
+  padding: 0 1.5rem;
 `;
 
 const PostWrapper = styled.div`
-  width: 100%;
-  
+  padding: 0.3rem;
+  break-inside: avoid;
+  margin-bottom: var(--masonry-gap);
 `;
 
 const Post = styled.a`
-
   display: flex;
   flex-direction: column;
+  justify-self: start;
   align-items: center;
   box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
-  border-radius: 1rem;
+  border-radius: 0.15rem;
   cursor: pointer;
   transition: 200ms;
-  &: hover {
-    transform: scale(1.1, 1.1);
-  }
 `;
 
 const PostTitle = styled.p`
   font-weight: 500;
-  font-size: 1.9vw;
-  
+  font-size: 1.6vw;
+  text-align: center;
 `;
 
-const PostImageWrapper = styled.div`
+const PostImageContainer = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const PostImage = styled.img`
   width: 100%;
-  height: auto;
+  display: block;
 `;
 
 const PostAuthor = styled.p`
+  text-align: center;
   font-size: 1.5vw;
   font-weight: 100;
   padding: 0.5rem;
-  
-  
 `;
 
 const PostDate = styled.span``;

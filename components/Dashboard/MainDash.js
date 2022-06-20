@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import DashMenu from "./DashMenu";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { motion, AnimatePresence, useCycle } from "framer-motion";
 import moment from "moment";
 
@@ -103,76 +104,79 @@ const MainDash = ({ user, posts }) => {
           </OpenMenuButton>
           <Welcome>Welcome to your dashboard, {user.username}</Welcome>
           <Published>Published Posts</Published>
-          
-            <ScrollBar>
-              {publishedPosts.map((posts) => {
-                const {
-                  title,
-                  date,
-                  _id,
-                  imageUrl,
-                  user: { username },
-                } = posts;
-                return (
-                  <MyPostsWrapper key={_id}>
-                    <Post>
-                      <PostTitle>{title}</PostTitle>
-                      <PostImageWrapper>
+
+          <ScrollBar>
+            {publishedPosts.map((posts) => {
+              const {
+                title,
+                date,
+                _id,
+                imageUrl,
+                user: { username },
+              } = posts;
+              return (
+                <MyPostsWrapper key={_id}>
+                  <Post>
+                    <PostTitle>{title}</PostTitle>
+                    <PostImageContainer>
+                      <Link href={`/post/${_id}`}>
                         <PostImage
                           src={
                             imageUrl ||
                             "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
                           }
                         />
-                      </PostImageWrapper>
-                      <PostAuthor>
-                        By {username} / <PostDate>{dateFormat(date)}</PostDate>
-                      </PostAuthor>
-                      <UnpublishButton onClick={() => handleUnpublish(_id)}>
-                        Unpublish
-                      </UnpublishButton>
-                    </Post>
-                  </MyPostsWrapper>
-                );
-              })}
-            </ScrollBar>
-          
+                      </Link>
+                    </PostImageContainer>
+                    <PostAuthor>
+                      By {username} / <PostDate>{dateFormat(date)}</PostDate>
+                    </PostAuthor>
+                    <UnpublishButton onClick={() => handleUnpublish(_id)}>
+                      Unpublish
+                    </UnpublishButton>
+                  </Post>
+                </MyPostsWrapper>
+              );
+            })}
+          </ScrollBar>
 
           <Unpublished>Unpublished Posts</Unpublished>
-         
-            <ScrollBar>
-              {unPublishedPosts.map((posts) => {
-                const {
-                  title,
-                  date,
-                  _id,
-                  imageUrl,
-                  user: { username },
-                } = posts;
-                return (
-                  <MyPostsWrapper key={_id}>
-                    <Post>
-                      <PostTitle>{title}</PostTitle>
-                      <PostImageWrapper>
+
+          <ScrollBar>
+            {unPublishedPosts.map((posts) => {
+              const {
+                title,
+                date,
+                _id,
+                imageUrl,
+                user: { username },
+              } = posts;
+              return (
+                <MyPostsWrapper key={_id}>
+                  <Post>
+                    <PostTitle>{title}</PostTitle>
+                    <PostImageContainer>
+                      <Link href={`/post/${_id}`}>
                         <PostImage
                           src={
                             imageUrl ||
                             "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
                           }
                         />
-                      </PostImageWrapper>
-                      <PostAuthor>
-                        By {username} / <PostDate>{dateFormat(date)}</PostDate>
-                      </PostAuthor>
-                      <PublishButton onClick={() => handlePublish(_id)}>
-                        Publish
-                      </PublishButton>
-                    </Post>
-                  </MyPostsWrapper>
-                );
-              })}
-            </ScrollBar>
-          
+                      </Link>
+                    </PostImageContainer>
+                    <PostAuthor>
+                      By {username} / <PostDate>{dateFormat(date)}</PostDate>
+                    </PostAuthor>
+
+                    <PublishButton onClick={() => handlePublish(_id)}>
+                      Publish
+                    </PublishButton>
+                  </Post>
+                </MyPostsWrapper>
+              );
+            })}
+          </ScrollBar>
         </RightPanelWrapper>
       </>
     </>
@@ -185,7 +189,6 @@ const MotionAside = styled(motion.aside)`
   background-color: rgb(52, 60, 85);
   min-height: 100vh;
   box-shadow: inset 0 0 5rem rgba(255, 255, 255, 0.5);
- 
 `;
 
 const MotionDiv = styled(motion.div)``;
@@ -196,6 +199,7 @@ const RightPanelWrapper = styled.section`
   font-family: "Prompt", sans-serif;
   font-weight: 900;
   overflow: hidden;
+  width: 100%;
 `;
 
 const Welcome = styled.h1`
@@ -209,7 +213,6 @@ const Published = styled.p`
   margin: 1.5rem;
   padding: 1.5rem;
   width: 100%;
-  
 `;
 
 const Unpublished = styled.p`
@@ -220,13 +223,10 @@ const Unpublished = styled.p`
   width: 100%;
 `;
 
-
-
 const ScrollBar = styled.section`
   padding: 2rem;
   display: flex;
   overflow-x: scroll;
-  
 `;
 
 const MyPostsWrapper = styled.div`
@@ -234,20 +234,15 @@ const MyPostsWrapper = styled.div`
 `;
 
 const Post = styled.a`
+  width: 100%;
+  overflow: hidden;
   display: flex;
-  flex: 0 0 auto;
   flex-direction: column;
   align-items: center;
-  justify-content: end;
   gap: 1.5rem;
   box-shadow: 0 0 0.5rem rgba(39, 37, 37, 1);
-  border-radius: 1rem;
-  width: 20rem;
-  cursor: pointer;
-  transition: 200ms;
-  &: hover {
-    transform: scale(1.1, 1.1);
-  }
+  border-radius: 0.1rem;
+  width: 25rem;
 `;
 
 const PostTitle = styled.p`
@@ -255,17 +250,14 @@ const PostTitle = styled.p`
   font-size: 1.2rem;
 `;
 
-const PostImageWrapper = styled.div`
+const PostImageContainer = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: auto;
 `;
 
 const PostImage = styled.img`
   width: 100%;
-  height: auto;
+  height: 12rem;
+  cursor: pointer;
 `;
 
 const PostAuthor = styled.p`
@@ -284,6 +276,7 @@ const OpenMenuButton = styled.button`
   padding: 0 1.5rem;
   margin-left: 2rem;
   margin-bottom: 2rem;
+  margin-top: 2rem;
   color: rgb(255, 255, 255);
   cursor: pointer;
   background-color: rgb(33, 37, 41);
@@ -301,6 +294,10 @@ const PublishButton = styled.button`
   cursor: pointer;
   background-color: rgb(33, 37, 41);
   border-radius: 0.25rem;
+  transition: 500ms;
+  &: hover {
+    transform: scale(1.1, 1.1);
+  }
 `;
 
 const UnpublishButton = styled.button`
@@ -314,4 +311,8 @@ const UnpublishButton = styled.button`
   cursor: pointer;
   background-color: rgb(33, 37, 41);
   border-radius: 0.25rem;
+  transition: 500ms;
+  &: hover {
+    transform: scale(1.1, 1.1);
+  }
 `;

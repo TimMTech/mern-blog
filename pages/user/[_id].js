@@ -46,6 +46,7 @@ const DashBoardWrapper = styled.main`
   padding-top: 4rem;
   display: flex;
   width: 100%:
+  
 `;
 
 

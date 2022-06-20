@@ -16,17 +16,22 @@ export default blog;
 
 const PostPageWrapper = styled.main`
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const PostHeaderWrapper = styled.div`
-  background-color: rgba(0, 0, 0, 0.06);
-  height: 100%;
-  padding: 5rem;
-  border-bottom: 0.05rem solid rgb(0, 0, 0);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  
 `;
 
 const PostTitle = styled.h2`
-  text-align: left;
+  border-bottom: 0.1rem solid rgba(0, 0, 0, 0.3);
+  text-align: center;
   font-family: "Prompt", sans-serif;
   font-weight: 900;
   font-size: 4rem;

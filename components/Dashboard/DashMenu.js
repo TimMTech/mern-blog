@@ -1,7 +1,14 @@
 import styled from "styled-components";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 const DashMenu = () => {
+
+   const logout = () => {
+     Cookies.remove("token");
+     window.location.href = "/account/login";
+   };
+
   return (
     <DashMenuWrapper>
       <MenuTitle>Menu</MenuTitle>
@@ -12,7 +19,7 @@ const DashMenu = () => {
         <ViewPosts>View Posts</ViewPosts>
       </ViewYourPostsButton>
       <LogoutButton href="/account/login">
-        <Logout>Logout</Logout>
+        <Logout onClick={logout}>Logout</Logout>
       </LogoutButton>
     </DashMenuWrapper>
   );

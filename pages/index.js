@@ -33,7 +33,7 @@ export const getStaticProps = async () => {
 export default home;
 
 const HomePageWrapper = styled.main`
-  min-height: 100vh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
 `;
@@ -54,7 +54,10 @@ const BlogImage = styled.img`
   padding-top: 3rem;
   display: block;
   width: 50%;
-  height: auto;
+  max-height: 450px;
+  @media (max-width: 850px) {
+    display: none;
+  }
 `
 
 const BlogTitle = styled.h2`

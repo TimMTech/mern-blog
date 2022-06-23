@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Blog from "../components/Blogs/Blog";
+import Blog from "../components/Blogs/Blog/Blog";
 import Link from "next/link";
 
 const home = ({ posts }) => {
@@ -45,10 +45,9 @@ const BlogHeaderWrapper = styled.div`
 
 const BlogHeader = styled.div`
   display: flex;
-`
+`;
 
-const BlogLeft = styled.div`
-`
+const BlogLeft = styled.div``;
 
 const BlogImage = styled.img`
   padding-top: 3rem;
@@ -58,7 +57,7 @@ const BlogImage = styled.img`
   @media (max-width: 850px) {
     display: none;
   }
-`
+`;
 
 const BlogTitle = styled.h2`
   text-align: left;
@@ -70,8 +69,6 @@ const BlogTitle = styled.h2`
   line-height: 0.9em;
   padding-bottom: 5rem;
 `;
-
-
 
 const NavSignUp = styled(Link)``;
 

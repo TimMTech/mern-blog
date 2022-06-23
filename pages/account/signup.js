@@ -1,4 +1,4 @@
-import SignUpForm from "../../components/Forms/SignupForm";
+import SignUpForm from "../../components/Forms/SignupForm/SignupForm";
 import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,7 +9,7 @@ const signup = () => {
     <SignUpPageWrapper>
       <SignUpForm />
       <SignUpRightWrapper>
-        <Image layout="fill" src={formBG} alt="" objectFit="cover" />
+        <Image layout="fill" src={formBG} priority alt="" objectFit="cover" />
         <SignUpTitle>Already a Member?</SignUpTitle>
         <LoginDescription>
           If you are part of our community, login below!

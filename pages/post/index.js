@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import PostForm from "../../components/Forms/PostForm"
+import PostForm from "../../components/Forms/PostForm/PostForm"
 
 const blog = () => {
   return (

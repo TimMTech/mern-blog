@@ -32,6 +32,10 @@ const PostTemplate = new mongoose.Schema({
     likes: {
         type: [],
         default: []
+    },
+    viewCounter: {
+        type: Number,
+        default: 0
     }
 })
 

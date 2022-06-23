@@ -26,6 +26,7 @@ const post = async (req, res) => {
         imageUrl: req.body.imageUrl,
         user: decoded._id,
         published: true,
+        
       });
       post
         .save()

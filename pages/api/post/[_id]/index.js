@@ -11,7 +11,10 @@ const post = async (req, res) => {
   } = req;
 
   if (method === "GET") {
-    const post = await PostTemplate.findById(_id).populate("user");
+    const post = await PostTemplate.findByIdAndUpdate(
+      { _id: _id },
+      { $inc: { viewCounter: +1 } }
+    ).populate("user");
 
     if (!post) {
       return res.status(400).json({ error: "Post Not Found" });

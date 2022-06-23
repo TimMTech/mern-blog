@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import MainDash from "../../components/Dashboard/MainDash";
+import MainDash from "../../components/Dashboard/MainDash/MainDash";
 
 const dashboard = ({ user, posts }) => {
   const { data } = user;
@@ -46,7 +46,6 @@ const DashBoardWrapper = styled.main`
   padding-top: 4rem;
   display: flex;
   width: 100%:
-  
 `;
 
 

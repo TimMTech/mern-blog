@@ -2,8 +2,11 @@ import styled from "styled-components";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import PostForm from "../../Forms/PostForm";
-import CommentForm from "../../Forms/CommentForm";
+import PostForm from "../../Forms/PostForm/PostForm";
+import CommentForm from "../../Forms/CommentForm/CommentForm";
+import likeIcon from "/public/static/icons/like.png"
+import unlikeIcon from "/public/static/icons/unlike.png"
+import Image from "next/image";
 
 const Post = ({ post }) => {
   const {
@@ -157,8 +160,14 @@ const Post = ({ post }) => {
             </PostImageWrapper>
             <PostContent>{content}</PostContent>
             <PostLikes hidden={user ? false : true} onClick={handlePostLike}>
-              {postLikes.length}
+              {liked ? (
+                <Image src={likeIcon} alt="" />
+              ) : (
+                <Image src={unlikeIcon} alt="" />
+              )}
+              <PostLikeAmount>{postLikes.length}</PostLikeAmount>
             </PostLikes>
+
             <PostAuthor>
               by {username} / <PostDate>{dateFormat(date)}</PostDate>
             </PostAuthor>
@@ -251,6 +260,7 @@ const PostTitle = styled.h1`
   font-size: 3rem;
   padding-bottom: 2rem;
   font-weight: 500;
+  text-align: center;
 `;
 
 const PostImageWrapper = styled.div`
@@ -266,10 +276,24 @@ const PostImage = styled.img`
 `;
 
 const PostLikes = styled.button`
-  align-self: flex-start;
-  margin-left 1.5rem;
-  margin-top: 2rem;
+  
+  margin-top: 1.5rem;
+  border: none;
+  background-color: transparent;
+  width: 1rem;
+  &: hover {
+    transform: scale(1.1,1.1);
+    cursor: pointer;
+  }
+
 `;
+
+const PostLikeAmount = styled.span`
+  padding-left: 0rem;
+  font-weight: 900;
+`
+
+
 
 const PostAuthor = styled.p`
   align-self: flex-start;

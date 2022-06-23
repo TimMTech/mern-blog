@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { renderSignupError } from "../Validations/SignupError";
+import { renderSignupError } from "../../Validations/SignupError";
 
 const SignupForm = () => {
   const router = useRouter();

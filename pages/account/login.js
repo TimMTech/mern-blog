@@ -1,4 +1,4 @@
-import LoginForm from "../../components/Forms/LoginForm";
+import LoginForm from "../../components/Forms/LoginForm/LoginForm";
 import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,7 +9,7 @@ const login = () => {
     <LoginPageWrapper>
       <LoginForm />
       <LoginRightWrapper>
-        <Image layout="fill" src={formBG} alt="" objectFit="cover" />
+        <Image layout="fill" src={formBG} priority alt="" objectFit="cover" />
         <LoginTitle>New?</LoginTitle>
         <SignUpDescription>
           Sign up and discover a great amount of stories and ideas!

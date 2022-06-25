@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Blog from "../components/Blogs/Blog/Blog";
+import Blog from "../components/Blog/Blog";
 import Link from "next/link";
 
 const home = ({ posts }) => {

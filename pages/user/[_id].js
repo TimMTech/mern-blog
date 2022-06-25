@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-import MainDash from "../../components/Dashboard/MainDash/MainDash";
+import DashBoard from "../../components/Dashboard/Dashboard";
 
 const dashboard = ({ user, posts }) => {
   const { data } = user;
 
   return (
     <DashBoardWrapper>
-      <MainDash user={data} posts={posts} />
+      <DashBoard user={data} posts={posts} />
     </DashBoardWrapper>
   );
 };
@@ -45,7 +45,7 @@ export const getStaticProps = async (context) => {
 const DashBoardWrapper = styled.main`
   padding-top: 4rem;
   display: flex;
-  width: 100%:
+  width: 100%;
 `;
 
 

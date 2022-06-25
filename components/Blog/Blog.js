@@ -60,7 +60,9 @@ const Blog = ({ posts }) => {
                 <PostDate>{dateFormat(post.date)}</PostDate>
               </PostAuthor>
               <PostViewImageWrap>
-                <Image src={viewIcon} alt="" />
+                <IconContainer>
+                  <Image src={viewIcon} alt="" />
+                </IconContainer>
                 <PostViews>{post.viewCounter}</PostViews>
               </PostViewImageWrap>
             </PostFooter>
@@ -94,7 +96,9 @@ const Blog = ({ posts }) => {
                 <PostDate>{dateFormat(post.date)}</PostDate>
               </PostAuthor>
               <PostViewImageWrap>
-                <Image src={viewIcon} alt="" />
+                <IconContainer>
+                  <Image src={viewIcon} alt="" />
+                </IconContainer>
                 <PostViews>{post.viewCounter}</PostViews>
               </PostViewImageWrap>
             </PostFooter>
@@ -128,7 +132,9 @@ const Blog = ({ posts }) => {
                 <PostDate>{dateFormat(post.date)}</PostDate>
               </PostAuthor>
               <PostViewImageWrap>
-                <Image src={viewIcon} alt="" />
+                <IconContainer>
+                  <Image src={viewIcon} alt="" />
+                </IconContainer>
                 <PostViews>{post.viewCounter}</PostViews>
               </PostViewImageWrap>
             </PostFooter>
@@ -137,38 +143,6 @@ const Blog = ({ posts }) => {
       </PostWrapper>
     ));
 
-  const newPost = filteredPosts
-    .sort((a, b) => a.title.localeCompare(b.title))
-    .map((post, index) => (
-      <PostWrapper key={post._id}>
-        <Link href={`/post/${post._id}`}>
-          <Post>
-            <PostHeader>
-              <PostNumber>{index + 1}</PostNumber>
-              <PostTitle>{post.title}</PostTitle>
-            </PostHeader>
-            <PostImageContainer>
-              <PostImage
-                src={
-                  post.imageUrl ||
-                  "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
-                }
-              />
-            </PostImageContainer>
-            <PostFooter>
-              <PostAuthor>
-                By {post.user.username} /{" "}
-                <PostDate>{dateFormat(post.date)}</PostDate>
-              </PostAuthor>
-              <PostViewImageWrap>
-                <Image src={viewIcon} alt="" />
-                <PostViews>{post.viewCounter}</PostViews>
-              </PostViewImageWrap>
-            </PostFooter>
-          </Post>
-        </Link>
-      </PostWrapper>
-    ));
 
   return (
     <>
@@ -238,6 +212,10 @@ const PostTitle = styled.p`
   width: 100%;
 `;
 
+const IconContainer = styled.div`
+  width: 1.2rem;
+`
+
 const PostImageContainer = styled.div`
   width: 100%;
 `;
@@ -258,9 +236,7 @@ const PostFooter = styled.div`
 const PostViewImageWrap = styled.span`
   display: flex;
   align-items: center;
-  width: 2rem;
-  height: 1rem;
-  max-width: 100%;
+  justify-content: center;
   gap: 0.2rem;
   color: rgba(0, 0, 0, 0.3);
 `;

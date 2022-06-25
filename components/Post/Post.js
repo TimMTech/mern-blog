@@ -2,8 +2,8 @@ import styled from "styled-components";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import PostForm from "../../Forms/PostForm/PostForm";
-import CommentForm from "../../Forms/CommentForm/CommentForm";
+import PostForm from "../Forms/PostForm/PostForm";
+import CommentForm from "../Forms/CommentForm/CommentForm";
 import likeIcon from "/public/static/icons/like.png"
 import unlikeIcon from "/public/static/icons/unlike.png"
 import Image from "next/image";
@@ -281,7 +281,7 @@ const PostLikes = styled.button`
   border: none;
   background-color: transparent;
   width: 1rem;
-  &: hover {
+  &:hover {
     transform: scale(1.1,1.1);
     cursor: pointer;
   }

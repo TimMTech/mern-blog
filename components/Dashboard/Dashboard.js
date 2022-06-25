@@ -245,7 +245,7 @@ const Home = styled.button`
   padding: 0.8rem 1.5rem;
   font-weight: 800;
   font-size: 1rem;
-  &: hover {
+  &:hover {
     background-color: rgba(0, 0, 0, 0.1);
     cursor: pointer;
   }
@@ -257,7 +257,7 @@ const EditProfile = styled.button`
   font-weight: 800;
   padding: 0.8rem 1.5rem;
   font-size: 1rem;
-  &: hover {
+  &:hover {
     background-color: rgba(0, 0, 0, 0.1);
     cursor: pointer;
   }
@@ -312,7 +312,7 @@ const CreatePostIcon = styled.a`
   display: block;
   width: 1.7rem;
   height: 1.7rem;
-  &: hover{
+  &:hover{
     transform: scale(1.1,1.1);
     cursor: pointer;
   }
@@ -389,7 +389,7 @@ const PublishButton = styled.button`
   background-color: rgb(33, 37, 41);
   border-radius: 0.25rem;
   transition: 500ms;
-  &: hover {
+  &:hover {
     transform: scale(1.1, 1.1);
   }
 `;
@@ -406,7 +406,7 @@ const UnpublishButton = styled.button`
   background-color: rgb(33, 37, 41);
   border-radius: 0.25rem;
   transition: 500ms;
-  &: hover {
+  &:hover {
     transform: scale(1.1, 1.1);
   }
 `;

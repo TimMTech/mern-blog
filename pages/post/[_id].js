@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import Post from "../../components/Blogs/Posts/Post"
+import Post from "../../components/Post/Post";
 
 const post = ({post}) => {
     return (

@@ -1,6 +1,17 @@
 import styled from "styled-components";
+import * as Yup from "yup";
+import { Formik, ErrorMessage } from "formik";
 import { useState } from "react";
 import Cookies from "js-cookie";
+import {
+  FormContainer,
+  FieldContainer,
+  StyledLabel,
+  StyledField,
+  StyledForm,
+  FormTitle
+} from "../GlobalFormStyle";
+import { renderError } from "../../Validations/FormError";
 
 const LoginForm = () => {
   const contentType = "application/json";
@@ -8,6 +19,16 @@ const LoginForm = () => {
     username: "",
     password: "",
   });
+
+    const validationSchema = Yup.object({
+      username: Yup.string()
+        .required("*Required")
+        .min(1, "*Please Enter a Valid Username"),
+      password: Yup.string()
+        .required("*Required")
+        .min(1, "*Please Enter a Valid Password"),
+    
+    });
 
   const handleLoginChange = (e) => {
     const { name, value } = e.target;
@@ -45,86 +66,48 @@ const LoginForm = () => {
   };
 
   return (
-    <FormWrapper>
-      <Form method="POST" onSubmit={handleLoginSubmit}>
-        <FormTitle>Login to Your Account</FormTitle>
-        <FieldWrapper>
-          <StyledLabel>Username</StyledLabel>
-          <Input
-            value={loginValue.username}
-            type="text"
-            name="username"
-            onChange={(e) => handleLoginChange(e)}
-          />
-        </FieldWrapper>
-        <FieldWrapper>
-          <StyledLabel>Password</StyledLabel>
-          <Input
-            value={loginValue.password}
-            type="password"
-            name="password"
-            onChange={(e) => handleLoginChange(e)}
-          />
-        </FieldWrapper>
-        <LoginButton type="submit">Login</LoginButton>
-      </Form>
-    </FormWrapper>
+    <Formik
+      initialValues={loginValue}
+      validationSchema={validationSchema}
+      enableReinitialize
+      onSubmit={handleLoginSubmit}
+    >
+      <FormContainer>
+        <StyledForm method="POST">
+          <FormTitle>Login to Your Account</FormTitle>
+          <FieldContainer>
+            <StyledLabel>Username</StyledLabel>
+            <StyledField
+              value={loginValue.username}
+              type="text"
+              name="username"
+              onChange={(e) => handleLoginChange(e)}
+            />
+            <ErrorMessage name="username" render={renderError} />
+          </FieldContainer>
+          <FieldContainer>
+            <StyledLabel>Password</StyledLabel>
+            <StyledField
+              value={loginValue.password}
+              type="password"
+              name="password"
+              onChange={(e) => handleLoginChange(e)}
+            />
+            <ErrorMessage name="password" render={renderError} />
+          </FieldContainer>
+          <LoginButton type="submit">Login</LoginButton>
+        </StyledForm>
+      </FormContainer>
+    </Formik>
   );
 };
 
 export default LoginForm;
 
-const FormWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 70%;
-`;
-const FormTitle = styled.p`
-  font-size: 4rem;
-  text-align: center;
-  border-bottom: 0.05rem solid rgba(0, 0, 0, 0.3);
-  padding: 1rem;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: auto;
-  gap: 1.5rem;
-`;
-
-const FieldWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 50%;
-`;
-
-const StyledLabel = styled.label`
-  width: 100%;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 1rem;
-  border: 0.05rem solid rgb(0, 0, 0);
-  height: 3rem;
-  font-size: 1.5rem;
-`;
-
 const LoginButton = styled.button`
-  font-family: "Prompt", sans-serif;
-  font-weight: 900;
-  font-size: 1.5em;
   border: 0.05rem solid rgb(0, 0, 0);
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: 0.5rem 2rem;
   color: rgb(255, 255, 255);
   cursor: pointer;
   background-color: rgb(33, 37, 41);
-  border-radius: 0.25rem;
 `;

@@ -1,6 +1,16 @@
 import styled from "styled-components";
+import * as Yup from "yup";
+import { Formik, ErrorMessage } from "formik";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import {
+  FormContainer,
+  FieldContainer,
+  StyledLabel,
+  StyledField,
+  StyledForm,
+} from "../GlobalFormStyle";
+import { renderError } from "../../Validations/FormError";
 
 const CommentForm = ({ setPostComments }) => {
   const { query } = useRouter();
@@ -10,6 +20,13 @@ const CommentForm = ({ setPostComments }) => {
     user: "",
     content: "",
     postId: query._id,
+  });
+
+  const validationSchema = Yup.object({
+    user: Yup.string()
+      .required("*Required")
+      .min(1, "*Please Provide A Username"),
+    content: Yup.string().required("*Required").min(1, "*Please Enter Comment"),
   });
 
   const handleCommentChange = (e) => {
@@ -42,70 +59,48 @@ const CommentForm = ({ setPostComments }) => {
   };
 
   return (
-    <FormWrapper>
-      <Form method="POST" onSubmit={handleCommentSubmit}>
-        <Input
-          placeholder="Username"
-          type="text"
-          name="user"
-          value={commentValue.user}
-          onChange={(e) => handleCommentChange(e)}
-        />
-        <TextArea
-          placeholder="Comment"
-          type="text"
-          name="content"
-          value={commentValue.content}
-          onChange={(e) => handleCommentChange(e)}
-        />
-        <CommentButton type="submit">Comment</CommentButton>
-      </Form>
-    </FormWrapper>
+    <Formik
+      initialValues={commentValue}
+      validationSchema={validationSchema}
+      enableReinitialize
+      onSubmit={handleCommentSubmit}
+    >
+      <FormContainer>
+        <StyledForm method="POST" commentForm>
+          <FieldContainer commentForm>
+            <StyledLabel>Username</StyledLabel>
+            <StyledField
+              type="text"
+              name="user"
+              value={commentValue.user}
+              onChange={(e) => handleCommentChange(e)}
+            />
+            <ErrorMessage name="user" render={renderError} />
+          </FieldContainer>
+          <FieldContainer commentForm>
+            <StyledLabel>Comment</StyledLabel>
+            <StyledField
+              component="textarea"
+              type="text"
+              name="content"
+              value={commentValue.content}
+              onChange={(e) => handleCommentChange(e)}
+            />
+            <ErrorMessage name="content" render={renderError} />
+          </FieldContainer>
+          <CommentButton type="submit">Comment</CommentButton>
+        </StyledForm>
+      </FormContainer>
+    </Formik>
   );
 };
 
 export default CommentForm;
 
-const FormWrapper = styled.div`
-  width: 100%;
-  padding: 2rem;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
-
-const Input = styled.input`
-  padding: 0.5rem;
-  width: 50%;
-  font-size: 1.5rem;
-  height: 3rem;
-  ::placeholder {
-    font-size: 1.5rem;
-  }
-`;
-
-const TextArea = styled.textarea`
-  padding: 0.5rem;
-  width: 100%;
-  font-size: 1.5rem;
-  height: 10rem;
-  ::placeholder {
-    font-size: 1.5rem;
-  }
-`;
-
 const CommentButton = styled.button`
-  font-family: "Prompt", sans-serif;
-  font-weight: 900;
-  font-size: 1.5em;
   border: 0.05rem solid rgb(0, 0, 0);
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: 0.5rem 2rem;
   color: rgb(255, 255, 255);
   cursor: pointer;
   background-color: rgb(33, 37, 41);
-  border-radius: 0.25rem;
 `;

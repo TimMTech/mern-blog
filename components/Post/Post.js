@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import PostForm from "../Forms/PostForm/PostForm";
 import CommentForm from "../Forms/CommentForm/CommentForm";
-import likeIcon from "/public/static/icons/like.png"
-import unlikeIcon from "/public/static/icons/unlike.png"
-import Image from "next/image";
+import likeIcon from "/public/static/icons/like.png";
+import unlikeIcon from "/public/static/icons/unlike.png";
+import NextImage from "next/image";
 
 const Post = ({ post }) => {
   const {
@@ -128,70 +128,63 @@ const Post = ({ post }) => {
   return (
     <>
       {editMode ? (
-        <EditModeWrapper>
+        <EditContainer>
           <PostForm
             editMode={editMode}
             postId={_id}
             setEditMode={setEditMode}
           />
-        </EditModeWrapper>
+        </EditContainer>
       ) : (
-        <PostWrapper>
-          <PostContainer>
-            {user === username ? (
-              <EditMode>
-                <EditPost hidden={user ? false : true} onClick={handleEdit}>
-                  Edit
-                </EditPost>
-                <DeletePost hidden={user ? false : true} onClick={handleDelete}>
-                  Delete
-                </DeletePost>
-              </EditMode>
-            ) : null}
+        <PostContainer>
+          {user === username ? (
+            <OptionContainer>
+              <EditPost hidden={user ? false : true} onClick={handleEdit}>
+                Edit
+              </EditPost>
+              <DeletePost hidden={user ? false : true} onClick={handleDelete}>
+                Delete
+              </DeletePost>
+            </OptionContainer>
+          ) : null}
 
-            <PostTitle>{title}</PostTitle>
-            <PostImageWrapper>
-              <PostImage
-                src={
-                  imageUrl ||
-                  "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
-                }
-              />
-            </PostImageWrapper>
-            <PostContent>{content}</PostContent>
-            <PostLikes hidden={user ? false : true} onClick={handlePostLike}>
-              {liked ? (
-                <Image src={likeIcon} alt="" />
-              ) : (
-                <Image src={unlikeIcon} alt="" />
-              )}
-              <PostLikeAmount>{postLikes.length}</PostLikeAmount>
-            </PostLikes>
-
-            <PostAuthor>
-              by {username} / <PostDate>{dateFormat(date)}</PostDate>
-            </PostAuthor>
-            <CommentForm setPostComments={setPostComments} />
-            <PostComments>
-              <ShownComments>
-                Comments ({filteredComments.length})
-              </ShownComments>
-              {filteredComments.map((comment) => {
-                const { _id, user, content, date } = comment;
-                return (
-                  <CommentWrapper key={_id}>
-                    <Comment>
-                      <CommentUser>
-                        {user} / <CommentDate>{date}</CommentDate>
-                      </CommentUser>
-                      <CommentContent>{content}</CommentContent>
-                    </Comment>
-                  </CommentWrapper>
-                );
-              })}
-            </PostComments>
-          </PostContainer>
-        </PostWrapper>
+          <PostTitle>{title}</PostTitle>
+          <PostImageWrapper>
+            <PostImage
+              src={
+                imageUrl ||
+                "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
+              }
+            />
+          </PostImageWrapper>
+          <PostContent>{content}</PostContent>
+          <LikesWrapper hidden={user ? false : true} onClick={handlePostLike}>
+            {liked ? (
+              <NextImage src={likeIcon} alt="" />
+            ) : (
+              <NextImage src={unlikeIcon} alt="" />
+            )}
+            <PostLikeAmount>{postLikes.length}</PostLikeAmount>
+          </LikesWrapper>
+          <PostAuthor>
+            by {username} / {dateFormat(date)}
+          </PostAuthor>
+          <CommentForm setPostComments={setPostComments} />
+          <CommentContainer>
+            <CommentAmount>Comments ({filteredComments.length})</CommentAmount>
+            {filteredComments.map((comment) => {
+              const { _id, user, content, date } = comment;
+              return (
+                <CommentWrapper key={_id}>
+                  <CommentUser>
+                    {user} / {date}
+                  </CommentUser>
+                  <CommentContent>{content}</CommentContent>
+                </CommentWrapper>
+              );
+            })}
+          </CommentContainer>
+        </PostContainer>
       )}
     </>
   );
@@ -199,110 +192,68 @@ const Post = ({ post }) => {
 
 export default Post;
 
-const EditModeWrapper = styled.main`
+const EditContainer = styled.main``;
+
+const PostContainer = styled.main`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 2rem;
 `;
 
-const PostWrapper = styled.main`
-  min-height: 100vh;
-  padding-top: 10rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 3rem;
-`;
-
-const PostContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 75%;
-  height: 100%;
-  box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
-`;
-
-const EditMode = styled.div`
-  margin: 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+const OptionContainer = styled.div``;
 
 const EditPost = styled.button`
-  font-family: "Prompt", sans-serif;
-  font-weight: 900;
   font-size: 1.2em;
   border: 0.05rem solid rgb(0, 0, 0);
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: 0.5rem 2rem;
   color: rgb(255, 255, 255);
   cursor: pointer;
   background-color: rgb(33, 37, 41);
-  border-radius: 0.25rem;
-  margin-right: 0.5rem;
+  margin: 0.5rem;
 `;
 
 const DeletePost = styled.button`
-  font-family: "Prompt", sans-serif;
-  font-weight: 900;
+  margin: 0.5rem;
   font-size: 1.2em;
   border: 0.05rem solid rgb(0, 0, 0);
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: 0.5rem 2rem;
   color: rgb(255, 255, 255);
   cursor: pointer;
   background-color: rgb(33, 37, 41);
-  border-radius: 0.25rem;
-  margin-left: 0.5rem;
 `;
 const PostTitle = styled.h1`
   font-size: 3rem;
-  padding-bottom: 2rem;
-  font-weight: 500;
   text-align: center;
 `;
 
 const PostImageWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 50%;
 `;
 
 const PostImage = styled.img`
-  max-width: 100%;
-  height: auto;
+  width: 100%;
 `;
 
-const PostLikes = styled.button`
-  
+const LikesWrapper = styled.button`
   margin-top: 1.5rem;
   border: none;
   background-color: transparent;
   width: 1rem;
   &:hover {
-    transform: scale(1.1,1.1);
+    transform: scale(1.1, 1.1);
     cursor: pointer;
   }
-
 `;
 
-const PostLikeAmount = styled.span`
-  padding-left: 0rem;
-  font-weight: 900;
-`
-
-
+const PostLikeAmount = styled.span``;
 
 const PostAuthor = styled.p`
   align-self: flex-start;
   padding-left: 1.5rem;
-  padding-top: 2rem;
-  font-weight: 200;
 `;
-
-const PostDate = styled.span``;
 
 const PostContent = styled.p`
   padding-top: 0.5rem;
@@ -312,30 +263,26 @@ const PostContent = styled.p`
   box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
 `;
 
-const PostComments = styled.section`
+const CommentContainer = styled.section`
   width: 100%;
 `;
 
-const ShownComments = styled.p`
-  font-weight: 500;
+const CommentAmount = styled.h3`
   padding-left: 1.2rem;
   margin-bottom: 1.5rem;
 `;
 
 const CommentWrapper = styled.div`
-  margin: 2rem;
   border: 0.1rem solid black;
   box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
+  margin: 1rem 0;
 `;
 
-const Comment = styled.div``;
-
-const CommentUser = styled.p`
+const CommentUser = styled.h4`
   font-weight: 200;
   padding: 1rem;
-`;
 
-const CommentDate = styled.span``;
+`;
 
 const CommentContent = styled.p`
   padding: 1rem;

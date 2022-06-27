@@ -2,11 +2,11 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import addIcon from "/public/static/icons/add.png";
-import Image from "next/image";
-import Link from "next/link";
+import NextImage from "next/image";
+import NextLink from "next/link";
 import moment from "moment";
 
-const MainDash = ({ user, posts }) => {
+const Dashboard = ({ user, posts }) => {
   const router = useRouter();
 
   const [showPublished, setShowPublished] = useState(false);
@@ -72,49 +72,45 @@ const MainDash = ({ user, posts }) => {
   }, []);
 
   return (
-    <UserDashWrapper>
-      <UserHeader>
+    <DashContainer>
+      <HeaderContainer>
         <UserLogo variant={/[A-Ma-m]/}>{user.username.slice(0, 1)}</UserLogo>
 
         <Username>{user.username}</Username>
         <UserEmail>{user.email}</UserEmail>
-        <TotalPosts>{filteredMyPosts.length} Posts</TotalPosts>
-        <UserOptionsWrapper>
-          <HomeNav href={"/"}>
-            <Home>Home</Home>
-          </HomeNav>
-          <EditProfile>Edit Profile</EditProfile>
-        </UserOptionsWrapper>
-        <ViewPostsWrapper>
-          <ViewPublishedWrapper>
+        <UserPosts>{filteredMyPosts.length} Posts</UserPosts>
+        <OptionsContainer>
+          <NextLink href={"/"}>
+            <HomeButton>Home</HomeButton>
+          </NextLink>
+          <EditButton>Edit Profile</EditButton>
+        </OptionsContainer>
+        <ViewContainer>
+          <PublishedContainer>
             <ViewPublished onClick={handleShowPublished}>
               Published
             </ViewPublished>
-            <ViewPublishedUnderline
-              hidden={showPublished ? false : true}
-            ></ViewPublishedUnderline>
-          </ViewPublishedWrapper>
-          <ViewUnpublishedWrapper>
+            <Underline hidden={showPublished ? false : true}></Underline>
+          </PublishedContainer>
+          <UnpublishedContainer>
             <ViewUnpublished onClick={handleShowUnpublished}>
               Unpublished
             </ViewUnpublished>
-            <ViewUnpublishedUnderline
-              hidden={showUnpublished ? false : true}
-            ></ViewUnpublishedUnderline>
-          </ViewUnpublishedWrapper>
-        </ViewPostsWrapper>
-      </UserHeader>
-      <MenuWrapper>
+            <Underline hidden={showUnpublished ? false : true}></Underline>
+          </UnpublishedContainer>
+        </ViewContainer>
+      </HeaderContainer>
+      <MenuContainer>
         <Select></Select>
 
-        <CreatePost href={"/post"}>
+        <NextLink href={"/post"}>
           <CreatePostIcon>
-            <Image src={addIcon} alt="" />
+            <NextImage src={addIcon} alt="" />
           </CreatePostIcon>
-        </CreatePost>
-      </MenuWrapper>
+        </NextLink>
+      </MenuContainer>
       {showPublished && (
-        <PublishedPostsWrapper>
+        <MasonryContainer>
           {publishedPosts.map((posts) => {
             const {
               title,
@@ -124,33 +120,31 @@ const MainDash = ({ user, posts }) => {
               user: { username },
             } = posts;
             return (
-              <MyPostsWrapper key={_id}>
-                <Post>
+              <NextLink href={`/post/${_id}`} key={_id}>
+                <PostsContainer>
                   <PostTitle>{title}</PostTitle>
-                  <PostImageContainer>
-                    <Link href={`/post/${_id}`}>
-                      <PostImage
-                        src={
-                          imageUrl ||
-                          "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
-                        }
-                      />
-                    </Link>
-                  </PostImageContainer>
+                  <PostImageWrapper>
+                    <PostImage
+                      src={
+                        imageUrl ||
+                        "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
+                      }
+                    />
+                  </PostImageWrapper>
                   <PostAuthor>
-                    By {username} / <PostDate>{dateFormat(date)}</PostDate>
+                    By {username} / {dateFormat(date)}
                   </PostAuthor>
                   <UnpublishButton onClick={() => handleUnpublish(_id)}>
                     Unpublish
                   </UnpublishButton>
-                </Post>
-              </MyPostsWrapper>
+                </PostsContainer>
+              </NextLink>
             );
           })}
-        </PublishedPostsWrapper>
+        </MasonryContainer>
       )}
       {showUnpublished && (
-        <UnpublishedPostsWrapper>
+        <MasonryContainer>
           {unPublishedPosts.map((posts) => {
             const {
               title,
@@ -160,44 +154,40 @@ const MainDash = ({ user, posts }) => {
               user: { username },
             } = posts;
             return (
-              <MyPostsWrapper key={_id}>
-                <Post>
+              <NextLink href={`/post/${_id}`} key={_id}>
+                <PostsContainer>
                   <PostTitle>{title}</PostTitle>
-                  <PostImageContainer>
-                    <Link href={`/post/${_id}`}>
-                      <PostImage
-                        src={
-                          imageUrl ||
-                          "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
-                        }
-                      />
-                    </Link>
-                  </PostImageContainer>
+                  <PostImageWrapper>
+                    <PostImage
+                      src={
+                        imageUrl ||
+                        "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
+                      }
+                    />
+                  </PostImageWrapper>
                   <PostAuthor>
-                    By {username} / <PostDate>{dateFormat(date)}</PostDate>
+                    By {username} / {dateFormat(date)}
                   </PostAuthor>
                   <PublishButton onClick={() => handlePublish(_id)}>
                     Publish
                   </PublishButton>
-                </Post>
-              </MyPostsWrapper>
+                </PostsContainer>
+              </NextLink>
             );
           })}
-        </UnpublishedPostsWrapper>
+        </MasonryContainer>
       )}
-    </UserDashWrapper>
+    </DashContainer>
   );
 };
 
-export default MainDash;
+export default Dashboard;
 
-const UserDashWrapper = styled.section`
-  overflow: hidden;
+const DashContainer = styled.div`
   width: 100%;
-  padding: 0.5rem;
 `;
 
-const UserHeader = styled.div`
+const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -206,10 +196,9 @@ const UserHeader = styled.div`
 
 const UserLogo = styled.span`
   width: 7rem;
-  height: 7rem;
   line-height: 7rem;
   border-radius: 50%;
-  font-size: 50px;
+  font-size: 5rem;
   color: rgb(255, 255, 255);
   text-align: center;
   background: ${(props) =>
@@ -217,18 +206,16 @@ const UserLogo = styled.span`
 `;
 
 const Username = styled.h1`
-  text-align: center;
   font-size: 4rem;
 `;
 
-const UserEmail = styled.span`
+const UserEmail = styled.h3`
   color: rgba(0, 0, 0, 0.5);
-  text-align: center;
 `;
 
-const TotalPosts = styled.span``;
+const UserPosts = styled.h3``;
 
-const UserOptionsWrapper = styled.div`
+const OptionsContainer = styled.div`
   display: flex;
   gap: 1.5rem;
   justify-content: center;
@@ -236,10 +223,7 @@ const UserOptionsWrapper = styled.div`
   margin-top: 1rem;
 `;
 
-const HomeNav = styled(Link)`
-`;
-
-const Home = styled.button`
+const HomeButton = styled.button`
   border: none;
   border-radius: 2rem;
   padding: 0.8rem 1.5rem;
@@ -251,7 +235,7 @@ const Home = styled.button`
   }
 `;
 
-const EditProfile = styled.button`
+const EditButton = styled.button`
   border: none;
   border-radius: 2rem;
   font-weight: 800;
@@ -263,7 +247,7 @@ const EditProfile = styled.button`
   }
 `;
 
-const ViewPostsWrapper = styled.div`
+const ViewContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
@@ -272,7 +256,7 @@ const ViewPostsWrapper = styled.div`
   margin-top: 1.5rem;
 `;
 
-const ViewPublishedWrapper = styled.div``;
+const PublishedContainer = styled.div``;
 const ViewPublished = styled.button`
   border: none;
   background: transparent;
@@ -281,12 +265,7 @@ const ViewPublished = styled.button`
   cursor: pointer;
 `;
 
-const ViewPublishedUnderline = styled.div`
-  border: 0.1rem solid rgb(0, 0, 0);
-  background-color: rgb(0, 0, 0);
-`;
-
-const ViewUnpublishedWrapper = styled.div``;
+const UnpublishedContainer = styled.div``;
 const ViewUnpublished = styled.button`
   border: none;
   background: transparent;
@@ -295,63 +274,53 @@ const ViewUnpublished = styled.button`
   cursor: pointer;
 `;
 
-const ViewUnpublishedUnderline = styled.div`
+const Underline = styled.div`
   border: 0.1rem solid rgb(0, 0, 0);
   background-color: rgb(0, 0, 0);
 `;
 
-const MenuWrapper = styled.div`
+const MenuContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 2rem;
 `;
 
-const CreatePost = styled(Link)``;
-
 const CreatePostIcon = styled.a`
   display: block;
   width: 1.7rem;
-  height: 1.7rem;
-  &:hover{
-    transform: scale(1.1,1.1);
+
+  &:hover {
+    transform: scale(1.1, 1.1);
     cursor: pointer;
   }
 `;
 
 const Select = styled.select``;
 
-const PublishedPostsWrapper = styled.div`
+const MasonryContainer = styled.div`
   --masonry-gap: 0.5rem;
   --masonry-brick-width: 300px;
   column-gap: var(--masonry-gap);
   column-fill: initial;
   column-width: var(--masonry-brick-width);
-  padding: 0.5rem 0.5rem;
+  padding: 1rem;
 `;
 
-const MyPostsWrapper = styled.div`
-  padding: 0.3rem;
-  break-inside: avoid;
-  margin-bottom: var(--masonry-gap);
-`;
-
-const Post = styled.a`
-  width: 100%;
-
+const PostsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  break-inside: avoid;
+  margin-bottom: var(--masonry-gap);
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border: 0.1rem solid rgba(0,0,0,0.1);
+  border-radius: 0.2rem;
   cursor: pointer;
-  border-radius: 0.15rem;
 `;
 
-const PostTitle = styled.p`
-  font-weight: 500;
-  font-size: 1.2rem;
-`;
+const PostTitle = styled.p``;
 
-const PostImageContainer = styled.div`
+const PostImageWrapper = styled.div`
   width: 100%;
 `;
 
@@ -366,24 +335,10 @@ const PostAuthor = styled.p`
   padding: 0.5rem;
 `;
 
-const PostDate = styled.span``;
-
-const UnpublishedPostsWrapper = styled.div`
-  --masonry-gap: 0.5rem;
-  --masonry-brick-width: 300px;
-  column-gap: var(--masonry-gap);
-  column-fill: initial;
-  column-width: var(--masonry-brick-width);
-  padding: 0.5rem 0.5rem;
-`;
-
 const PublishButton = styled.button`
-  font-family: "Prompt", sans-serif;
-  font-weight: 900;
-  font-size: 1.5em;
-  border: 0.05rem solid rgb(0, 0, 0);
+  border: none;
   margin-bottom: 0.5rem;
-  padding: 0 1.5rem;
+  padding: 0.5rem 1.5rem;
   color: rgb(255, 255, 255);
   cursor: pointer;
   background-color: rgb(33, 37, 41);
@@ -395,12 +350,9 @@ const PublishButton = styled.button`
 `;
 
 const UnpublishButton = styled.button`
-  font-family: "Prompt", sans-serif;
-  font-weight: 900;
-  font-size: 1.5em;
-  border: 0.05rem solid rgb(0, 0, 0);
+  border: none;
   margin-bottom: 0.5rem;
-  padding: 0 1.5rem;
+  padding: 0.5rem 1.5rem;
   color: rgb(255, 255, 255);
   cursor: pointer;
   background-color: rgb(33, 37, 41);

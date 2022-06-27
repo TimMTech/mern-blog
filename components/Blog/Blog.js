@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import moment from "moment";
-import Link from "next/link";
-import Image from "next/image";
+import NextLink from "next/link";
+import NextImage from "next/image";
 import { useState, useEffect } from "react";
 import viewIcon from "/public/static/icons/view.png";
 
@@ -39,110 +39,100 @@ const Blog = ({ posts }) => {
     .sort((a, b) => a.viewCounter - b.viewCounter)
     .reverse()
     .map((post, index) => (
-      <PostWrapper key={post._id}>
-        <Link href={`/post/${post._id}`}>
-          <Post>
-            <PostHeader>
-              <PostNumber>{index + 1}</PostNumber>
-              <PostTitle>{post.title}</PostTitle>
-            </PostHeader>
-            <PostImageContainer>
-              <PostImage
-                src={
-                  post.imageUrl ||
-                  "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
-                }
-              />
-            </PostImageContainer>
-            <PostFooter>
-              <PostAuthor>
-                By {post.user.username} /{" "}
-                <PostDate>{dateFormat(post.date)}</PostDate>
-              </PostAuthor>
-              <PostViewImageWrap>
-                <IconContainer>
-                  <Image src={viewIcon} alt="" />
-                </IconContainer>
-                <PostViews>{post.viewCounter}</PostViews>
-              </PostViewImageWrap>
-            </PostFooter>
-          </Post>
-        </Link>
-      </PostWrapper>
+      <NextLink href={`/post/${post._id}`} key={post._id}>
+        <PostContainer>
+          <PostHeaderContainer>
+            <PostNumber>{index + 1}</PostNumber>
+            <PostTitle>{post.title}</PostTitle>
+          </PostHeaderContainer>
+          <PostImageWrapper>
+            <PostImage
+              src={
+                post.imageUrl ||
+                "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
+              }
+            />
+          </PostImageWrapper>
+          <PostFooterContainer>
+            <PostAuthor>
+              By {post.user.username} / {dateFormat(post.date)}
+            </PostAuthor>
+            <PostIconContainer>
+              <PostIconWrapper>
+                <NextImage src={viewIcon} alt="" />
+              </PostIconWrapper>
+              <PostViews>{post.viewCounter}</PostViews>
+            </PostIconContainer>
+          </PostFooterContainer>
+        </PostContainer>
+      </NextLink>
     ));
 
   const mostRecent = filteredPosts
     .sort((a, b) => a.date.localeCompare(b.date))
     .reverse()
     .map((post, index) => (
-      <PostWrapper key={post._id}>
-        <Link href={`/post/${post._id}`}>
-          <Post>
-            <PostHeader>
-              <PostNumber>{index + 1}</PostNumber>
-              <PostTitle>{post.title}</PostTitle>
-            </PostHeader>
-            <PostImageContainer>
-              <PostImage
-                src={
-                  post.imageUrl ||
-                  "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
-                }
-              />
-            </PostImageContainer>
-            <PostFooter>
-              <PostAuthor>
-                By {post.user.username} /{" "}
-                <PostDate>{dateFormat(post.date)}</PostDate>
-              </PostAuthor>
-              <PostViewImageWrap>
-                <IconContainer>
-                  <Image src={viewIcon} alt="" />
-                </IconContainer>
-                <PostViews>{post.viewCounter}</PostViews>
-              </PostViewImageWrap>
-            </PostFooter>
-          </Post>
-        </Link>
-      </PostWrapper>
+      <NextLink href={`/post/${post._id}`} key={post._id}>
+        <PostContainer>
+          <PostHeaderContainer>
+            <PostNumber>{index + 1}</PostNumber>
+            <PostTitle>{post.title}</PostTitle>
+          </PostHeaderContainer>
+          <PostImageWrapper>
+            <PostImage
+              src={
+                post.imageUrl ||
+                "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
+              }
+            />
+          </PostImageWrapper>
+          <PostFooterContainer>
+            <PostAuthor>
+              By {post.user.username} / {dateFormat(post.date)}
+            </PostAuthor>
+            <PostIconContainer>
+              <PostIconWrapper>
+                <NextImage src={viewIcon} alt="" />
+              </PostIconWrapper>
+              <PostViews>{post.viewCounter}</PostViews>
+            </PostIconContainer>
+          </PostFooterContainer>
+        </PostContainer>
+      </NextLink>
     ));
 
   const mostLikes = filteredPosts
     .sort((a, b) => a.likes.length - b.likes.length)
     .reverse()
     .map((post, index) => (
-      <PostWrapper key={post._id}>
-        <Link href={`/post/${post._id}`}>
-          <Post>
-            <PostHeader>
-              <PostNumber>{index + 1}</PostNumber>
-              <PostTitle>{post.title}</PostTitle>
-            </PostHeader>
-            <PostImageContainer>
-              <PostImage
-                src={
-                  post.imageUrl ||
-                  "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
-                }
-              />
-            </PostImageContainer>
-            <PostFooter>
-              <PostAuthor>
-                By {post.user.username} /{" "}
-                <PostDate>{dateFormat(post.date)}</PostDate>
-              </PostAuthor>
-              <PostViewImageWrap>
-                <IconContainer>
-                  <Image src={viewIcon} alt="" />
-                </IconContainer>
-                <PostViews>{post.viewCounter}</PostViews>
-              </PostViewImageWrap>
-            </PostFooter>
-          </Post>
-        </Link>
-      </PostWrapper>
+      <NextLink href={`/post/${post._id}`} key={post._id}>
+        <PostContainer key={post._id}>
+          <PostHeaderContainer>
+            <PostNumber>{index + 1}</PostNumber>
+            <PostTitle>{post.title}</PostTitle>
+          </PostHeaderContainer>
+          <PostImageWrapper>
+            <PostImage
+              src={
+                post.imageUrl ||
+                "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
+              }
+            />
+          </PostImageWrapper>
+          <PostFooterContainer>
+            <PostAuthor>
+              By {post.user.username} / {dateFormat(post.date)}
+            </PostAuthor>
+            <PostIconContainer>
+              <PostIconWrapper>
+                <NextImage src={viewIcon} alt="" />
+              </PostIconWrapper>
+              <PostViews>{post.viewCounter}</PostViews>
+            </PostIconContainer>
+          </PostFooterContainer>
+        </PostContainer>
+      </NextLink>
     ));
-
 
   return (
     <>
@@ -152,53 +142,45 @@ const Blog = ({ posts }) => {
         <Option value="mostLiked">Most Liked</Option>
         <Option value="mostViewed">Most Viewed</Option>
       </Select>
-      {mostRecentDefaultVisible && <BlogWrapper>{mostRecent}</BlogWrapper>}
-      {mostLikedVisible && <BlogWrapper>{mostLikes}</BlogWrapper>}
-      {mostViewedVisible && <BlogWrapper>{mostViewed}</BlogWrapper>}
+      {mostRecentDefaultVisible && <BlogContainer>{mostRecent}</BlogContainer>}
+      {mostLikedVisible && <BlogContainer>{mostLikes}</BlogContainer>}
+      {mostViewedVisible && <BlogContainer>{mostViewed}</BlogContainer>}
     </>
   );
 };
 
 export default Blog;
 
-const BlogWrapper = styled.section`
+const BlogContainer = styled.section`
   --masonry-gap: 0.5rem;
   --masonry-brick-width: 300px;
   column-gap: var(--masonry-gap);
   column-fill: initial;
   column-width: var(--masonry-brick-width);
-  padding: 0 0.5rem;
+  padding: 1rem;
 `;
 
-const PostAmount = styled.h4`
-  width: 100%;
-  font-size: 1.5rem;
-  margin-top: 1.5rem;
-  margin-left: 1.5rem;
-`
-
-const PostWrapper = styled.div`
-  padding: 0.3rem;
-  break-inside: avoid;
-  margin-bottom: var(--masonry-gap);
- 
-`;
-
-const Post = styled.a`
+const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
-  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
-  border-radius: 0.15rem;
+  break-inside: avoid;
+  margin-bottom: var(--masonry-gap);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border: 0.1rem solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.2rem;
   cursor: pointer;
 `;
 
-const PostHeader = styled.div`
+const PostHeaderContainer = styled.div`
   text-align: center;
   position: relative;
 `;
 
+const PostAmount = styled.h4`
+  margin: 1rem;
+`;
+
 const PostNumber = styled.span`
-  font-weight: 600;
   position: absolute;
   left: 0;
   top: 50%;
@@ -207,16 +189,9 @@ const PostNumber = styled.span`
   color: rgba(0, 0, 0, 0.2);
 `;
 
-const PostTitle = styled.p`
-  font-weight: 700;
-  width: 100%;
-`;
+const PostTitle = styled.p``;
 
-const IconContainer = styled.div`
-  width: 1.2rem;
-`
-
-const PostImageContainer = styled.div`
+const PostImageWrapper = styled.div`
   width: 100%;
 `;
 
@@ -225,39 +200,33 @@ const PostImage = styled.img`
   display: block;
 `;
 
-const PostFooter = styled.div`
+const PostFooterContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 0.5rem;
 `;
 
-const PostViewImageWrap = styled.span`
+const PostIconContainer = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 0.2rem;
+  gap: 0.1rem;
   color: rgba(0, 0, 0, 0.3);
 `;
 
-const PostViews = styled.span`
-  font-weight: 600;
+const PostIconWrapper = styled.div`
+  width: 1.2rem;
 `;
+
+const PostViews = styled.span``;
 
 const PostAuthor = styled.p`
   text-align: center;
-  width: 100%;
   font-weight: 100;
 `;
 
-const PostDate = styled.span``;
-
 const Select = styled.select`
-  width: 10rem;
+  width: 8rem;
   text-align: center;
-  margin: 1.5rem;
-  font-weight: 700;
+  margin: 1rem;
   border: 0.1rem solid rgb(0, 0, 0);
 `;
 

@@ -1,6 +1,16 @@
 import styled from "styled-components";
+import * as Yup from "yup";
+import { Formik, ErrorMessage } from "formik";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import {
+  FormContainer,
+  FieldContainer,
+  StyledLabel,
+  StyledField,
+  StyledForm,
+} from "../GlobalFormStyle";
+import { renderError } from "../../Validations/FormError";
 
 const PostForm = ({ editMode, postId, setEditMode }) => {
   const contentType = "application/json";
@@ -9,6 +19,14 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
     title: "",
     content: "",
     imageUrl: "",
+  });
+
+  const validationSchema = Yup.object({
+    title: Yup.string().required("*Required").min(1, "*Please Provide A Title"),
+    content: Yup.string()
+      .required("*Required")
+      .min(1, "*Please Provide Content"),
+    imageUrl: Yup.string(),
   });
 
   const handlePostChange = (e) => {
@@ -72,66 +90,56 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
   };
 
   return (
-    <>
-      <FormWrapper>
-        <Form method="POST" onSubmit={handleSubmitPost}>
+    <Formik
+      initialValues={post}
+      validationSchema={validationSchema}
+      enableReinitialize
+      onSubmit={handleSubmitPost}
+    >
+      <FormContainer>
+        <StyledForm method="POST">
           {editMode ? <EditTitle>Edit</EditTitle> : null}
-          <FieldWrapper>
+          <FieldContainer>
             <StyledLabel>Title</StyledLabel>
-            <Input
+            <StyledField
               value={post.title}
               type="text"
               name="title"
               onChange={(e) => handlePostChange(e)}
             />
-          </FieldWrapper>
-          <FieldWrapper>
+            <ErrorMessage name="title" render={renderError} />
+          </FieldContainer>
+          <FieldContainer>
             <StyledLabel>Content</StyledLabel>
-            <TextArea
+            <StyledField
+              component="textarea"
               value={post.content}
               type="text"
               name="content"
               onChange={(e) => handlePostChange(e)}
             />
-          </FieldWrapper>
-          <FieldWrapper>
+            <ErrorMessage name="content" render={renderError} />
+          </FieldContainer>
+          <FieldContainer>
             <StyledLabel>Image (Optional)</StyledLabel>
-            <Input
+            <StyledField
               value={post.imageUrl}
               type="text"
               name="imageUrl"
               onChange={(e) => handlePostChange(e)}
             />
-          </FieldWrapper>
+            <ErrorMessage name="imageUrl" render={renderError} />
+          </FieldContainer>
           <CreatePost type="submit">
             {editMode ? "Save" : "Create Post"}
           </CreatePost>
-        </Form>
-      </FormWrapper>
-    </>
+        </StyledForm>
+      </FormContainer>
+    </Formik>
   );
 };
 
 export default PostForm;
-
-const FormWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 2rem 0;
-  width: 100%;
-`;
-
-const FieldWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 50%;
-`;
-
-const StyledLabel = styled.label`
-  width: 100%;
-`;
 
 const EditTitle = styled.p`
   font-weight: 700;
@@ -140,41 +148,10 @@ const EditTitle = styled.p`
   padding-top: 3rem;
 `;
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: auto;
-  gap: 1.5rem;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 1rem;
-  border: 0.05rem solid rgb(0, 0, 0);
-  height: 3rem;
-  font-size: 1.5rem;
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 1rem;
-  border: 0.05rem solid rgb(0, 0, 0);
-  height: 10rem;
-  font-size: 1.5rem;
-`;
-
 const CreatePost = styled.button`
-  font-family: "Prompt", sans-serif;
-  font-weight: 900;
-  font-size: 1.5em;
   border: 0.05rem solid rgb(0, 0, 0);
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: 0.5rem 2rem;
   color: rgb(255, 255, 255);
   cursor: pointer;
   background-color: rgb(33, 37, 41);
-  border-radius: 0.25rem;
 `;

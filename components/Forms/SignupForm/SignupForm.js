@@ -2,8 +2,16 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { renderSignupError } from "../../Validations/SignupError";
+import { Formik, ErrorMessage } from "formik";
+import {
+  FormContainer,
+  FieldContainer,
+  StyledLabel,
+  StyledField,
+  StyledForm,
+  FormTitle
+} from "../GlobalFormStyle";
+import { renderError } from "../../Validations/FormError";
 
 const SignupForm = () => {
   const router = useRouter();
@@ -67,15 +75,12 @@ const SignupForm = () => {
       onSubmit={handleSignUpSubmit}
     >
       {() => (
-        <FormWrapper>
+        <FormContainer>
           <StyledForm method="POST">
             <FormTitle>
-              Welcome to{" "}
-              <StyledE>
-                E<StyledBlog>BLOG</StyledBlog>
-              </StyledE>
+              Welcome to <StyledE>EBLOG</StyledE>
             </FormTitle>
-            <FieldWrapper>
+            <FieldContainer>
               <StyledLabel>Username</StyledLabel>
               <StyledField
                 value={signUpValue.username}
@@ -83,9 +88,9 @@ const SignupForm = () => {
                 name="username"
                 onChange={(e) => handleSignUpChange(e)}
               />
-              <ErrorMessage name="username" render={renderSignupError} />
-            </FieldWrapper>
-            <FieldWrapper>
+              <ErrorMessage name="username" render={renderError} />
+            </FieldContainer>
+            <FieldContainer>
               <StyledLabel>Email</StyledLabel>
               <StyledField
                 value={signUpValue.email}
@@ -93,9 +98,9 @@ const SignupForm = () => {
                 name="email"
                 onChange={(e) => handleSignUpChange(e)}
               />
-              <ErrorMessage name="email" render={renderSignupError} />
-            </FieldWrapper>
-            <FieldWrapper>
+              <ErrorMessage name="email" render={renderError} />
+            </FieldContainer>
+            <FieldContainer>
               <StyledLabel>Password</StyledLabel>
               <StyledField
                 value={signUpValue.password}
@@ -103,11 +108,11 @@ const SignupForm = () => {
                 name="password"
                 onChange={(e) => handleSignUpChange(e)}
               />
-              <ErrorMessage name="password" render={renderSignupError} />
-            </FieldWrapper>
+              <ErrorMessage name="password" render={renderError} />
+            </FieldContainer>
             <SignUpButton type="submit">Sign Up</SignUpButton>
           </StyledForm>
-        </FormWrapper>
+        </FormContainer>
       )}
     </Formik>
   );
@@ -115,69 +120,16 @@ const SignupForm = () => {
 
 export default SignupForm;
 
-const FormWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 70%;
-`;
-
-const FormTitle = styled.p`
-  font-size: 4rem;
-  text-align: center;
-  border-bottom: 0.05rem solid rgba(0, 0, 0, 0.3);
-  padding: 1rem;
-`;
 const StyledE = styled.span`
   color: rgb(52, 97, 235);
-  font-size: 6rem;
   cursor: pointer;
   letter-spacing: 0.8rem;
 `;
 
-const StyledBlog = styled.span`
-  color: rgb(0, 0, 0);
-  font-size: 4rem;
-`;
-
-const StyledForm = styled(Form)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: auto;
-  gap: 1.5rem;
-`;
-
-const FieldWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 50%;
-`;
-
-const StyledLabel = styled.label`
-  width: 100%;
-`;
-
-const StyledField = styled(Field)`
-  width: 100%;
-  padding: 1rem;
-  border: 0.05rem solid rgb(0, 0, 0);
-  height: 3rem;
-  font-size: 1.5rem;
-`;
-
 const SignUpButton = styled.button`
-  font-family: "Prompt", sans-serif;
-  font-weight: 900;
-  font-size: 1.5em;
   border: 0.05rem solid rgb(0, 0, 0);
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: 0.5rem 2rem;
   color: rgb(255, 255, 255);
   cursor: pointer;
   background-color: rgb(33, 37, 41);
-  border-radius: 0.25rem;
 `;

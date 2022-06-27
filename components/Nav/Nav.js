@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import styled from "styled-components"
+import NextLink from "next/link";
+import styled from "styled-components";
 const cookies = require("js-cookie");
 
 const Nav = () => {
@@ -37,130 +37,104 @@ const Nav = () => {
   };
 
   return (
-    <NavWrapper>
-      <Home href="/">
-        <StyledE>
-          E<StyledBlog>BLOG</StyledBlog>
-        </StyledE>
-      </Home>
+    <NavContainer>
+      <NextLink href="/">
+        <Logo>EBLOG</Logo>
+      </NextLink>
 
-      <NavLinkWrapper>
+      <NavLinkContainer>
         {isAuth ? (
-          <LoggedIn>
-            <ViewDash href={`/user/${user._id}`}>
+          <LoggedInContainer>
+            <NextLink href={`/user/${user._id}`}>
               <Username>{user.username}</Username>
-            </ViewDash>
-            <LogoutButton href="/account/login">
+            </NextLink>
+            <NextLink href="/account/login">
               <Logout onClick={logout}>Log Out</Logout>
-            </LogoutButton>
-          </LoggedIn>
+            </NextLink>
+          </LoggedInContainer>
         ) : (
-          <LoggedOut>
-            <LoginButton href="/account/login">
-              <LogIn>Log In</LogIn>
-            </LoginButton>
-            <SignUpButton href="/account/signup">
-              <SignUp>Sign Up</SignUp>
-            </SignUpButton>
-          </LoggedOut>
+          <LoggedOutContainer>
+            <NextLink href="/account/login">
+              <Login>Log In</Login>
+            </NextLink>
+            <NextLink href="/account/signup">
+              <Login>Sign Up</Login>
+            </NextLink>
+          </LoggedOutContainer>
         )}
-      </NavLinkWrapper>
-    </NavWrapper>
+      </NavLinkContainer>
+    </NavContainer>
   );
 };
 
 export default Nav;
 
-export const NavWrapper = styled.nav`
+export const NavContainer = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
   position: fixed;
   z-index: 999;
   width: 100%;
   background-color: rgb(0, 0, 0);
-  border-bottom: 0.05rem solid rgb(0, 0, 0);
-  box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
+  color: rgb(255, 255, 255);
+  font-size: 1.2rem;
+ 
 `;
 
-export const StyledE = styled.a`
+export const Logo = styled.a`
   color: rgb(52, 97, 235);
-  font-weight: 900;
-  font-size: 2.5rem;
   cursor: pointer;
   letter-spacing: 0.8rem;
 `;
 
-export const StyledBlog = styled.span`
-  color: rgb(255, 255, 255);
-  font-size: 1.5rem;
-`;
-
-export const NavLinkWrapper = styled.div`
+export const NavLinkContainer = styled.ul`
   display: flex;
-  gap: 1.5rem;
+  list-style: none;
 `;
 
-export const ViewDash = styled(Link)``;
-
-export const Username = styled.a`
-  font-size: 1.5rem;
-  font-weight: 900;
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.1, 1.1);
-  }
+export const LoggedInContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  align-items: center;
 `;
 
-export const LogoutButton = styled(Link)``;
-
-export const Logout = styled.a`
-  cursor: pointer;
-  font-size: 1.2rem;
-  font-family: "Prompt", sans-serif;
-  font-weight: 900;
-  &:hover {
-    transform: scale(1.1, 1.1);
-  }
-`;
-
-export const LoginButton = styled(Link)``;
-
-export const LogIn = styled.a`
-  cursor: pointer;
-  font-size: 1.2rem;
-  font-family: "Prompt", sans-serif;
-  font-weight: 900;
-  &:hover {
-    transform: scale(1.1, 1.1);
-  }
-`;
-
-export const SignUpButton = styled(Link)``;
-
-export const SignUp = styled.a`
-  cursor: pointer;
-  font-size: 1.2rem;
-  font-family: "Prompt", sans-serif;
-  font-weight: 900;
-  &:hover {
-    transform: scale(1.1, 1.1);
-  }
-`;
-
-export const Home = styled(Link)``;
-
-export const LoggedIn = styled.div`
+export const LoggedOutContainer = styled.div`
   display: flex;
   gap: 2rem;
   align-items: center;
-  color: rgb(255, 255, 255);
+  justify-content: center;
 `;
 
-export const LoggedOut = styled.div`
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-  color: rgb(255, 255, 255);
+export const Username = styled.li`
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1, 1.1);
+  }
+`;
+
+export const Logout = styled.li`
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1, 1.1);
+  }
+`;
+
+export const Login = styled.li`
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1, 1.1);
+  }
+`;
+
+export const Signup = styled.li`
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1, 1.1);
+  }
 `;

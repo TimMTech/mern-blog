@@ -3,7 +3,7 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import PostForm from "../Forms/PostForm/PostForm";
-import CommentForm from "../Forms/CommentForm/CommentForm";
+import Comment from "../Comment/Comment";
 import likeIcon from "/public/static/icons/like.png";
 import unlikeIcon from "/public/static/icons/unlike.png";
 import NextImage from "next/image";
@@ -24,9 +24,6 @@ const Post = ({ post }) => {
   const [liked, setLiked] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
-  const filteredComments = postComments.filter(
-    (comment) => comment.postId === post._id
-  );
 
   const handleEdit = () => {
     setEditMode(true);
@@ -158,32 +155,26 @@ const Post = ({ post }) => {
             />
           </PostImageWrapper>
           <PostContent>{content}</PostContent>
-          <LikesWrapper hidden={user ? false : true} onClick={handlePostLike}>
+          <LikesContainer hidden={user ? false : true} onClick={handlePostLike}>
             {liked ? (
-              <NextImage src={likeIcon} alt="" />
+              <ImageWrapper>
+                <NextImage src={likeIcon} alt="" />
+              </ImageWrapper>
             ) : (
-              <NextImage src={unlikeIcon} alt="" />
+              <ImageWrapper>
+                <NextImage src={unlikeIcon} alt="" />
+              </ImageWrapper>
             )}
             <PostLikeAmount>{postLikes.length}</PostLikeAmount>
-          </LikesWrapper>
+          </LikesContainer>
           <PostAuthor>
             by {username} / {dateFormat(date)}
           </PostAuthor>
-          <CommentForm setPostComments={setPostComments} />
-          <CommentContainer>
-            <CommentAmount>Comments ({filteredComments.length})</CommentAmount>
-            {filteredComments.map((comment) => {
-              const { _id, user, content, date } = comment;
-              return (
-                <CommentWrapper key={_id}>
-                  <CommentUser>
-                    {user} / {date}
-                  </CommentUser>
-                  <CommentContent>{content}</CommentContent>
-                </CommentWrapper>
-              );
-            })}
-          </CommentContainer>
+          <Comment
+            setPostComments={setPostComments}
+            postComments={postComments}
+            post={post}
+          />
         </PostContainer>
       )}
     </>
@@ -200,90 +191,61 @@ const PostContainer = styled.main`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding-top: 3rem;
 `;
 
-const OptionContainer = styled.div``;
+const OptionContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+`;
 
 const EditPost = styled.button`
-  font-size: 1.2em;
-  border: 0.05rem solid rgb(0, 0, 0);
-  padding: 0.5rem 2rem;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-  background-color: rgb(33, 37, 41);
-  margin: 0.5rem;
 `;
 
 const DeletePost = styled.button`
-  margin: 0.5rem;
-  font-size: 1.2em;
-  border: 0.05rem solid rgb(0, 0, 0);
-  padding: 0.5rem 2rem;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-  background-color: rgb(33, 37, 41);
+ 
 `;
 const PostTitle = styled.h1`
-  font-size: 3rem;
-  text-align: center;
+  
 `;
 
 const PostImageWrapper = styled.div`
-  width: 50%;
+  width: 100%;
 `;
 
 const PostImage = styled.img`
-  width: 100%;
+  
 `;
 
-const LikesWrapper = styled.button`
-  margin-top: 1.5rem;
+const LikesContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
   border: none;
   background-color: transparent;
-  width: 1rem;
-  &:hover {
-    transform: scale(1.1, 1.1);
-    cursor: pointer;
-  }
+  padding: 1rem;
 `;
+
+const ImageWrapper = styled.div`
+  cursor: pointer;
+  width: 0.8rem;
+`
 
 const PostLikeAmount = styled.span``;
 
-const PostAuthor = styled.p`
+const PostAuthor = styled.h4`
   align-self: flex-start;
-  padding-left: 1.5rem;
+  padding-left: 1rem;
+  font-weight: 300;
+  font-style: italic;
 `;
 
 const PostContent = styled.p`
-  padding-top: 0.5rem;
-  padding-left: 2rem;
-  min-height: 20rem;
-  width: 100%;
-  box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
-`;
-
-const CommentContainer = styled.section`
-  width: 100%;
-`;
-
-const CommentAmount = styled.h3`
-  padding-left: 1.2rem;
-  margin-bottom: 1.5rem;
-`;
-
-const CommentWrapper = styled.div`
-  border: 0.1rem solid black;
-  box-shadow: 0 0 1rem rgba(39, 37, 37, 1);
-  margin: 1rem 0;
-`;
-
-const CommentUser = styled.h4`
-  font-weight: 200;
   padding: 1rem;
-
+  width: 100%;
+  text-align: left;
 `;
 
-const CommentContent = styled.p`
-  padding: 1rem;
-`;

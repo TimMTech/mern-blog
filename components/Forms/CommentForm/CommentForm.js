@@ -1,4 +1,4 @@
-import styled from "styled-components";
+
 import * as Yup from "yup";
 import { Formik, ErrorMessage } from "formik";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import {
   StyledLabel,
   StyledField,
   StyledForm,
+  SubmitButton
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
 
@@ -37,9 +38,7 @@ const CommentForm = ({ setPostComments }) => {
     }));
   };
 
-  const handleCommentSubmit = (e) => {
-    e.preventDefault();
-
+  const handleCommentSubmit = () => {
     fetch(`/api/comment/${query._id}`, {
       method: "POST",
       headers: {
@@ -52,6 +51,7 @@ const CommentForm = ({ setPostComments }) => {
       })
       .then((data) => {
         setPostComments((prevState) => [...prevState, data]);
+        
       })
       .catch((error) => {
         console.log(error);
@@ -66,8 +66,8 @@ const CommentForm = ({ setPostComments }) => {
       onSubmit={handleCommentSubmit}
     >
       <FormContainer>
-        <StyledForm method="POST" commentForm>
-          <FieldContainer commentForm>
+        <StyledForm method="POST" commentform="true">
+          <FieldContainer commentform="true">
             <StyledLabel>Username</StyledLabel>
             <StyledField
               type="text"
@@ -77,7 +77,7 @@ const CommentForm = ({ setPostComments }) => {
             />
             <ErrorMessage name="user" render={renderError} />
           </FieldContainer>
-          <FieldContainer commentForm>
+          <FieldContainer commentform="true">
             <StyledLabel>Comment</StyledLabel>
             <StyledField
               component="textarea"
@@ -88,7 +88,7 @@ const CommentForm = ({ setPostComments }) => {
             />
             <ErrorMessage name="content" render={renderError} />
           </FieldContainer>
-          <CommentButton type="submit">Comment</CommentButton>
+          <SubmitButton type="submit">Comment</SubmitButton>
         </StyledForm>
       </FormContainer>
     </Formik>
@@ -97,10 +97,4 @@ const CommentForm = ({ setPostComments }) => {
 
 export default CommentForm;
 
-const CommentButton = styled.button`
-  border: 0.05rem solid rgb(0, 0, 0);
-  padding: 0.5rem 2rem;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-  background-color: rgb(33, 37, 41);
-`;
+

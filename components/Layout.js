@@ -1,9 +1,9 @@
 import Nav from "./Nav/Nav"
 
-const Layout = ({ children }) => {
+const Layout = ({ children, toggleTheme, isDark }) => {
   return (
     <>
-      <Nav />
+      <Nav toggleTheme={toggleTheme} isDark={isDark}/>
       <>{children}</>
     </>
   );

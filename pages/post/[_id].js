@@ -3,9 +3,9 @@ import Post from "../../components/Post/Post";
 
 const post = ({post}) => {
     return (
-        <PostPageWrapper>
+        <PostContainer>
             <Post post={post}/>
-        </PostPageWrapper>
+        </PostContainer>
     )
 }
 
@@ -37,6 +37,8 @@ export const getStaticProps = async(context) => {
     }
 }
 
-const PostPageWrapper = styled.main`
-    min-height: 100vh;
+const PostContainer = styled.main`
+    min-height: 100%;
+    padding-top: 1rem;
+  
 `

@@ -7,14 +7,13 @@ class MyDocument extends Document {
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          
           enhanceApp: (App) => (props) =>
             sheet.collectStyles(
               <>
                 <App {...props} />
               </>
             ),
-          
+
           enhanceComponent: (Component) => Component,
         });
       const initialProps = await Document.getInitialProps(ctx);
@@ -36,9 +35,13 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
           <link
-            href="https://fonts.googleapis.com/css2?family=Prompt:wght@100;500;700;800&display=swap"
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin="true"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap"
             rel="stylesheet"
           />
         </Head>

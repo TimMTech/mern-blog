@@ -1,4 +1,4 @@
-import styled from "styled-components";
+
 import * as Yup from "yup";
 import { Formik, ErrorMessage } from "formik";
 import { useState } from "react";
@@ -9,6 +9,11 @@ import {
   StyledLabel,
   StyledField,
   StyledForm,
+  FormTitle,
+  EditTitle,
+  SubmitButton,
+  ButtonContainer,
+  ExitButton
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
 
@@ -29,6 +34,10 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
     imageUrl: Yup.string(),
   });
 
+  const handleExitEdit = () => {
+    setEditMode(false)
+  }
+
   const handlePostChange = (e) => {
     const { name, value } = e.target;
     setPost((prevState) => ({
@@ -37,8 +46,8 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
     }));
   };
 
-  const handleSubmitPost = (e) => {
-    e.preventDefault();
+  const handleSubmitPost = () => {
+  
     if (editMode) {
       fetch(`/api/post/${postId}`, {
         method: "PUT",
@@ -98,7 +107,11 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
     >
       <FormContainer>
         <StyledForm method="POST">
-          {editMode ? <EditTitle>Edit</EditTitle> : null}
+          {editMode ? (
+            <EditTitle>Edit</EditTitle>
+          ) : (
+            <FormTitle>What is on your mind....</FormTitle>
+          )}
           <FieldContainer>
             <StyledLabel>Title</StyledLabel>
             <StyledField
@@ -130,9 +143,12 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
             />
             <ErrorMessage name="imageUrl" render={renderError} />
           </FieldContainer>
-          <CreatePost type="submit">
-            {editMode ? "Save" : "Create Post"}
-          </CreatePost>
+          <ButtonContainer>
+            <SubmitButton type="submit">
+              {editMode ? "Save" : "Create Post"}
+            </SubmitButton>
+            {editMode && <ExitButton onClick={handleExitEdit}>Exit</ExitButton>}
+          </ButtonContainer>
         </StyledForm>
       </FormContainer>
     </Formik>
@@ -141,17 +157,5 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
 
 export default PostForm;
 
-const EditTitle = styled.p`
-  font-weight: 700;
-  font-size: 2rem;
-  text-align: center;
-  padding-top: 3rem;
-`;
 
-const CreatePost = styled.button`
-  border: 0.05rem solid rgb(0, 0, 0);
-  padding: 0.5rem 2rem;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-  background-color: rgb(33, 37, 41);
-`;
+

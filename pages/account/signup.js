@@ -1,37 +1,42 @@
 import SignUpForm from "../../components/Forms/SignupForm/SignupForm";
 import styled from "styled-components";
-import Link from "next/link";
-import Image from "next/image";
+import NextLink from "next/link";
+import NextImage from "next/image";
 import formBG from "/public/static/images/formBG.png";
 
 const signup = () => {
   return (
-    <SignUpPageWrapper>
+    <SignUpPageContainer>
       <SignUpForm />
-      <SignUpRightWrapper>
-        <Image layout="fill" src={formBG} priority alt="" objectFit="cover" />
+      <RightContainer>
+        <NextImage
+          layout="fill"
+          src={formBG}
+          priority
+          alt=""
+          objectFit="cover"
+        />
         <SignUpTitle>Already a Member?</SignUpTitle>
         <LoginDescription>
           If you are part of our community, login below!
         </LoginDescription>
-        <NavLogin href="/account/login">
-          <Login>LOGIN</Login>
-        </NavLogin>
-      </SignUpRightWrapper>
-    </SignUpPageWrapper>
+        <NextLink href="/account/login">
+          <LoginButton>LOGIN</LoginButton>
+        </NextLink>
+      </RightContainer>
+    </SignUpPageContainer>
   );
 };
 
 export default signup;
 
-const SignUpPageWrapper = styled.main`
+const SignUpPageContainer = styled.main`
   width: 100%;
   display: flex;
   min-height: 100vh;
 `;
 
-const SignUpRightWrapper = styled.div`
-  width: 30%;
+const RightContainer = styled.div`
   border-bottom: 0.05rem solid rgb(0, 0, 0);
   color: rgb(255, 255, 255);
   display: flex;
@@ -39,37 +44,22 @@ const SignUpRightWrapper = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+  @media (max-width: 750px) {
+    display: none;
+  }
 `;
 
-const SignUpTitle = styled.h2`
-  text-align: center;
-  font-family: "Prompt", sans-serif;
-  font-weight: 900;
-  font-size: 4rem;
-  max-width: 40rem;
-  line-height: 0.8em;
+const SignUpTitle = styled.h1`
   padding-bottom: 1rem;
   position: relative;
 `;
 
-const LoginDescription = styled.h3`
+const LoginDescription = styled.p`
   text-align: center;
   padding: 1rem;
   position: relative;
 `;
 
-const NavLogin = styled(Link)``;
-
-const Login = styled.a`
-  font-family: "Prompt", sans-serif;
-  font-weight: 900;
-  font-size: 1.5em;
-  border: 0.05rem solid rgb(0, 0, 0);
-  padding-left: 2rem;
-  padding-right: 2rem;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-  background-color: rgb(33, 37, 41);
-  border-radius: 0.25rem;
+const LoginButton = styled.button`
   position: relative;
 `;

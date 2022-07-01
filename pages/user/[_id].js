@@ -6,9 +6,9 @@ const dashboard = ({ user, posts }) => {
   const { data } = user;
 
   return (
-    <DashBoardWrapper>
+    <DashboardContainer>
       <DashBoard user={data} posts={posts} />
-    </DashBoardWrapper>
+    </DashboardContainer>
   );
 };
 
@@ -42,9 +42,8 @@ export const getStaticProps = async (context) => {
   };
 };
 
-const DashBoardWrapper = styled.main`
+const DashboardContainer = styled.main`
   padding-top: 4rem;
-  display: flex;
   width: 100%;
 `;
 

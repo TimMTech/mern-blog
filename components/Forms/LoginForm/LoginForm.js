@@ -1,4 +1,4 @@
-import styled from "styled-components";
+
 import * as Yup from "yup";
 import { Formik, ErrorMessage } from "formik";
 import { useState } from "react";
@@ -9,7 +9,8 @@ import {
   StyledLabel,
   StyledField,
   StyledForm,
-  FormTitle
+  FormTitle,
+  SubmitButton
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
 
@@ -39,7 +40,7 @@ const LoginForm = () => {
   };
 
   const handleLoginSubmit = (e) => {
-    e.preventDefault();
+    
     fetch("/api/auth", {
       method: "POST",
       headers: {
@@ -95,7 +96,7 @@ const LoginForm = () => {
             />
             <ErrorMessage name="password" render={renderError} />
           </FieldContainer>
-          <LoginButton type="submit">Login</LoginButton>
+          <SubmitButton type="submit">Login</SubmitButton>
         </StyledForm>
       </FormContainer>
     </Formik>
@@ -104,10 +105,4 @@ const LoginForm = () => {
 
 export default LoginForm;
 
-const LoginButton = styled.button`
-  border: 0.05rem solid rgb(0, 0, 0);
-  padding: 0.5rem 2rem;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-  background-color: rgb(33, 37, 41);
-`;
+

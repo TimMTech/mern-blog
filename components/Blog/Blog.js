@@ -136,12 +136,13 @@ const Blog = ({ posts }) => {
 
   return (
     <>
-      <PostAmount>Posts ({posts.length})</PostAmount>
-      <Select value={option} onChange={(e) => handleBlogOptions(e)}>
-        <Option value="mostRecentDefault">Most Recent</Option>
-        <Option value="mostLiked">Most Liked</Option>
-        <Option value="mostViewed">Most Viewed</Option>
-      </Select>
+      <OptionContainer>
+        <Select value={option} onChange={(e) => handleBlogOptions(e)}>
+          <Option value="mostRecentDefault">Most Recent</Option>
+          <Option value="mostLiked">Most Liked</Option>
+          <Option value="mostViewed">Most Viewed</Option>
+        </Select>
+      </OptionContainer>
       {mostRecentDefaultVisible && <BlogContainer>{mostRecent}</BlogContainer>}
       {mostLikedVisible && <BlogContainer>{mostLikes}</BlogContainer>}
       {mostViewedVisible && <BlogContainer>{mostViewed}</BlogContainer>}
@@ -152,7 +153,7 @@ const Blog = ({ posts }) => {
 export default Blog;
 
 const BlogContainer = styled.section`
-  --masonry-gap: 0.5rem;
+  --masonry-gap: 0.7rem;
   --masonry-brick-width: 300px;
   column-gap: var(--masonry-gap);
   column-fill: initial;
@@ -166,7 +167,6 @@ const PostContainer = styled.div`
   break-inside: avoid;
   margin-bottom: var(--masonry-gap);
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  border: 0.1rem solid rgba(0, 0, 0, 0.1);
   border-radius: 0.2rem;
   cursor: pointer;
 `;
@@ -176,9 +176,7 @@ const PostHeaderContainer = styled.div`
   position: relative;
 `;
 
-const PostAmount = styled.h4`
-  margin: 1rem;
-`;
+
 
 const PostNumber = styled.span`
   position: absolute;
@@ -186,18 +184,17 @@ const PostNumber = styled.span`
   top: 50%;
   transform: translateY(-50%);
   margin-left: 0.5rem;
-  color: rgba(0, 0, 0, 0.2);
+  
 `;
 
-const PostTitle = styled.p``;
+const PostTitle = styled.h4``;
 
 const PostImageWrapper = styled.div`
   width: 100%;
 `;
 
 const PostImage = styled.img`
-  width: 100%;
-  display: block;
+  
 `;
 
 const PostFooterContainer = styled.div`
@@ -223,11 +220,21 @@ const PostAuthor = styled.p`
   font-weight: 100;
 `;
 
+const OptionContainer = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 1rem;
+  gap: 0.5rem;
+`
+
+
 const Select = styled.select`
   width: 8rem;
+  height: 1.5rem;
   text-align: center;
-  margin: 1rem;
-  border: 0.1rem solid rgb(0, 0, 0);
+
+  border-radius: 0.2rem;
 `;
 
 const Option = styled.option``;

@@ -5,10 +5,11 @@ import addIcon from "/public/static/icons/add.png";
 import NextImage from "next/image";
 import NextLink from "next/link";
 import moment from "moment";
+import SignupForm from "../Forms/SignupForm/SignupForm"
 
 const Dashboard = ({ user, posts }) => {
   const router = useRouter();
-
+  const [editMode, setEditMode] = useState(false)
   const [showPublished, setShowPublished] = useState(false);
   const [showUnpublished, setShowUnpublished] = useState(false);
 
@@ -20,6 +21,10 @@ const Dashboard = ({ user, posts }) => {
   const unPublishedPosts = filteredMyPosts.filter(
     (post) => post.published === false
   );
+
+  const handleEditMode = () => {
+    setEditMode(true);
+  }
 
   const handleShowPublished = () => {
     setShowPublished(true);
@@ -72,116 +77,132 @@ const Dashboard = ({ user, posts }) => {
   }, []);
 
   return (
-    <DashContainer>
-      <HeaderContainer>
-        <UserLogo variant={/[A-Ma-m]/}>{user.username.slice(0, 1)}</UserLogo>
+    <>
+      {editMode ? (
+        <EditContainer>
+          <SignupForm
+            editMode={editMode}
+            userId={user._id}
+            setEditMode={setEditMode}
+          />
+        </EditContainer>
+      ) : (
+        <DashContainer>
+          <HeaderContainer>
+            <UserLogo variant={/[A-Ma-m]/}>
+              {user.username.slice(0, 1)}
+            </UserLogo>
 
-        <Username>{user.username}</Username>
-        <UserEmail>{user.email}</UserEmail>
-        <UserPosts>{filteredMyPosts.length} Posts</UserPosts>
-        <OptionsContainer>
-          <NextLink href={"/"}>
-            <HomeButton>Home</HomeButton>
-          </NextLink>
-          <EditButton>Edit Profile</EditButton>
-        </OptionsContainer>
-        <ViewContainer>
-          <PublishedContainer>
-            <ViewPublished onClick={handleShowPublished}>
-              Published
-            </ViewPublished>
-            <Underline hidden={showPublished ? false : true}></Underline>
-          </PublishedContainer>
-          <UnpublishedContainer>
-            <ViewUnpublished onClick={handleShowUnpublished}>
-              Unpublished
-            </ViewUnpublished>
-            <Underline hidden={showUnpublished ? false : true}></Underline>
-          </UnpublishedContainer>
-        </ViewContainer>
-      </HeaderContainer>
-      <MenuContainer>
-        <Select></Select>
+            <Username>{user.username}</Username>
+            <UserEmail>{user.email}</UserEmail>
+            <UserPosts>{filteredMyPosts.length} Posts</UserPosts>
+            <OptionsContainer>
+              <NextLink href={"/"}>
+                <HomeButton>Home</HomeButton>
+              </NextLink>
+              <EditButton onClick={handleEditMode}>Edit Profile</EditButton>
+            </OptionsContainer>
+            <ViewContainer>
+              <PublishedContainer>
+                <ViewPublished onClick={handleShowPublished}>
+                  Published
+                </ViewPublished>
+                <Underline hidden={showPublished ? false : true}></Underline>
+              </PublishedContainer>
+              <UnpublishedContainer>
+                <ViewUnpublished onClick={handleShowUnpublished}>
+                  Unpublished
+                </ViewUnpublished>
+                <Underline hidden={showUnpublished ? false : true}></Underline>
+              </UnpublishedContainer>
+            </ViewContainer>
+          </HeaderContainer>
+          <MenuContainer>
+            <Select></Select>
 
-        <NextLink href={"/post"}>
-          <CreatePostIcon>
-            <NextImage src={addIcon} alt="" />
-          </CreatePostIcon>
-        </NextLink>
-      </MenuContainer>
-      {showPublished && (
-        <MasonryContainer>
-          {publishedPosts.map((posts) => {
-            const {
-              title,
-              date,
-              _id,
-              imageUrl,
-              user: { username },
-            } = posts;
-            return (
-              <NextLink href={`/post/${_id}`} key={_id}>
-                <PostsContainer>
-                  <PostTitle>{title}</PostTitle>
-                  <PostImageWrapper>
-                    <PostImage
-                      src={
-                        imageUrl ||
-                        "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
-                      }
-                    />
-                  </PostImageWrapper>
-                  <PostAuthor>
-                    By {username} / {dateFormat(date)}
-                  </PostAuthor>
-                  <UnpublishButton onClick={() => handleUnpublish(_id)}>
-                    Unpublish
-                  </UnpublishButton>
-                </PostsContainer>
-              </NextLink>
-            );
-          })}
-        </MasonryContainer>
+            <NextLink href={"/post"}>
+              <CreatePostIcon>
+                <NextImage src={addIcon} alt="" />
+              </CreatePostIcon>
+            </NextLink>
+          </MenuContainer>
+          {showPublished && (
+            <MasonryContainer>
+              {publishedPosts.map((posts) => {
+                const {
+                  title,
+                  date,
+                  _id,
+                  imageUrl,
+                  user: { username },
+                } = posts;
+                return (
+                  <NextLink href={`/post/${_id}`} key={_id}>
+                    <PostsContainer>
+                      <PostTitle>{title}</PostTitle>
+                      <PostImageWrapper>
+                        <PostImage
+                          src={
+                            imageUrl ||
+                            "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
+                          }
+                        />
+                      </PostImageWrapper>
+                      <PostAuthor>
+                        By {username} / {dateFormat(date)}
+                      </PostAuthor>
+                      <UnpublishButton onClick={() => handleUnpublish(_id)}>
+                        Unpublish
+                      </UnpublishButton>
+                    </PostsContainer>
+                  </NextLink>
+                );
+              })}
+            </MasonryContainer>
+          )}
+          {showUnpublished && (
+            <MasonryContainer>
+              {unPublishedPosts.map((posts) => {
+                const {
+                  title,
+                  date,
+                  _id,
+                  imageUrl,
+                  user: { username },
+                } = posts;
+                return (
+                  <NextLink href={`/post/${_id}`} key={_id}>
+                    <PostsContainer>
+                      <PostTitle>{title}</PostTitle>
+                      <PostImageWrapper>
+                        <PostImage
+                          src={
+                            imageUrl ||
+                            "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
+                          }
+                        />
+                      </PostImageWrapper>
+                      <PostAuthor>
+                        By {username} / {dateFormat(date)}
+                      </PostAuthor>
+                      <PublishButton onClick={() => handlePublish(_id)}>
+                        Publish
+                      </PublishButton>
+                    </PostsContainer>
+                  </NextLink>
+                );
+              })}
+            </MasonryContainer>
+          )}
+        </DashContainer>
       )}
-      {showUnpublished && (
-        <MasonryContainer>
-          {unPublishedPosts.map((posts) => {
-            const {
-              title,
-              date,
-              _id,
-              imageUrl,
-              user: { username },
-            } = posts;
-            return (
-              <NextLink href={`/post/${_id}`} key={_id}>
-                <PostsContainer>
-                  <PostTitle>{title}</PostTitle>
-                  <PostImageWrapper>
-                    <PostImage
-                      src={
-                        imageUrl ||
-                        "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
-                      }
-                    />
-                  </PostImageWrapper>
-                  <PostAuthor>
-                    By {username} / {dateFormat(date)}
-                  </PostAuthor>
-                  <PublishButton onClick={() => handlePublish(_id)}>
-                    Publish
-                  </PublishButton>
-                </PostsContainer>
-              </NextLink>
-            );
-          })}
-        </MasonryContainer>
-      )}
-    </DashContainer>
+    </>
   );
 };
 
 export default Dashboard;
+
+const EditContainer = styled.main``;
 
 const DashContainer = styled.div`
   width: 100%;
@@ -205,19 +226,17 @@ const UserLogo = styled.span`
     props.variant.test(props.children) ? "blue" : "red"};
 `;
 
-const Username = styled.h1`
-  font-size: 4rem;
-`;
+const Username = styled.h1``;
 
-const UserEmail = styled.h3`
+const UserEmail = styled.h2`
   color: rgba(0, 0, 0, 0.5);
 `;
 
-const UserPosts = styled.h3``;
+const UserPosts = styled.h2``;
 
 const OptionsContainer = styled.div`
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
   justify-content: center;
   align-items: center;
   margin-top: 1rem;
@@ -227,23 +246,17 @@ const HomeButton = styled.button`
   border: none;
   border-radius: 2rem;
   padding: 0.8rem 1.5rem;
-  font-weight: 800;
-  font-size: 1rem;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.5);
   }
 `;
 
 const EditButton = styled.button`
   border: none;
   border-radius: 2rem;
-  font-weight: 800;
   padding: 0.8rem 1.5rem;
-  font-size: 1rem;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.5);
   }
 `;
 
@@ -259,19 +272,17 @@ const ViewContainer = styled.div`
 const PublishedContainer = styled.div``;
 const ViewPublished = styled.button`
   border: none;
+  color: rgb(0, 0, 0);
   background: transparent;
-  font-weight: 900;
-  font-size: 1rem;
-  cursor: pointer;
+  padding: 0;
 `;
 
 const UnpublishedContainer = styled.div``;
 const ViewUnpublished = styled.button`
   border: none;
+  color: rgb(0, 0, 0);
   background: transparent;
-  font-weight: 900;
-  font-size: 1rem;
-  cursor: pointer;
+  padding: 0;
 `;
 
 const Underline = styled.div`
@@ -313,35 +324,27 @@ const PostsContainer = styled.div`
   break-inside: avoid;
   margin-bottom: var(--masonry-gap);
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  border: 0.1rem solid rgba(0,0,0,0.1);
+  border: 0.1rem solid rgba(0, 0, 0, 0.1);
   border-radius: 0.2rem;
   cursor: pointer;
 `;
 
-const PostTitle = styled.p``;
+const PostTitle = styled.h4``;
 
 const PostImageWrapper = styled.div`
   width: 100%;
 `;
 
-const PostImage = styled.img`
-  width: 100%;
-  display: block;
-`;
+const PostImage = styled.img``;
 
-const PostAuthor = styled.p`
-  font-size: 1rem;
+const PostAuthor = styled.h4`
   font-weight: 100;
   padding: 0.5rem;
 `;
 
 const PublishButton = styled.button`
-  border: none;
   margin-bottom: 0.5rem;
-  padding: 0.5rem 1.5rem;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-  background-color: rgb(33, 37, 41);
+
   border-radius: 0.25rem;
   transition: 500ms;
   &:hover {
@@ -350,12 +353,8 @@ const PublishButton = styled.button`
 `;
 
 const UnpublishButton = styled.button`
-  border: none;
   margin-bottom: 0.5rem;
-  padding: 0.5rem 1.5rem;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-  background-color: rgb(33, 37, 41);
+
   border-radius: 0.25rem;
   transition: 500ms;
   &:hover {

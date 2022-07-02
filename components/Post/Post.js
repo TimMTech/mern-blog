@@ -24,6 +24,7 @@ const Post = ({ post }) => {
   const [liked, setLiked] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
+  
 
   const handleEdit = () => {
     setEditMode(true);
@@ -220,9 +221,6 @@ const PostImage = styled.img`
 `;
 
 const LikesContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 0.2rem;
   border: none;
   background-color: transparent;

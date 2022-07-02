@@ -41,29 +41,29 @@ const Blog = ({ posts }) => {
     .map((post, index) => (
       <NextLink href={`/post/${post._id}`} key={post._id}>
         <PostContainer>
-          <PostHeaderContainer>
-            <PostNumber>{index + 1}</PostNumber>
-            <PostTitle>{post.title}</PostTitle>
-          </PostHeaderContainer>
           <PostImageWrapper>
+            <PostHeaderContainer>
+              <PostNumber>{index + 1}</PostNumber>
+              <PostTitle>{post.title}</PostTitle>
+            </PostHeaderContainer>
             <PostImage
               src={
                 post.imageUrl ||
                 "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
               }
             />
+            <PostFooterContainer>
+              <PostAuthor>
+                By {post.user.username} / {dateFormat(post.date)}
+              </PostAuthor>
+              <PostIconContainer>
+                <PostIconWrapper>
+                  <NextImage src={viewIcon} alt="" />
+                </PostIconWrapper>
+                <PostViews>{post.viewCounter}</PostViews>
+              </PostIconContainer>
+            </PostFooterContainer>
           </PostImageWrapper>
-          <PostFooterContainer>
-            <PostAuthor>
-              By {post.user.username} / {dateFormat(post.date)}
-            </PostAuthor>
-            <PostIconContainer>
-              <PostIconWrapper>
-                <NextImage src={viewIcon} alt="" />
-              </PostIconWrapper>
-              <PostViews>{post.viewCounter}</PostViews>
-            </PostIconContainer>
-          </PostFooterContainer>
         </PostContainer>
       </NextLink>
     ));
@@ -74,29 +74,29 @@ const Blog = ({ posts }) => {
     .map((post, index) => (
       <NextLink href={`/post/${post._id}`} key={post._id}>
         <PostContainer>
-          <PostHeaderContainer>
-            <PostNumber>{index + 1}</PostNumber>
-            <PostTitle>{post.title}</PostTitle>
-          </PostHeaderContainer>
           <PostImageWrapper>
+            <PostHeaderContainer>
+              <PostNumber>{index + 1}</PostNumber>
+              <PostTitle>{post.title}</PostTitle>
+            </PostHeaderContainer>
             <PostImage
               src={
                 post.imageUrl ||
                 "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
               }
             />
+            <PostFooterContainer>
+              <PostAuthor>
+                By {post.user.username} / {dateFormat(post.date)}
+              </PostAuthor>
+              <PostIconContainer>
+                <PostIconWrapper>
+                  <NextImage src={viewIcon} alt="" />
+                </PostIconWrapper>
+                <PostViews>{post.viewCounter}</PostViews>
+              </PostIconContainer>
+            </PostFooterContainer>
           </PostImageWrapper>
-          <PostFooterContainer>
-            <PostAuthor>
-              By {post.user.username} / {dateFormat(post.date)}
-            </PostAuthor>
-            <PostIconContainer>
-              <PostIconWrapper>
-                <NextImage src={viewIcon} alt="" />
-              </PostIconWrapper>
-              <PostViews>{post.viewCounter}</PostViews>
-            </PostIconContainer>
-          </PostFooterContainer>
         </PostContainer>
       </NextLink>
     ));
@@ -107,29 +107,29 @@ const Blog = ({ posts }) => {
     .map((post, index) => (
       <NextLink href={`/post/${post._id}`} key={post._id}>
         <PostContainer key={post._id}>
-          <PostHeaderContainer>
-            <PostNumber>{index + 1}</PostNumber>
-            <PostTitle>{post.title}</PostTitle>
-          </PostHeaderContainer>
           <PostImageWrapper>
+            <PostHeaderContainer>
+              <PostNumber>{index + 1}</PostNumber>
+              <PostTitle>{post.title}</PostTitle>
+            </PostHeaderContainer>
             <PostImage
               src={
                 post.imageUrl ||
                 "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
               }
             />
+            <PostFooterContainer>
+              <PostAuthor>
+                By {post.user.username} / {dateFormat(post.date)}
+              </PostAuthor>
+              <PostIconContainer>
+                <PostIconWrapper>
+                  <NextImage src={viewIcon} alt="" />
+                </PostIconWrapper>
+                <PostViews>{post.viewCounter}</PostViews>
+              </PostIconContainer>
+            </PostFooterContainer>
           </PostImageWrapper>
-          <PostFooterContainer>
-            <PostAuthor>
-              By {post.user.username} / {dateFormat(post.date)}
-            </PostAuthor>
-            <PostIconContainer>
-              <PostIconWrapper>
-                <NextImage src={viewIcon} alt="" />
-              </PostIconWrapper>
-              <PostViews>{post.viewCounter}</PostViews>
-            </PostIconContainer>
-          </PostFooterContainer>
         </PostContainer>
       </NextLink>
     ));
@@ -161,21 +161,6 @@ const BlogContainer = styled.section`
   padding: 1rem;
 `;
 
-const PostContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  break-inside: avoid;
-  margin-bottom: var(--masonry-gap);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  border-radius: 0.2rem;
-  cursor: pointer;
-`;
-
-const PostHeaderContainer = styled.div`
-  text-align: center;
-  position: relative;
-`;
-
 
 
 const PostNumber = styled.span`
@@ -184,6 +169,7 @@ const PostNumber = styled.span`
   top: 50%;
   transform: translateY(-50%);
   margin-left: 0.5rem;
+  color: ${(props) => props.theme.postSpan};
   
 `;
 
@@ -191,40 +177,81 @@ const PostTitle = styled.h4``;
 
 const PostImageWrapper = styled.div`
   width: 100%;
+  position: relative
 `;
 
 const PostImage = styled.img`
   
 `;
 
+const PostHeaderContainer = styled.div`
+  text-align: center;
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: ${(props) => props.theme.postDiv};
+  color: ${(props) => props.theme.postText};
+  padding: 0.5rem;
+  
+`;
+
 const PostFooterContainer = styled.div`
   display: flex;
   flex-direction: column;
+  position: absolute;
+  opacity: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: ${(props) => props.theme.postDiv};
+  color: ${(props) => props.theme.postText};
+  padding: 0.5rem;
+  
+`;
+
+const PostContainer = styled.div`
+  break-inside: avoid;
+  margin-bottom: var(--masonry-gap);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border-radius: 0.2rem;
+  cursor: pointer;
+  &:hover {
+    ${PostHeaderContainer} {
+      opacity: 1;
+    }
+    ${PostFooterContainer} {
+      opacity: 1;
+    }
+  }
+  
 `;
 
 const PostIconContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 0.1rem;
-  color: rgba(0, 0, 0, 0.3);
+  
 `;
 
 const PostIconWrapper = styled.div`
   width: 1.2rem;
 `;
 
-const PostViews = styled.span``;
+const PostViews = styled.span`
+  color: ${(props) => props.theme.postSpan};
+`;
 
 const PostAuthor = styled.p`
   text-align: center;
-  font-weight: 100;
 `;
 
 const OptionContainer = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-  padding: 1rem;
+  padding: 1rem 0 0 1rem;
   gap: 0.5rem;
 `
 

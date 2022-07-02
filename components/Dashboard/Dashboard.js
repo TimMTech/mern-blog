@@ -229,7 +229,7 @@ const UserLogo = styled.span`
 const Username = styled.h1``;
 
 const UserEmail = styled.h2`
-  color: rgba(0, 0, 0, 0.5);
+  opacity: 0.5;
 `;
 
 const UserPosts = styled.h2``;
@@ -272,7 +272,7 @@ const ViewContainer = styled.div`
 const PublishedContainer = styled.div``;
 const ViewPublished = styled.button`
   border: none;
-  color: rgb(0, 0, 0);
+  color: ${(props) => props.theme.text};
   background: transparent;
   padding: 0;
 `;
@@ -280,14 +280,14 @@ const ViewPublished = styled.button`
 const UnpublishedContainer = styled.div``;
 const ViewUnpublished = styled.button`
   border: none;
-  color: rgb(0, 0, 0);
+  color: ${(props) => props.theme.text};
   background: transparent;
   padding: 0;
 `;
 
 const Underline = styled.div`
-  border: 0.1rem solid rgb(0, 0, 0);
-  background-color: rgb(0, 0, 0);
+  border: ${(props) => props.theme.border};
+  background-color: ${(props) => props.theme.borderBackground};
 `;
 
 const MenuContainer = styled.div`

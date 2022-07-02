@@ -19,11 +19,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   span {
-    color: ${(props) => props.theme.tags}
-  }
-
-  div {
-    box-shadow: ${(props) => props.theme.boxShadow}
+    color: ${(props) => props.theme.span};
   }
 
 
@@ -39,7 +35,7 @@ const GlobalStyles = createGlobalStyle`
   } 
 
   h4{
-    font-size: 1rem;
+    font-size: 1.5rem;
     
   }
   img {
@@ -60,12 +56,26 @@ const themes = {
   dark: {
     body: "rgb(21,23,30)",
     text: "white",
-    tags: "rgba(255,255,255,0.7)",
+    span: "rgba(255,255,255,0.7)",
+    postDiv: "rgba(255,255,255, 0.9)",
+    postText: "rgb(0,0,0)",
+    postSpan: "rgba(0,0,0,0.7)",
+    border: "0.1rem solid rgb(255,255,255)",
+    borderBackground: "rgb(255,255,255)"
+
+
+    
   },
   light: {
     body: "white",
     text: "black",
-    tags: "rgba(0, 0, 0, 0.2)",
+    span: "rgba(255, 255, 255, 0.7);",
+    postDiv: "rgba(0,0,0, 0.9)",
+    postText: "rgb(255,255,255)",
+    postSpan: "rgba(255,255,255,0.7)",
+    border: "0.1rem solid rgb(0,0,0)",
+    borderBackground: "rgb(0,0,0)"
+    
   },
 };
 

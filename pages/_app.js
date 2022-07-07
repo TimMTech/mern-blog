@@ -18,10 +18,6 @@ const GlobalStyles = createGlobalStyle`
     color: ${(props) => props.theme.text};
   }
 
-  span {
-    color: ${(props) => props.theme.span};
-  }
-
 
   h1 {
     font-size: 3rem;
@@ -57,25 +53,17 @@ const themes = {
     body: "rgb(21,23,30)",
     text: "white",
     span: "rgba(255,255,255,0.7)",
-    postDiv: "rgba(255,255,255, 0.9)",
-    postText: "rgb(0,0,0)",
-    postSpan: "rgba(0,0,0,0.7)",
+
     border: "0.1rem solid rgb(255,255,255)",
-    borderBackground: "rgb(255,255,255)"
-
-
-    
+    borderBackground: "rgb(255,255,255)",
   },
   light: {
     body: "white",
     text: "black",
     span: "rgba(255, 255, 255, 0.7);",
-    postDiv: "rgba(0,0,0, 0.9)",
-    postText: "rgb(255,255,255)",
-    postSpan: "rgba(255,255,255,0.7)",
+
     border: "0.1rem solid rgb(0,0,0)",
-    borderBackground: "rgb(0,0,0)"
-    
+    borderBackground: "rgb(0,0,0)",
   },
 };
 
@@ -97,7 +85,7 @@ const MyApp = ({ Component, pageProps }) => {
       <NextNProgress color="red" height={3} showOnShallow={true} />
       <GlobalStyles theme={theme} />
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <Component {...pageProps}  />
       </ThemeProvider>
     </Layout>
   );

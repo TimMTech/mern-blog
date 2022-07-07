@@ -12,11 +12,13 @@ const dashboard = async (req, res) => {
   } = req;
 
   if (method === "GET") {
+    
     const user = await UserTemplate.findById(_id);
 
     if (!user) {
       return res.status(401).json({ error: "User not found" });
     }
+    console.log(req.cookies)
     return res.status(200).json({ success: true, data: user });
   }
   if (method === "PUT") {

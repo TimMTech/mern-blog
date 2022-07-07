@@ -1,9 +1,10 @@
 import styled from "styled-components";
-
 import DashBoard from "../../components/Dashboard/Dashboard";
+
 
 const dashboard = ({ user, posts }) => {
   const { data } = user;
+  
 
   return (
     <DashboardContainer>
@@ -46,5 +47,3 @@ const DashboardContainer = styled.main`
   padding-top: 4rem;
   width: 100%;
 `;
-
-

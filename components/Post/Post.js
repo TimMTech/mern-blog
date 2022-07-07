@@ -213,7 +213,7 @@ const PostTitle = styled.h1`
 `;
 
 const PostImageWrapper = styled.div`
-  width: 100%;
+  width: 75%;
 `;
 
 const PostImage = styled.img`

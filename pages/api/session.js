@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const session = async (req, res) => {
   const { method } = req;
-
+  
   if (method === "GET") {
     if (!("token" in req.cookies)) {
       return res.status(401).json(null);

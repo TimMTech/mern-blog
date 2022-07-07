@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Hamburger from "./Hamburger";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
@@ -23,7 +23,7 @@ const Nav = ({ toggleTheme, isDark }) => {
   const [user, setUser] = useState(null);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState(false);
-
+  
   const toggleHamburger = () => {
     setHamburgerOpen(!hamburgerOpen);
   };
@@ -35,8 +35,14 @@ const Nav = ({ toggleTheme, isDark }) => {
       .then((response) => {
         return response.json();
       })
+
       .then((data) => {
-        setUser(data);
+        
+        if (data) {
+          setUser(data);
+          setIsAuth(true);
+        }
+        
       })
       .catch((error) => {
         console.log(error);
@@ -44,13 +50,8 @@ const Nav = ({ toggleTheme, isDark }) => {
   };
 
   useEffect(() => {
-    setIsAuth(false);
-    if (user === null) {
-      getUser();
-    } else {
-      setIsAuth(true);
-    }
-  }, [user]);
+    getUser();
+  }, []);
 
   useEffect(() => {
     const changeNav = () => {
@@ -178,7 +179,7 @@ const SwitchLabel = styled.label`
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  color: ${(props) => props.backgroundColor ? "black" : "white"};
+  color: ${(props) => (props.backgroundColor ? "black" : "white")};
   color: ${(props) => props.path !== "/" && "white"};
 `;
 
@@ -208,7 +209,7 @@ const SwitchInput = styled.input`
   opacity: 0;
   position: absolute;
   display: none;
-  
+
   &:checked + ${Switch} {
     background-color: #b3b3b3;
     &:before {

@@ -70,6 +70,7 @@ const CommentForm = ({ setPostComments }) => {
           <FieldContainer commentform="true">
             <StyledLabel>Username</StyledLabel>
             <StyledField
+            
               type="text"
               name="user"
               value={commentValue.user}
@@ -78,8 +79,9 @@ const CommentForm = ({ setPostComments }) => {
             <ErrorMessage name="user" render={renderError} />
           </FieldContainer>
           <FieldContainer commentform="true">
-            <StyledLabel>Comment</StyledLabel>
+            <StyledLabel>Content</StyledLabel>
             <StyledField
+              
               component="textarea"
               type="text"
               name="content"

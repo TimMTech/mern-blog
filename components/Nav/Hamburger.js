@@ -41,8 +41,9 @@ const Burger = styled.div`
   height: 0.25rem;
   border-radius: 10px;
   background-color: ${(props) => (props.backgroundColor ? "black" : "white")};
-  background-color: ${(props) => props.showBurger && "white"};
+  background-color: ${(props) => props.showBurger && "black"};
   background-color: ${(props) => props.path !== "/" && "white"};
+  background-color: ${(props) => props.pathname !== "/" && props.showBurger && "black"};
   transform-origin: 1px;
   transition: all 0.3s linear;
 `;

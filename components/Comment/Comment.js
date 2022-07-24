@@ -15,17 +15,18 @@ const Comment = ({setPostComments, postComments, post}) => {
       <CommentContainer>
         <CommentForm setPostComments={setPostComments} />
         <CommentAmount>Comments ({filteredComments.length})</CommentAmount>
-        {filteredComments.map((comment) => {
-          const { _id, user, content, date } = comment;
-          return (
-            <CommentWrapper key={_id}>
-              <CommentUser>
-                {user} / {dateFormat(date)}
-              </CommentUser>
-              <CommentContent>{content}</CommentContent>
-            </CommentWrapper>
-          );
-        })}
+          {filteredComments.map((comment) => {
+            const { _id, user, content, date } = comment;
+            return (
+              <CommentWrapper key={_id}>
+                <CommentUser>
+                  {user} / {dateFormat(date)}
+                </CommentUser>
+                <CommentContent>{content}</CommentContent>
+              </CommentWrapper>
+            );
+          })}
+       
       </CommentContainer>
     );
 }
@@ -34,12 +35,20 @@ export default Comment
 
 const CommentContainer = styled.section`
   width: 100%;
+  
 `;
 
 const CommentAmount = styled.h4`
-  padding-left: 1.2rem;
+  padding-left: 1rem;
   margin-bottom: 1.5rem;
 `;
+
+const Comments = styled.div`
+  overflow-y: scroll;
+  width: 100%;
+  height: 10rem;
+  
+`
 
 const CommentWrapper = styled.div`
   border: 0.1rem solid black;

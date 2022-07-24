@@ -1,29 +1,34 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Hamburger from "./Hamburger";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import {
+  AiFillFacebook,
+  AiFillGithub,
+  AiFillInstagram,
+  AiFillLinkedin,
+} from "react-icons/ai";
 const cookies = require("js-cookie");
 const Framer = require("framer-motion");
 
-const backdrop = {
-  visible: { opacity: 1 },
-  hidden: { opacity: 0 },
-};
-
-const menu = {
-  hidden: { x: "100%" },
-  visible: { x: "0" },
-};
-
 const Nav = ({ toggleTheme, isDark }) => {
+  const backdrop = {
+    visible: { opacity: 1 },
+    hidden: { opacity: 0 },
+  };
+
+  const menu = {
+    hidden: { x: "100%" },
+    visible: { x: "0" },
+  };
   const router = useRouter();
 
   const [isAuth, setIsAuth] = useState(false);
   const [user, setUser] = useState(null);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState(false);
-  
+
   const toggleHamburger = () => {
     setHamburgerOpen(!hamburgerOpen);
   };
@@ -35,17 +40,16 @@ const Nav = ({ toggleTheme, isDark }) => {
       .then((response) => {
         return response.json();
       })
-
       .then((data) => {
-        
         if (data) {
           setUser(data);
           setIsAuth(true);
         }
-        
       })
       .catch((error) => {
         console.log(error);
+        cookies.remove("token");
+        router.push("/404");
       });
   };
 
@@ -87,6 +91,30 @@ const Nav = ({ toggleTheme, isDark }) => {
         <Switch onClick={toggleTheme} />
         {isDark ? "Dark" : "Light"}
       </SwitchLabel>
+      <NavLinkContainer
+        backgroundColor={backgroundColor}
+        path={router.pathname}
+      >
+        {isAuth ? (
+          <LoggedInContainer>
+            <NextLink href={`/user/${user._id}`}>
+              <Username>{user.username}</Username>
+            </NextLink>
+            <NextLink href="/account/login">
+              <Logout onClick={logout}>LOGOUT</Logout>
+            </NextLink>
+          </LoggedInContainer>
+        ) : (
+          <LoggedOutContainer showBurger={hamburgerOpen}>
+            <NextLink href="/account/login">
+              <Login>LOGIN</Login>
+            </NextLink>
+            <NextLink href="/account/signup">
+              <Login>SIGN-UP</Login>
+            </NextLink>
+          </LoggedOutContainer>
+        )}
+      </NavLinkContainer>
       <Framer.AnimatePresence>
         {hamburgerOpen && (
           <>
@@ -97,36 +125,56 @@ const Nav = ({ toggleTheme, isDark }) => {
               exit="hidden"
               transition={{ ease: "easeOut", duration: 0.5 }}
             />
-            <NavLinkContainer
+            <Modal
               variants={menu}
               initial="hidden"
               animate="visible"
               exit="hidden"
               transition={{ ease: "easeOut", duration: 0.5 }}
             >
+              <NextLink href="/">
+                <Logo showBurger={hamburgerOpen}>EBLOG</Logo>
+              </NextLink>
+              <Paragraph>Let us discover new tech together!</Paragraph>
               {isAuth ? (
                 <LoggedInContainer>
                   <NextLink href={`/user/${user._id}`}>
                     <Username>{user.username}</Username>
                   </NextLink>
                   <NextLink href="/account/login">
-                    <Logout onClick={logout}>Log Out</Logout>
+                    <Logout onClick={logout}>LOGOUT</Logout>
                   </NextLink>
                 </LoggedInContainer>
               ) : (
-                <LoggedOutContainer>
+                <LoggedOutContainer showBurger={hamburgerOpen}>
                   <NextLink href="/account/login">
-                    <Login>Log In</Login>
+                    <Login>LOGIN</Login>
                   </NextLink>
                   <NextLink href="/account/signup">
-                    <Login>Sign Up</Login>
+                    <Login>SIGN-UP</Login>
                   </NextLink>
                 </LoggedOutContainer>
               )}
-            </NavLinkContainer>
+              <Paragraph>Connect with me!</Paragraph>
+              <IconContainer>
+                <IconWrapper>
+                  <AiFillFacebook size={35} />
+                </IconWrapper>
+                <IconWrapper>
+                  <AiFillGithub size={35} />
+                </IconWrapper>
+                <IconWrapper>
+                  <AiFillInstagram size={35} />
+                </IconWrapper>
+                <IconWrapper>
+                  <AiFillLinkedin size={35} />
+                </IconWrapper>
+              </IconContainer>
+            </Modal>
           </>
         )}
       </Framer.AnimatePresence>
+
       <HamburgerMenu onClick={toggleHamburger}>
         <Hamburger
           backgroundColor={backgroundColor}
@@ -140,6 +188,9 @@ const Nav = ({ toggleTheme, isDark }) => {
 export default Nav;
 
 const Overlay = styled(Framer.motion.div)`
+  @media (min-width: 750px) {
+    display: none;
+  }
   top: 0;
   left: 0;
   position: fixed;
@@ -167,11 +218,24 @@ export const NavContainer = styled.nav`
   top: 0;
 `;
 
+export const NavLinkContainer = styled.div`
+  @media (max-width: 750px) {
+    display: none;
+  }
+
+  color: ${(props) => (props.backgroundColor ? "black" : "white")};
+  color: ${(props) => props.path !== "/" && "white"};
+`;
+
 export const Logo = styled.a`
   cursor: pointer;
   letter-spacing: 0.4rem;
+
   color: ${(props) => (props.backgroundColor ? "black" : "white")};
   color: ${(props) => props.path !== "/" && "white"};
+  color: ${(props) => props.showBurger && "black"};
+  font-size: ${(props) => props.showBurger && "2.5rem"};
+  font-weight: ${(props) => props.showBurger && "700"};
 `;
 
 const SwitchLabel = styled.label`
@@ -219,44 +283,61 @@ const SwitchInput = styled.input`
   }
 `;
 
-export const NavLinkContainer = styled(Framer.motion.ul)`
+export const Modal = styled(Framer.motion.div)`
+  @media (min-width: 750px) {
+    display: none;
+  }
+  padding: 4rem 2rem 2rem;
   z-index: 10;
-  list-style: none;
-  color: ${(props) => (props.backgroundColor ? "black" : "white")};
-  border: 0.05rem solid rgb(255, 255, 255);
-  background-color: rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
+  background-color: rgb(255, 255, 255);
   position: fixed;
   top: 0;
   right: 0;
   width: 75%;
   height: 100%;
-  & > div {
-    height: 100%;
+  & > ul {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: ${(props) => props.showBurger && "white"};
+    padding-top: 2rem;
+    font-size: 2rem;
+    font-weight: 700;
+    
   }
 `;
 
+export const Paragraph = styled.p`
+  padding: 4rem;
+  text-transform: uppercase;
+  width: 100%;
+  color: rgba(0, 0, 0, 0.6);
+  border-bottom: 0.1rem solid rgba(0, 0, 0, 0.5);
+`;
+
 export const HamburgerMenu = styled.div`
-  display: flex;
+  display: none;
   cursor: pointer;
+  @media (max-width: 750px) {
+    display: flex;
+  }
 `;
 
-export const LoggedInContainer = styled.div`
+export const LoggedInContainer = styled.ul`
+  list-style: none;
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  align-items: center;
+  gap: 1rem;
+  align-items: flex-start;
+  
 `;
 
-export const LoggedOutContainer = styled.div`
+export const LoggedOutContainer = styled.ul`
+  list-style: none;
   display: flex;
-  gap: 2rem;
-  align-items: center;
+  gap: 1rem;
+  align-items: flex-start;
   justify-content: center;
+  
 `;
 
 export const Username = styled.li`
@@ -287,5 +368,24 @@ export const Signup = styled.li`
 
   &:hover {
     transform: scale(1.1, 1.1);
+  }
+`;
+
+export const IconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 2rem;
+`;
+
+export const IconWrapper = styled.div`
+  box-shadow: 0 0.4rem 0.5rem 0.1rem rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  padding: 0.75rem;
+  transition: 200ms;
+  &:hover {
+    transform: scale(1.1,1.1);
+    cursor: pointer;
   }
 `;

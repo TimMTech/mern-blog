@@ -103,7 +103,9 @@ const PostTitle = styled.h1`
   font-size: 2rem;
 `;
 
-const PostImage = styled.img``;
+const PostImage = styled.img`
+  
+`;
 
 const PostHeaderContainer = styled.div``;
 

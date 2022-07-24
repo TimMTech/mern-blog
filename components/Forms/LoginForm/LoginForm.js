@@ -13,6 +13,7 @@ import {
   SubmitButton
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
+import LoginError from "../../Validations/LoginError";
 
 const LoginForm = () => {
   const contentType = "application/json";
@@ -20,6 +21,8 @@ const LoginForm = () => {
     username: "",
     password: "",
   });
+
+  const [loginFailed, setLoginFailed] = useState(false)
 
     const validationSchema = Yup.object({
       username: Yup.string()
@@ -39,7 +42,7 @@ const LoginForm = () => {
     }));
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = () => {
     
     fetch("/api/auth", {
       method: "POST",
@@ -54,11 +57,14 @@ const LoginForm = () => {
       .then((data) => {
         if (data && data.error) {
           console.log("FAILED LOGIN");
+          setLoginFailed(true)
         }
         if (data && data.token) {
           console.log("Success");
+          setLoginFailed(false)
           Cookies.set("token", data.token, { expires: 1 });
           window.location.href = `/user/${data._id}`;
+
         }
       })
       .catch((error) => {
@@ -74,7 +80,9 @@ const LoginForm = () => {
       onSubmit={handleLoginSubmit}
     >
       <FormContainer>
+        
         <StyledForm method="POST">
+          {loginFailed && <LoginError/>}
           <FormTitle>Login to Your Account</FormTitle>
           <FieldContainer>
             <StyledLabel>Username</StyledLabel>

@@ -214,6 +214,7 @@ const PostTitle = styled.h1`
 
 const PostImageWrapper = styled.div`
   width: 75%;
+  
 `;
 
 const PostImage = styled.img`
@@ -225,6 +226,8 @@ const LikesContainer = styled.div`
   border: none;
   background-color: transparent;
   padding: 1rem;
+  width: 100%;
+  display: ${(props) => props.hidden ? "none" : "flex"};
 `;
 
 const ImageWrapper = styled.div`
@@ -232,7 +235,9 @@ const ImageWrapper = styled.div`
   width: 0.8rem;
 `
 
-const PostLikeAmount = styled.span``;
+const PostLikeAmount = styled.span`
+  display: in-line;
+`;
 
 const PostAuthor = styled.h4`
   align-self: flex-start;

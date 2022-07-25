@@ -1,16 +1,14 @@
-import { connectDB } from "../../database/connectDB";
+import dbConnect from "../../database/connectDB.js";
 const UserTemplate = require("../../models/UserModel.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-connectDB();
+await dbConnect();
 
 const login = async (req, res) => {
-  
-  const { method} = req;
+  const { method } = req;
 
   if (method === "POST") {
-    
     const user = await UserTemplate.findOne({
       username: req.body.username,
     });
@@ -27,19 +25,19 @@ const login = async (req, res) => {
         {
           username: user.username,
           email: user.email,
-          _id: user._id
+          _id: user._id,
         },
         "secretBlog",
         {
           expiresIn: 3000,
         }
-      ); 
+      );
       return res.status(200).json({ token, _id: user._id });
     } else {
       return res.status(401).json({ error: true, message: "Failed Auth" });
     }
   } else {
-    return res.status(400).json({error:"POST FAILED"});
+    return res.status(400).json({ error: "POST FAILED" });
   }
 };
 

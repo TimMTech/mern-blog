@@ -1,8 +1,8 @@
-import { connectDB } from "../../../../../database/connectDB";
+import dbConnect from "../../../../../database/connectDB.js";
 const PostTemplate = require("../../../../../models/PostModel.js");
 const jwt = require("jsonwebtoken");
 
-connectDB();
+await dbConnect();
 
 const likes = async (req, res) => {
   const {

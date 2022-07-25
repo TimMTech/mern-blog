@@ -8,6 +8,7 @@ import SignupForm from "../Forms/SignupForm/SignupForm";
 import Cookies from "js-cookie";
 import Card from "../Card/Card";
 import Filter from "../Filter/Filter";
+import {AiOutlinePlus} from "react-icons/ai"
 
 const Dashboard = ({ user, posts }) => {
   const session = Cookies.get("token");
@@ -206,7 +207,7 @@ const Dashboard = ({ user, posts }) => {
                 <Filter value={option} handleBlogOptions={handleBlogOptions} />
                 <NextLink href={"/post"}>
                   <CreatePostIcon>
-                    <NextImage src={addIcon} alt="" />
+                    <AiOutlinePlus size={35}/>
                   </CreatePostIcon>
                 </NextLink>
               </MenuContainer>
@@ -248,10 +249,10 @@ const HeaderContainer = styled.div`
 `;
 
 const UserLogo = styled.span`
-  width: 7rem;
-  line-height: 7rem;
+  padding: 2rem;
+  line-height: 50%;
   border-radius: 50%;
-  font-size: 5rem;
+  font-size: 4rem;
   color: rgb(255, 255, 255);
   text-align: center;
   background: ${(props) =>
@@ -330,9 +331,6 @@ const MenuContainer = styled.div`
 `;
 
 const CreatePostIcon = styled.a`
-  display: block;
-  width: 1.7rem;
-
   &:hover {
     transform: scale(1.1, 1.1);
     cursor: pointer;

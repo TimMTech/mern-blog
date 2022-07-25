@@ -1,8 +1,8 @@
-import { connectDB } from "../../../../../database/connectDB";
+import dbConnect from "../../../../../database/connectDB";
 const PostTemplate = require("../../../../../models/PostModel");
 const jwt = require("jsonwebtoken");
 
-connectDB();
+await dbConnect();
 
 const unpublish = async (req, res) => {
   const {

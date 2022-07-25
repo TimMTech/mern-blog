@@ -105,12 +105,12 @@ const Nav = ({ toggleTheme, isDark }) => {
             </NextLink>
           </LoggedInContainer>
         ) : (
-          <LoggedOutContainer showBurger={hamburgerOpen}>
+          <LoggedOutContainer >
             <NextLink href="/account/login">
               <Login>LOGIN</Login>
             </NextLink>
             <NextLink href="/account/signup">
-              <Login>SIGN-UP</Login>
+              <Signup>SIGN-UP</Signup>
             </NextLink>
           </LoggedOutContainer>
         )}
@@ -146,7 +146,7 @@ const Nav = ({ toggleTheme, isDark }) => {
                   </NextLink>
                 </LoggedInContainer>
               ) : (
-                <LoggedOutContainer showBurger={hamburgerOpen}>
+                <LoggedOutContainer >
                   <NextLink href="/account/login">
                     <Login>LOGIN</Login>
                   </NextLink>
@@ -158,16 +158,40 @@ const Nav = ({ toggleTheme, isDark }) => {
               <Paragraph>Connect with me!</Paragraph>
               <IconContainer>
                 <IconWrapper>
-                  <AiFillFacebook size={35} />
+                  <LinkWrapper
+                    href="https://www.facebook.com/tim.mukhamedov"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <AiFillFacebook size={35} />
+                  </LinkWrapper>
                 </IconWrapper>
                 <IconWrapper>
-                  <AiFillGithub size={35} />
+                  <LinkWrapper
+                    href="https://github.com/TimMTech"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <AiFillGithub size={35} />
+                  </LinkWrapper>
                 </IconWrapper>
                 <IconWrapper>
-                  <AiFillInstagram size={35} />
+                  <LinkWrapper
+                    href="https://www.instagram.com/forevertech93/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <AiFillInstagram size={35} />
+                  </LinkWrapper>
                 </IconWrapper>
                 <IconWrapper>
-                  <AiFillLinkedin size={35} />
+                  <LinkWrapper
+                    href="https://www.linkedin.com/in/timur-mukhamedov-50b3b6221/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <AiFillLinkedin size={35} />
+                  </LinkWrapper>
                 </IconWrapper>
               </IconContainer>
             </Modal>
@@ -200,7 +224,7 @@ const Overlay = styled(Framer.motion.div)`
   z-index: 9;
 `;
 
-export const NavContainer = styled.nav`
+const NavContainer = styled.nav`
   z-index: 11;
   overflow-y: scroll;
   display: flex;
@@ -218,7 +242,7 @@ export const NavContainer = styled.nav`
   top: 0;
 `;
 
-export const NavLinkContainer = styled.div`
+const NavLinkContainer = styled.div`
   @media (max-width: 750px) {
     display: none;
   }
@@ -227,7 +251,7 @@ export const NavLinkContainer = styled.div`
   color: ${(props) => props.path !== "/" && "white"};
 `;
 
-export const Logo = styled.a`
+const Logo = styled.a`
   cursor: pointer;
   font-weight: 900;
   color: ${(props) => (props.backgroundColor ? "black" : "white")};
@@ -282,7 +306,7 @@ const SwitchInput = styled.input`
   }
 `;
 
-export const Modal = styled(Framer.motion.div)`
+const Modal = styled(Framer.motion.div)`
   @media (min-width: 750px) {
     display: none;
   }
@@ -305,7 +329,7 @@ export const Modal = styled(Framer.motion.div)`
   }
 `;
 
-export const Paragraph = styled.p`
+const Paragraph = styled.p`
   padding: 4rem;
   text-transform: uppercase;
   width: 100%;
@@ -313,7 +337,7 @@ export const Paragraph = styled.p`
   border-bottom: 0.1rem solid rgba(0, 0, 0, 0.5);
 `;
 
-export const HamburgerMenu = styled.div`
+const HamburgerMenu = styled.div`
   display: none;
   cursor: pointer;
   @media (max-width: 750px) {
@@ -321,7 +345,7 @@ export const HamburgerMenu = styled.div`
   }
 `;
 
-export const LoggedInContainer = styled.ul`
+const LoggedInContainer = styled.ul`
   list-style: none;
   display: flex;
   justify-content: center;
@@ -330,7 +354,7 @@ export const LoggedInContainer = styled.ul`
   
 `;
 
-export const LoggedOutContainer = styled.ul`
+const LoggedOutContainer = styled.ul`
   list-style: none;
   display: flex;
   gap: 1rem;
@@ -339,22 +363,14 @@ export const LoggedOutContainer = styled.ul`
   
 `;
 
-export const Username = styled.li`
+const Username = styled.li`
   cursor: pointer;
   &:hover {
     transform: scale(1.1, 1.1);
   }
 `;
 
-export const Logout = styled.li`
-  cursor: pointer;
-
-  &:hover {
-    transform: scale(1.1, 1.1);
-  }
-`;
-
-export const Login = styled.li`
+const Logout = styled.li`
   cursor: pointer;
 
   &:hover {
@@ -362,7 +378,7 @@ export const Login = styled.li`
   }
 `;
 
-export const Signup = styled.li`
+const Login = styled.li`
   cursor: pointer;
 
   &:hover {
@@ -370,7 +386,15 @@ export const Signup = styled.li`
   }
 `;
 
-export const IconContainer = styled.div`
+const Signup = styled.li`
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1, 1.1);
+  }
+`;
+
+const IconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -378,13 +402,19 @@ export const IconContainer = styled.div`
   padding-top: 2rem;
 `;
 
-export const IconWrapper = styled.div`
+const IconWrapper = styled.div`
+  
   box-shadow: 0 0.4rem 0.5rem 0.1rem rgba(0, 0, 0, 0.2);
   border-radius: 50%;
+  line-height: 50%;
   padding: 0.75rem;
   transition: 200ms;
   &:hover {
     transform: scale(1.1,1.1);
     cursor: pointer;
   }
+`;
+
+const LinkWrapper = styled.a`
+  color: rgb(0, 0, 0);
 `;

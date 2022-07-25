@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Card from "../Card/Card";
 import Filter from "../Filter/Filter";
 
+
 const Blog = ({ posts }) => {
   const [option, setOption] = useState("mostRecentDefault");
   const [mostLikedVisible, setMostLikedVisible] = useState(false);
@@ -48,6 +49,7 @@ const Blog = ({ posts }) => {
     <>
       <OptionContainer>
         <Filter value={option} handleBlogOptions={handleBlogOptions} />
+        
       </OptionContainer>
       <MasonryContainer>
         {mostRecentDefaultVisible && mostRecent}
@@ -76,5 +78,6 @@ const OptionContainer = styled.div`
   padding: 1rem 0 0 1rem;
   gap: 0.5rem;
 `;
+
 
 

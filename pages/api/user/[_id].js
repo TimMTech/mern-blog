@@ -1,9 +1,9 @@
-import { connectDB } from "../../../database/connectDB";
+import dbConnect from "../../../database/connectDB";
 const UserTemplate = require("../../../models/UserModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-connectDB();
+await dbConnect();
 
 const dashboard = async (req, res) => {
   const {

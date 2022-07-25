@@ -1,8 +1,8 @@
-import { connectDB } from "../../../database/connectDB";
+import dbConnect from "../../../database/connectDB";
 const CommentTemplate = require("../../../models/CommentModel");
 const Post = require("../../../models/PostModel");
 
-connectDB();
+await dbConnect();
 
 const comment = async (req, res) => {
   const {

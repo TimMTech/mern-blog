@@ -4,6 +4,7 @@ import NextLink from "next/link";
 import NextImage from "next/image";
 import heroBG from "/public/static/images/heroBG.png";
 
+
 const home = ({ posts }) => {
   return (
     <HomeContainer>
@@ -16,6 +17,7 @@ const home = ({ posts }) => {
         <NextLink href="/account/signup" rel="preload" as="">
           <SignupButton>GET STARTED</SignupButton>
         </NextLink>
+       
       </HeaderContainer>
       <Blog posts={posts} />
     </HomeContainer>
@@ -76,3 +78,5 @@ const SignupButton = styled.button`
   position: absolute;
   top: 75%;
 `;
+
+

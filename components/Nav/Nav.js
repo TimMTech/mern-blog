@@ -229,13 +229,12 @@ export const NavLinkContainer = styled.div`
 
 export const Logo = styled.a`
   cursor: pointer;
-  letter-spacing: 0.4rem;
-
+  font-weight: 900;
   color: ${(props) => (props.backgroundColor ? "black" : "white")};
   color: ${(props) => props.path !== "/" && "white"};
   color: ${(props) => props.showBurger && "black"};
   font-size: ${(props) => props.showBurger && "2.5rem"};
-  font-weight: ${(props) => props.showBurger && "700"};
+  
 `;
 
 const SwitchLabel = styled.label`

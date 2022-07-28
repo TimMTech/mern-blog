@@ -12,16 +12,17 @@ import {
 const cookies = require("js-cookie");
 const Framer = require("framer-motion");
 
-const Nav = ({ toggleTheme, isDark }) => {
-  const backdrop = {
-    visible: { opacity: 1 },
-    hidden: { opacity: 0 },
-  };
+const backdrop = {
+  visible: { opacity: 1 },
+  hidden: { opacity: 0 },
+};
 
-  const menu = {
-    hidden: { x: "100%" },
-    visible: { x: "0" },
-  };
+const menu = {
+  hidden: { x: "100%" },
+  visible: { x: "0" },
+};
+
+const Nav = ({ toggleTheme, isDark }) => {
   const router = useRouter();
 
   const [isAuth, setIsAuth] = useState(false);
@@ -52,7 +53,6 @@ const Nav = ({ toggleTheme, isDark }) => {
         router.push("/404");
       });
   };
-
   useEffect(() => {
     getUser();
   }, []);
@@ -105,7 +105,7 @@ const Nav = ({ toggleTheme, isDark }) => {
             </NextLink>
           </LoggedInContainer>
         ) : (
-          <LoggedOutContainer >
+          <LoggedOutContainer>
             <NextLink href="/account/login">
               <Login>LOGIN</Login>
             </NextLink>
@@ -146,7 +146,7 @@ const Nav = ({ toggleTheme, isDark }) => {
                   </NextLink>
                 </LoggedInContainer>
               ) : (
-                <LoggedOutContainer >
+                <LoggedOutContainer>
                   <NextLink href="/account/login">
                     <Login>LOGIN</Login>
                   </NextLink>
@@ -258,7 +258,6 @@ const Logo = styled.a`
   color: ${(props) => props.path !== "/" && "white"};
   color: ${(props) => props.showBurger && "black"};
   font-size: ${(props) => props.showBurger && "2.5rem"};
-  
 `;
 
 const SwitchLabel = styled.label`
@@ -325,7 +324,6 @@ const Modal = styled(Framer.motion.div)`
     padding-top: 2rem;
     font-size: 2rem;
     font-weight: 700;
-    
   }
 `;
 
@@ -351,7 +349,6 @@ const LoggedInContainer = styled.ul`
   justify-content: center;
   gap: 1rem;
   align-items: flex-start;
-  
 `;
 
 const LoggedOutContainer = styled.ul`
@@ -360,7 +357,6 @@ const LoggedOutContainer = styled.ul`
   gap: 1rem;
   align-items: flex-start;
   justify-content: center;
-  
 `;
 
 const Username = styled.li`
@@ -403,14 +399,13 @@ const IconContainer = styled.div`
 `;
 
 const IconWrapper = styled.div`
-  
   box-shadow: 0 0.4rem 0.5rem 0.1rem rgba(0, 0, 0, 0.2);
   border-radius: 50%;
   line-height: 50%;
   padding: 0.75rem;
   transition: 200ms;
   &:hover {
-    transform: scale(1.1,1.1);
+    transform: scale(1.1, 1.1);
     cursor: pointer;
   }
 `;

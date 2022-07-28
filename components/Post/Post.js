@@ -4,9 +4,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import PostForm from "../Forms/PostForm/PostForm";
 import Comment from "../Comment/Comment";
-import likeIcon from "/public/static/icons/like.png";
-import unlikeIcon from "/public/static/icons/unlike.png";
-import NextImage from "next/image";
+import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 
 const Post = ({ post }) => {
   const {
@@ -23,8 +21,6 @@ const Post = ({ post }) => {
   const [postLikes, setPostLikes] = useState([]);
   const [liked, setLiked] = useState(false);
   const [editMode, setEditMode] = useState(false);
-
-  
 
   const handleEdit = () => {
     setEditMode(true);
@@ -135,42 +131,50 @@ const Post = ({ post }) => {
         </EditContainer>
       ) : (
         <PostContainer>
-          {user === username ? (
-            <OptionContainer>
-              <EditPost hidden={user ? false : true} onClick={handleEdit}>
-                Edit
-              </EditPost>
-              <DeletePost hidden={user ? false : true} onClick={handleDelete}>
-                Delete
-              </DeletePost>
-            </OptionContainer>
-          ) : null}
+          <PostCardContainer>
+            <LeftColumn>
+              {user === username ? (
+                <OptionContainer>
+                  <EditPost hidden={user ? false : true} onClick={handleEdit}>
+                    Edit
+                  </EditPost>
+                  <DeletePost
+                    hidden={user ? false : true}
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </DeletePost>
+                </OptionContainer>
+              ) : null}
+              <PostTitle>{title}</PostTitle>
+              <PostImage
+                src={
+                  imageUrl ||
+                  "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
+                }
+              />
+              <LikesContainer
+                hidden={user ? false : true}
+                onClick={handlePostLike}
+              >
+                {liked ? (
+                  <ImageWrapper>
+                    <AiFillLike size={17} />
+                  </ImageWrapper>
+                ) : (
+                  <ImageWrapper>
+                    <AiOutlineLike size={17} />
+                  </ImageWrapper>
+                )}
+                <PostLikeAmount>{postLikes.length}</PostLikeAmount>
+              </LikesContainer>
+              <PostAuthor>
+                by {username} / {dateFormat(date)}
+              </PostAuthor>
+            </LeftColumn>
+            <PostContent>{content}</PostContent>
+          </PostCardContainer>
 
-          <PostTitle>{title}</PostTitle>
-          <PostImageWrapper>
-            <PostImage
-              src={
-                imageUrl ||
-                "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
-              }
-            />
-          </PostImageWrapper>
-          <PostContent>{content}</PostContent>
-          <LikesContainer hidden={user ? false : true} onClick={handlePostLike}>
-            {liked ? (
-              <ImageWrapper>
-                <NextImage src={likeIcon} alt="" />
-              </ImageWrapper>
-            ) : (
-              <ImageWrapper>
-                <NextImage src={unlikeIcon} alt="" />
-              </ImageWrapper>
-            )}
-            <PostLikeAmount>{postLikes.length}</PostLikeAmount>
-          </LikesContainer>
-          <PostAuthor>
-            by {username} / {dateFormat(date)}
-          </PostAuthor>
           <Comment
             setPostComments={setPostComments}
             postComments={postComments}
@@ -187,12 +191,7 @@ export default Post;
 const EditContainer = styled.main``;
 
 const PostContainer = styled.main`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-top: 3rem;
+  padding-top: 0.5rem;
 `;
 
 const OptionContainer = styled.div`
@@ -202,23 +201,35 @@ const OptionContainer = styled.div`
   gap: 0.5rem;
 `;
 
-const EditPost = styled.button`
-`;
+const EditPost = styled.button``;
 
-const DeletePost = styled.button`
- 
-`;
-const PostTitle = styled.h1`
-  
-`;
+const DeletePost = styled.button``;
+const PostTitle = styled.h1``;
 
-const PostImageWrapper = styled.div`
-  width: 75%;
-  
+const PostCardContainer = styled.div`
+  @media (max-width: 750px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 1rem 0;
+  box-shadow: ${(props) => props.theme.boxShadow};
+  border-radius: 0.75rem;
 `;
 
 const PostImage = styled.img`
-  
+  @media (max-width: 750px) {
+    border-radius: 0;
+  }
+  border-radius: 0.75rem;
+`;
+
+const LeftColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem;
 `;
 
 const LikesContainer = styled.div`
@@ -227,21 +238,20 @@ const LikesContainer = styled.div`
   background-color: transparent;
   padding: 1rem;
   width: 100%;
-  display: ${(props) => props.hidden ? "none" : "flex"};
+  display: ${(props) => (props.hidden ? "none" : "flex")};
 `;
 
 const ImageWrapper = styled.div`
   cursor: pointer;
-  width: 0.8rem;
-`
+ 
+`;
 
 const PostLikeAmount = styled.span`
   display: in-line;
 `;
 
 const PostAuthor = styled.h4`
-  align-self: flex-start;
-  padding-left: 1rem;
+  padding: 1.5rem;
   font-weight: 300;
   font-style: italic;
 `;
@@ -249,6 +259,6 @@ const PostAuthor = styled.h4`
 const PostContent = styled.p`
   padding: 1rem;
   width: 100%;
+  max-height: 95%;
   text-align: left;
 `;
-

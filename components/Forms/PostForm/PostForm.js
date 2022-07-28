@@ -1,4 +1,4 @@
-
+import { Editor } from "@tinymce/tinymce-react";
 import * as Yup from "yup";
 import { Formik, ErrorMessage } from "formik";
 import { useState } from "react";
@@ -13,7 +13,7 @@ import {
   EditTitle,
   SubmitButton,
   ButtonContainer,
-  ExitButton
+  ExitButton,
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
 
@@ -35,8 +35,8 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
   });
 
   const handleExitEdit = () => {
-    setEditMode(false)
-  }
+    setEditMode(false);
+  };
 
   const handlePostChange = (e) => {
     const { name, value } = e.target;
@@ -46,8 +46,14 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
     }));
   };
 
+  const handleEditorChange = (content) => {
+    setPost((prevState) => ({
+      ...prevState,
+      content: content,
+    }));
+  };
+
   const handleSubmitPost = () => {
-  
     if (editMode) {
       fetch(`/api/post/${postId}`, {
         method: "PUT",
@@ -124,12 +130,23 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
           </FieldContainer>
           <FieldContainer>
             <StyledLabel>Content</StyledLabel>
-            <StyledField
-              component="textarea"
-              value={post.content}
-              type="text"
+            <Editor
               name="content"
-              onChange={(e) => handlePostChange(e)}
+              id="FIXED_ID"
+              apiKey={process.env.NEXT_PUBLIC_TINYMCU_API_KEY}
+              value={post.content}
+              init={{
+                forced_root_block: "false",
+                height: 500,
+                width: "100%",
+                menubar: false,
+                plugins: "autoresize link lists emoticons image",
+                max_height: 500,
+                toolbar_location: "bottom",
+                toolbar:
+                  "bold italic strikethrough link numlist bullist blockquote emoticons image",
+              }}
+              onEditorChange={handleEditorChange}
             />
             <ErrorMessage name="content" render={renderError} />
           </FieldContainer>
@@ -156,6 +173,3 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
 };
 
 export default PostForm;
-
-
-

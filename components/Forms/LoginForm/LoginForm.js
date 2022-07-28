@@ -1,4 +1,3 @@
-
 import * as Yup from "yup";
 import { Formik, ErrorMessage } from "formik";
 import { useState } from "react";
@@ -10,7 +9,7 @@ import {
   StyledField,
   StyledForm,
   FormTitle,
-  SubmitButton
+  SubmitButton,
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
 import LoginError from "../../Validations/LoginError";
@@ -22,17 +21,16 @@ const LoginForm = () => {
     password: "",
   });
 
-  const [loginFailed, setLoginFailed] = useState(false)
+  const [loginFailed, setLoginFailed] = useState(false);
 
-    const validationSchema = Yup.object({
-      username: Yup.string()
-        .required("*Required")
-        .min(1, "*Please Enter a Valid Username"),
-      password: Yup.string()
-        .required("*Required")
-        .min(1, "*Please Enter a Valid Password"),
-    
-    });
+  const validationSchema = Yup.object({
+    username: Yup.string()
+      .required("*Required")
+      .min(1, "*Please Enter a Valid Username"),
+    password: Yup.string()
+      .required("*Required")
+      .min(1, "*Please Enter a Valid Password"),
+  });
 
   const handleLoginChange = (e) => {
     const { name, value } = e.target;
@@ -43,7 +41,6 @@ const LoginForm = () => {
   };
 
   const handleLoginSubmit = () => {
-    
     fetch("/api/auth", {
       method: "POST",
       headers: {
@@ -57,14 +54,13 @@ const LoginForm = () => {
       .then((data) => {
         if (data && data.error) {
           console.log("FAILED LOGIN");
-          setLoginFailed(true)
+          setLoginFailed(true);
         }
         if (data && data.token) {
           console.log("Success");
-          setLoginFailed(false)
-          Cookies.set("token", data.token, { expires: 1 });
+          setLoginFailed(false);
+          Cookies.set("token", data.token, { expires: 1});
           window.location.href = `/user/${data._id}`;
-
         }
       })
       .catch((error) => {
@@ -80,9 +76,8 @@ const LoginForm = () => {
       onSubmit={handleLoginSubmit}
     >
       <FormContainer>
-        
         <StyledForm method="POST">
-          {loginFailed && <LoginError/>}
+          {loginFailed && <LoginError />}
           <FormTitle>Login to Your Account</FormTitle>
           <FieldContainer>
             <StyledLabel>Username</StyledLabel>
@@ -112,5 +107,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-
-

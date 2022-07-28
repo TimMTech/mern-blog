@@ -6,7 +6,7 @@ __dirname = path.resolve()
 
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
-const ACCESS_DATABASE = process.env.ACCESS_DATABASE;
+const ACCESS_DATABASE = process.env.NEXT_PUBLIC_ACCESS_DATABASE;
 
 if (!ACCESS_DATABASE) {
   throw new Error(

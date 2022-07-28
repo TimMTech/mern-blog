@@ -1,5 +1,6 @@
-import styled from "styled-components"
-import {Form, Field} from "formik"
+import styled from "styled-components";
+import { Form, Field } from "formik";
+import { Editor } from "@tinymce/tinymce-react";
 
 export const FormContainer = styled.div`
   display: flex;
@@ -19,7 +20,6 @@ export const FormTitle = styled.h1`
   padding: 1rem;
 `;
 
-
 export const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
@@ -28,7 +28,7 @@ export const StyledForm = styled(Form)`
   width: 100%;
   height: auto;
   gap: 1.5rem;
-  margin: ${(props) => props.commentform ? "1rem" : null};
+  margin: ${(props) => (props.commentform ? "1rem" : null)};
 `;
 
 export const FieldContainer = styled.div`
@@ -36,7 +36,7 @@ export const FieldContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: ${(props) => props.commentform ? "100%" : "50%"};
+  width: ${(props) => (props.commentform ? "100%" : "50%")};
 `;
 
 export const StyledLabel = styled.label`
@@ -56,10 +56,10 @@ export const ButtonContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-`
-
-export const SubmitButton = styled.button`
-  
 `;
 
-export const ExitButton = styled.button``
+export const SubmitButton = styled.button``;
+
+export const ExitButton = styled.button``;
+
+

@@ -19,7 +19,7 @@ const home = ({ posts }) => {
         </BlogImageWrapper>
         <Title>TECHNOLOGY FOR INOVATORS</Title>
         <SubTitle>Where Developers Push Limits</SubTitle>
-        <NextLink href="/account/signup" rel="preload" as="">
+        <NextLink href="/account/signup">
           <SignupButton>GET STARTED</SignupButton>
         </NextLink>
         <IconContainer>

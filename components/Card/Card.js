@@ -17,7 +17,7 @@ const Card = ({ post, user, index, showPublished, showUnpublished }) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+       
         router.push(`/user/${user._id}`);
       })
       .catch((error) => {
@@ -33,7 +33,7 @@ const Card = ({ post, user, index, showPublished, showUnpublished }) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        
         router.push(`/user/${user._id}`);
       })
       .catch((error) => {

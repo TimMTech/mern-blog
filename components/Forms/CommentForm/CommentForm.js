@@ -1,4 +1,4 @@
-
+import { Editor } from "@tinymce/tinymce-react";
 import * as Yup from "yup";
 import { Formik, ErrorMessage } from "formik";
 import { useState } from "react";
@@ -38,6 +38,13 @@ const CommentForm = ({ setPostComments }) => {
     }));
   };
 
+  const handleEditorChange = (content) => {
+    setCommentValue((prevState) => ({
+      ...prevState,
+      content: content,
+    }));
+  };
+
   const handleCommentSubmit = () => {
     fetch(`/api/comment/${query._id}`, {
       method: "POST",
@@ -51,6 +58,11 @@ const CommentForm = ({ setPostComments }) => {
       })
       .then((data) => {
         setPostComments((prevState) => [...prevState, data]);
+        setCommentValue({
+          user: "",
+          content: "",
+          postId: query._id,
+        });
         
       })
       .catch((error) => {
@@ -70,7 +82,6 @@ const CommentForm = ({ setPostComments }) => {
           <FieldContainer commentform="true">
             <StyledLabel>Username</StyledLabel>
             <StyledField
-            
               type="text"
               name="user"
               value={commentValue.user}
@@ -80,13 +91,23 @@ const CommentForm = ({ setPostComments }) => {
           </FieldContainer>
           <FieldContainer commentform="true">
             <StyledLabel>Content</StyledLabel>
-            <StyledField
-              
-              component="textarea"
-              type="text"
+            <Editor
               name="content"
+              id="FIXED_ID"
+              apiKey={process.env.NEXT_PUBLIC_TINYMCU_API_KEY}
               value={commentValue.content}
-              onChange={(e) => handleCommentChange(e)}
+              init={{
+                forced_root_block: "false",
+                height: 500,
+                width: "100%",
+                menubar: false,
+                plugins: "autoresize link lists emoticons image",
+                max_height: 500,
+                toolbar_location: "bottom",
+                toolbar:
+                  "bold italic strikethrough link numlist bullist blockquote emoticons image",
+              }}
+              onEditorChange={handleEditorChange}
             />
             <ErrorMessage name="content" render={renderError} />
           </FieldContainer>

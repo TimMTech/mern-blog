@@ -2,15 +2,13 @@ export const darkTheme = {
   body: "black",
   text: "white",
   span: "rgba(255,255,255,0.7)",
-
-  border: "0.1rem solid rgb(255,255,255)",
-  borderBackground: "rgb(255,255,255)",
+  boxShadow: "0 0.5rem 0.75rem 0 rgba(255, 255, 255, 0.3);",
+  boxShadowComment: "0 -0.5rem 0.75rem 0 rgba(255, 255, 255, 0.3);",
 };
 export const lightTheme = {
   body: "white",
   text: "black",
   span: "rgba(255, 255, 255, 0.7);",
-
-  border: "0.1rem solid rgb(0,0,0)",
-  borderBackground: "rgb(0,0,0)",
+  boxShadow: "0 0.5rem 0.75rem 0 rgba(0, 0, 0, 0.3);",
+  boxShadowComment: "0 -0.5rem 0.75rem 0 rgba(0, 0, 0, 0.3);",
 };

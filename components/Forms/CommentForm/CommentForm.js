@@ -23,6 +23,7 @@ const CommentForm = ({ setPostComments }) => {
     postId: query._id,
   });
 
+
   const validationSchema = Yup.object({
     user: Yup.string()
       .required("*Required")

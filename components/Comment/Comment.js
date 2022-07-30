@@ -5,7 +5,7 @@ import moment from "moment";
 import { useRef, useEffect } from "react";
 import { FaAngleDoubleDown } from "react-icons/fa";
 import { useState } from "react";
-import { array } from "yup";
+
 
 const Comment = ({ setPostComments, postComments, post }) => {
   const [showArrow, setShowArrow] = useState(false);
@@ -38,13 +38,14 @@ const Comment = ({ setPostComments, postComments, post }) => {
     };
   }, []);
 
+  
   return (
     <CommentContainer>
       <CommentForm setPostComments={setPostComments} />
       <ScrollContainer>
+        <CommentAmount>{filteredComments.length} Comments</CommentAmount>
         <Scroll ref={ref}>
           <ReverseScroll>
-            <CommentAmount>Comments ({filteredComments.length})</CommentAmount>
             {filteredComments.map((comment) => {
               const { _id, user, content, date } = comment;
               return (
@@ -78,15 +79,21 @@ const CommentContainer = styled.section`
   }
 `;
 
-const CommentAmount = styled.h4``;
+const CommentAmount = styled.h4`
+  padding-bottom: 1.5rem;
+  padding-left: 1rem;
+  margin: 2rem;
+  width: 80%;
+  border-bottom: 0.1rem solid rgba(0,0,0,0.2);
+`;
 
 const ScrollContainer = styled.div`
   box-shadow: ${(props) => props.theme.boxShadowComment};
 
-  border-radius: 0.75rem;
+  
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  margin: 1rem 1rem 0 1rem;
+  margin: 1rem 0 0 1rem;
   @media (max-width: 750px) {
     margin: 1rem 0 0 0;
   }
@@ -98,28 +105,31 @@ const Scroll = styled.div`
   overflow-y: scroll;
   max-height: 400px;
   padding: 1rem;
+  
 `;
 
 const ReverseScroll = styled.div`
   display: flex;
   flex-direction: column;
+  
 `;
 
 const CommentWrapper = styled.div`
-  box-shadow: ${(props) => props.theme.boxShadowComment};
   padding: 1rem;
-  border-radius: 0.75rem;
   margin: 0.75rem 0;
+  box-shadow: 0 0 0.5rem 0 rgba(0,0,0,0.3);
 `;
 
 const CommentUser = styled.h4`
-  font-weight: 300;
   padding: 1rem;
-  font-style: italic;
+  
 `;
+
+
 
 const CommentContent = styled.p`
   padding: 1rem;
+  
 `;
 
 const IconWrapper = styled.div`

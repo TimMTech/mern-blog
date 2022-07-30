@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import addIcon from "/public/static/icons/add.png";
-import NextImage from "next/image";
 import NextLink from "next/link";
 import SignupForm from "../Forms/SignupForm/SignupForm";
 import Cookies from "js-cookie";
@@ -13,7 +11,7 @@ import {AiOutlinePlus} from "react-icons/ai"
 const Dashboard = ({ user, posts }) => {
   const session = Cookies.get("token");
   const router = useRouter();
-
+  
   const [option, setOption] = useState("mostRecentDefault");
   const [mostLikedVisible, setMostLikedVisible] = useState(false);
   const [mostRecentDefaultVisible, setMostRecentDefaultVisible] =

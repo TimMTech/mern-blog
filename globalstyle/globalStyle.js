@@ -27,7 +27,7 @@ export const GlobalStyles = createGlobalStyle`
 
   h4{
     font-size: 1.2rem;
-    
+    font-weight: 800;
   }
   img {
     display: block;
@@ -42,7 +42,6 @@ export const GlobalStyles = createGlobalStyle`
     cursor: pointer;
     background-color: rgb(33, 37, 41);
   }
+
   
 `;
-
- 

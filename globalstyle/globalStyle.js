@@ -36,12 +36,14 @@ export const GlobalStyles = createGlobalStyle`
   button {
     font-size: 1rem;
     font-weight: 700;
-    border: 0.05rem solid rgb(255, 255, 255);
+    border: none;
     padding: 0.5rem 2rem;
-    color: rgb(255, 255, 255);
+    color: ${(props) => props.theme.text};
     cursor: pointer;
-    background-color: rgb(33, 37, 41);
+    background-color: transparent;
+    
   }
 
+ 
   
 `;

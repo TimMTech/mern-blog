@@ -63,7 +63,7 @@ const Blog = ({ posts }) => {
 export default Blog;
 
 const MasonryContainer = styled.div`
-  --masonry-gap: 0.7rem;
+  --masonry-gap: 1.2rem;
   --masonry-brick-width: 300px;
   column-gap: var(--masonry-gap);
   column-fill: initial;

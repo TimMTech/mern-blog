@@ -1,45 +1,47 @@
 import dbConnect from "../../../database/connectDB";
 const CommentTemplate = require("../../../models/CommentModel");
-const Post = require("../../../models/PostModel");
 
 await dbConnect();
 
-const comment = async (req, res) => {
+const commentReplies = async (req, res) => {
   const {
     method,
     query: { _id },
   } = req;
 
   if (method === "POST") {
-    const comment = await new CommentTemplate({
-      user: req.body.user,
-      content: req.body.content,
-      postId: req.body.postId,
-    });
-    comment
+    const replies = await CommentTemplate.findByIdAndUpdate(
+      { _id: req.body.commentId },
+      {
+        $push: {
+          commentReplies: new CommentTemplate({
+            user: req.body.user,
+            content: req.body.content,
+            postId: req.body.postId,
+            commentId: req.body.commentId,
+          }),
+        },
+      }
+    );
+    replies
       .save()
-      .then(async (data) => {
-        const post = await Post.findByIdAndUpdate(
-          { _id: _id },
-          { $push: { comments: data } }
-        );
-        post.save();
-        return res.status(200).json(data);
+      .then((data) => {
+        return res.status(200).json(data.commentReplies);
       })
       .catch((error) => {
         return res.status(400).json(error);
       });
   }
   if (method === "GET") {
-    const comment = CommentTemplate.find();
-    comment
-      .then((data) => {
-        return res.status(200).json(data);
-      })
-      .catch((error) => {
-        return res.status(400).json(error);
-      });
+    const comment = await CommentTemplate.findById(_id);
+    
+    if (!comment) {
+      return res.status(400).json({ error: "NOT FOUND" });
+    }
+    return res.status(200).json(
+      comment.commentReplies,
+    );
   }
 };
 
-export default comment;
+export default commentReplies;

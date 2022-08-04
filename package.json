@@ -30,6 +30,7 @@
     "@types/js-cookie": "^3.0.2",
     "eslint": "8.17.0",
     "eslint-config-next": "12.1.6",
-    "react-icons": "^4.4.0"
+    "react-icons": "^4.4.0",
+    "react-infinite-scroll-component": "^6.1.0"
   }
 }

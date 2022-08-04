@@ -55,96 +55,128 @@ const Card = ({ post, user, index, showPublished, showUnpublished }) => {
         console.log(error);
       });
   };
+
+  const handleDelete = (_id) => {
+    fetch(`/api/post/${_id}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          console.log("Server Error");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        router.push(`/user/${user._id}`);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const dateFormat = (date) => {
     return moment(date).format("lll");
-
   };
 
-  
   return (
-    <PostContainer key={post._id}>
-      <PostImage
-        src={
-          post.imageUrl ||
-          "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
-        }
-      />
+    <CardContainer>
+      <ImageContainer>
+        <CardImage
+          src={
+            post.imageUrl ||
+            "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
+          }
+        />
 
-      <OverlayContainer>
-        <PostHeaderContainer>
-          <IconOverlay>
-            <PostIconWrapper>
-              <AiOutlineFieldNumber size={20} />
-              <PostNumber>{index + 1}</PostNumber>
-            </PostIconWrapper>
-            <PostIconWrapper>
-              <AiOutlineLike size={20} />
-              <PostLikes>{post.likes.length}</PostLikes>
-            </PostIconWrapper>
-
-            <PostIconWrapper>
-              <AiOutlineEye size={20} />
-              <PostViews>{post.viewCounter}</PostViews>
-            </PostIconWrapper>
-          </IconOverlay>
-          {user && (
-            <ButtonOverlay>
-              
-              <AiOutlineMenu size={30} onClick={toggleCardMenu} />
-              <AnimatePresence>
-                {showCardMenu && (
-                  <Modal
-                    variants={menu}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    transition={{ duration: 0.2 }}
-                  >
-                    {showPublished && (
-                      <IconContainer>
-                        <MdUnpublished
-                          size={22}
-                          onClick={() => handleUnpublish(post._id)}
-                        />
-                        <AiOutlineDelete size={22} />
-                      </IconContainer>
-                    )}
-                    {showUnpublished && (
-                      <MdPublishedWithChanges
-                        size={22}
-                        onClick={() => handlePublish(post._id)}
-                      />
-                    )}
-                  </Modal>
-                )}
-              </AnimatePresence>
-            </ButtonOverlay>
-          )}
-        </PostHeaderContainer>
-        <PostFooterContainer>
-          <PostTitle>{post.title}</PostTitle>
-          <PostAuthor>
-            By {post.user.username} / {dateFormat(post.date)}
-          </PostAuthor>
-        </PostFooterContainer>
-      </OverlayContainer>
-    </PostContainer>
+        <OverlayContainer dashboard={user}>
+          <CardHeaderContainer>
+            <IconOverlay>
+              <CardIconWrapper>
+                <AiOutlineFieldNumber size={20} />
+                <CardNumber>{index + 1}</CardNumber>
+              </CardIconWrapper>
+              <CardIconWrapper>
+                <AiOutlineLike size={20} />
+                <CardLikes>{post.likes.length}</CardLikes>
+              </CardIconWrapper>
+              <CardIconWrapper>
+                <AiOutlineEye size={20} />
+                <CardViews>{post.viewCounter}</CardViews>
+              </CardIconWrapper>
+            </IconOverlay>
+            {user && (
+              <ButtonOverlay>
+                <AiOutlineMenu size={30} onClick={toggleCardMenu} />
+                <AnimatePresence>
+                  {showCardMenu && (
+                    <Modal
+                      variants={menu}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      transition={{ duration: 0.2 }}
+                    >
+                      {showPublished && (
+                        <IconContainer>
+                          <MdUnpublished
+                            size={22}
+                            onClick={() => handleUnpublish(post._id)}
+                            
+                          />
+                          <AiOutlineDelete
+                            size={22}
+                            onClick={() => handleDelete(post._id)}
+                          />
+                        </IconContainer>
+                      )}
+                      {showUnpublished && (
+                        <IconContainer>
+                          <MdPublishedWithChanges
+                            size={22}
+                            onClick={() => handlePublish(post._id)}
+                          />
+                        </IconContainer>
+                      )}
+                    </Modal>
+                  )}
+                </AnimatePresence>
+              </ButtonOverlay>
+            )}
+          </CardHeaderContainer>
+          <CardFooterContainer>
+            <CardTitle>{post.title}</CardTitle>
+            <CardAuthor>
+              By {post.user.username} / {dateFormat(post.date)}
+            </CardAuthor>
+          </CardFooterContainer>
+        </OverlayContainer>
+      </ImageContainer>
+      <ViewPostContainer>
+        <NextLink href={`/post/${post._id}`}>
+          <ViewPost>{user ? "View Post" : "Read More"}</ViewPost>
+        </NextLink>
+      </ViewPostContainer>
+    </CardContainer>
   );
 };
 
 export default Card;
 
+const CardContainer = styled.div`
+  break-inside: avoid;
+  margin-bottom: 1.3rem;
+`;
+
 const Modal = styled(motion.div)``;
 
-const PostNumber = styled.span``;
+const CardNumber = styled.span``;
 
-const PostTitle = styled.h4`
+const CardTitle = styled.h4`
   font-size: 1.5rem;
 `;
 
-const PostImage = styled.img``;
+const CardImage = styled.img``;
 
-const PostHeaderContainer = styled.div`
+const CardHeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -155,7 +187,7 @@ const PostHeaderContainer = styled.div`
   }
 `;
 
-const PostFooterContainer = styled.div`
+const CardFooterContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -163,10 +195,8 @@ const PostFooterContainer = styled.div`
   margin: auto;
 `;
 
-const PostContainer = styled.div`
+const ImageContainer = styled.div`
   position: relative;
-  break-inside: avoid;
-  margin-bottom: var(--masonry-gap);
 `;
 
 const OverlayContainer = styled.div`
@@ -179,34 +209,49 @@ const OverlayContainer = styled.div`
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  opacity: 0;
+  opacity: ${(props) => (props.dashboard ? "1" : "0")};
   transition: opacity 0.25s;
-  &:hover {
+  ${CardContainer}:hover & {
     opacity: 1;
-    cursor: pointer;
   }
 `;
 
-const PostIconWrapper = styled.div`
+const CardIconWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.3rem;
 `;
 
-const PostViews = styled.span``;
+const CardViews = styled.span``;
 
-const PostLikes = styled.span``;
+const CardLikes = styled.span``;
 
 const IconContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const PostAuthor = styled.p``;
+const ViewPostContainer = styled.div`
+  box-shadow: ${(props) => props.theme.boxShadow};
+  border-bottom-left-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+  padding: 1rem;
+  cursor: pointer;
+`;
+
+const ViewPost = styled.div`
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 1rem;
+`;
+
+const CardAuthor = styled.p``;
 
 const ButtonOverlay = styled.div`
   position: absolute;
+  cursor: pointer;
   top: 0;
   right: 0;
   display: flex;

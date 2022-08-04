@@ -4,8 +4,9 @@ export const darkTheme = {
   span: "rgba(255,255,255,0.7)",
   boxShadow: "0 0.5rem 0.75rem 0 rgba(255, 255, 255, 0.3);",
   boxShadowComment: "0 -0.5rem 0.75rem 0 rgba(255, 255, 255, 0.3);",
+  borderColor: "0.1rem solid rgba(255,255,255,0.2);",
   border: "0.1rem solid",
-  borderBackground: "rgb(255,255,255);"
+  borderBackground: "rgb(255,255,255);",
 };
 export const lightTheme = {
   body: "white",
@@ -13,6 +14,7 @@ export const lightTheme = {
   span: "rgba(255, 255, 255, 0.7);",
   boxShadow: "0 0.5rem 0.75rem 0 rgba(0, 0, 0, 0.3);",
   boxShadowComment: "0 -0.5rem 0.75rem 0 rgba(0, 0, 0, 0.3);",
+  borderColor: "0.1rem solid rgba(0,0,0,0.2);",
   border: "0.1rem solid",
   borderBackground: "rgb(0,0,0);",
 };

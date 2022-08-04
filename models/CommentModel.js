@@ -14,6 +14,13 @@ const CommentTemplate = new mongoose.Schema({
         type: String,
         required: true
     },
+    commentId: {
+        type: String,
+        
+    },
+    commentReplies: {
+        type: [],
+    },
     date: {
         type: Date,
         default: Date.now

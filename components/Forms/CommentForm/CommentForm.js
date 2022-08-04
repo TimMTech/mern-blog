@@ -6,14 +6,18 @@ import { useRouter } from "next/router";
 import {
   FormContainer,
   FieldContainer,
-  StyledLabel,
   StyledField,
   StyledForm,
-  SubmitButton
+  SubmitButton,
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
 
-const CommentForm = ({ setPostComments }) => {
+const CommentForm = ({
+  setPostComments,
+  setCommentReply,
+  replyMode,
+  commentId,
+}) => {
   const { query } = useRouter();
 
   const contentType = "application/json";
@@ -21,8 +25,8 @@ const CommentForm = ({ setPostComments }) => {
     user: "",
     content: "",
     postId: query._id,
+    commentId: commentId,
   });
-
 
   const validationSchema = Yup.object({
     user: Yup.string()
@@ -47,28 +51,51 @@ const CommentForm = ({ setPostComments }) => {
   };
 
   const handleCommentSubmit = () => {
-    fetch(`/api/comment/${query._id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": contentType,
-      },
-      body: JSON.stringify(commentValue),
-    })
-      .then((response) => {
-        return response.json();
+    if (replyMode) {
+      fetch(`/api/comment/${commentId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": contentType,
+        },
+        body: JSON.stringify(commentValue),
       })
-      .then((data) => {
-        setPostComments((prevState) => [...prevState, data]);
-        setCommentValue({
-          user: "",
-          content: "",
-          postId: query._id,
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          setCommentReply((prevState) => [...prevState, data]);
+          setCommentValue({
+            user: "",
+            content: "",
+            postId: query._id,
+            commentId: commentId,
+          });
+        })
+        .catch((error) => console.log(error));
+    } else {
+      fetch("/api/comment", {
+        method: "POST",
+        headers: {
+          "Content-Type": contentType,
+        },
+        body: JSON.stringify(commentValue),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setPostComments((prevState) => [...prevState, data]);
+          setCommentValue({
+            user: "",
+            content: "",
+            postId: query._id,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-        
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    }
   };
 
   return (
@@ -81,8 +108,8 @@ const CommentForm = ({ setPostComments }) => {
       <FormContainer>
         <StyledForm method="POST" commentform="true">
           <FieldContainer commentform="true">
-            <StyledLabel>Username</StyledLabel>
             <StyledField
+              placeholder="Username"
               type="text"
               name="user"
               value={commentValue.user}
@@ -91,28 +118,51 @@ const CommentForm = ({ setPostComments }) => {
             <ErrorMessage name="user" render={renderError} />
           </FieldContainer>
           <FieldContainer commentform="true">
-            <StyledLabel>Content</StyledLabel>
-            <Editor
-              name="content"
-              id="FIXED_ID"
-              apiKey={process.env.NEXT_PUBLIC_TINYMCU_API_KEY}
-              value={commentValue.content}
-              init={{
-                forced_root_block: "false",
-                height: 500,
-                width: "100%",
-                menubar: false,
-                plugins: "autoresize link lists emoticons image",
-                max_height: 500,
-                toolbar_location: "bottom",
-                toolbar:
-                  "bold italic strikethrough link numlist bullist blockquote emoticons image",
-              }}
-              onEditorChange={handleEditorChange}
-            />
+            {replyMode ? (
+              <Editor
+                id="REPLY_MODE"
+                name="content"
+                apiKey={process.env.NEXT_PUBLIC_TINYMCU_API_KEY}
+                value={commentValue.content}
+                init={{
+                  forced_root_block: "false",
+                  height: 500,
+                  width: "100%",
+                  menubar: false,
+                  plugins: "autoresize emoticons",
+                  max_height: 500,
+                  toolbar_location: "bottom",
+                  toolbar: "emoticons",
+                }}
+                onEditorChange={handleEditorChange}
+              />
+            ) : (
+              <Editor
+                id="COMMENT_MODE"
+                name="content"
+                apiKey={process.env.NEXT_PUBLIC_TINYMCU_API_KEY}
+                value={commentValue.content}
+                init={{
+                  forced_root_block: "false",
+                  height: 500,
+                  width: "100%",
+                  menubar: false,
+                  statusbar: false,
+                  plugins: "autoresize link lists emoticons image",
+                  max_height: 500,
+                  toolbar_location: "bottom",
+                  toolbar:
+                    "bold italic strikethrough link numlist bullist blockquote emoticons image",
+                }}
+                onEditorChange={handleEditorChange}
+              />
+            )}
             <ErrorMessage name="content" render={renderError} />
           </FieldContainer>
-          <SubmitButton type="submit">Comment</SubmitButton>
+
+          <SubmitButton type="submit">
+            {replyMode ? "Reply" : "Comment"}
+          </SubmitButton>
         </StyledForm>
       </FormContainer>
     </Formik>
@@ -120,5 +170,3 @@ const CommentForm = ({ setPostComments }) => {
 };
 
 export default CommentForm;
-
-

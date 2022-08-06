@@ -17,7 +17,6 @@ const Post = ({ post }) => {
   } = post;
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [postComments, setPostComments] = useState([]);
 
   const [postLikes, setPostLikes] = useState([]);
   const [liked, setLiked] = useState(false);
@@ -96,23 +95,7 @@ const Post = ({ post }) => {
       });
   };
 
-  const getComments = () => {
-    fetch("/api/comment", {
-      method: "GET",
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setPostComments(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   useEffect(() => {
-    getComments();
     getLikes();
   }, [liked]);
 
@@ -150,6 +133,11 @@ const Post = ({ post }) => {
                 "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
               }
             />
+
+            <PostContent>{content}</PostContent>
+            <PostAuthor>
+              by {username} / {dateFormat(date)}
+            </PostAuthor>
             <LikesContainer
               hidden={user ? false : true}
               onClick={handlePostLike}
@@ -165,18 +153,9 @@ const Post = ({ post }) => {
               )}
               <PostLikeAmount>{postLikes.length}</PostLikeAmount>
             </LikesContainer>
-
-            <PostContent>{content}</PostContent>
-            <PostAuthor>
-              by {username} / {dateFormat(date)}
-            </PostAuthor>
           </PostCardContainer>
 
-          <Comment
-            setPostComments={setPostComments}
-            postComments={postComments}
-            post={post}
-          />
+          <Comment post={post} />
         </PostContainer>
       )}
     </>
@@ -188,14 +167,15 @@ export default Post;
 const EditContainer = styled.main``;
 
 const PostContainer = styled.main`
-  padding: 1rem;
-  margin: 0 10rem;
+  margin: 0 3rem;
+  padding-top: 1rem;
   @media (max-width: 750px) {
-    margin: 0;
+    margin: 0 1rem;
   }
 `;
 
 const OptionContainer = styled.div`
+  padding-top: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -205,29 +185,32 @@ const OptionContainer = styled.div`
 const EditPost = styled.button``;
 
 const DeletePost = styled.button``;
-const PostTitle = styled.h1``;
+const PostTitle = styled.h1`
+  padding-top: 0.5rem;
+  text-align: left;
+`;
 
 const PostCardContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
   margin-top: 1rem;
 `;
 
 const PostImage = styled.img`
   @media (max-width: 750px) {
     border-radius: 0;
+    width: 100%;
+    padding: 0.5rem 0;
+    float: none;
   }
-  border-radius: 0.75rem;
+
+  float: left;
+  width: 50%;
+  padding-right: 0.5rem;
 `;
-
-
 
 const LikesContainer = styled.div`
   gap: 0.2rem;
   border: none;
   background-color: transparent;
-  padding-top: 1rem;
-  width: 100%;
   display: ${(props) => (props.hidden ? "none" : "flex")};
 `;
 
@@ -240,13 +223,13 @@ const PostLikeAmount = styled.span`
 `;
 
 const PostAuthor = styled.h4`
-  font-weight: 300;
-  font-style: italic;
-  
+  font-weight: 700;
+  opacity: 0.5;
+  padding: 1rem 0;
 `;
 
 const PostContent = styled.p`
   width: 100%;
   text-align: left;
-  padding: 1rem 0;
+  line-height: 1.5rem;
 `;

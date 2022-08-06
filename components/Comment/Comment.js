@@ -1,39 +1,48 @@
 import styled from "styled-components";
-import { keyframes } from "styled-components";
 import CommentForm from "../Forms/CommentForm/CommentForm";
 import Replies from "../Replies/Replies";
+import Filter from "../Filter/Filter";
 import moment from "moment";
 import { useRef, useEffect } from "react";
 import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
-import { FaAngleDoubleDown } from "react-icons/fa";
+
 import { AiOutlineLike } from "react-icons/ai";
-
+import { MdOutlineSort } from "react-icons/md";
 import { useState } from "react";
-import { ExitButton } from "../Forms/GlobalFormStyle";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Loader from "../InfiniteScroll/Loader/Loader";
+import End from "../InfiniteScroll/End/End";
 
-const Comment = ({ setPostComments, postComments, post }) => {
-  const [showArrow, setShowArrow] = useState(false);
+const Comment = ({ post }) => {
+  const [showDropDown, setShowDropDown] = useState(false);
   const [commentId, setCommentId] = useState("");
   const [replyMode, setReplyMode] = useState(false);
   const [viewReplies, setViewReplies] = useState(false);
   const [commentReply, setCommentReply] = useState([]);
-
+  const [postComments, setPostComments] = useState([]);
+  const [infinite, setInfinite] = useState([]);
+  const [lastObjectPosition, setLastObjectPosition] = useState(0);
   const ref = useRef(null);
+
+  const fetchInfiniteData = () => {
+    const limit = 5;
+    setInfinite((prevState) => [
+      ...prevState,
+      ...postComments.slice(lastObjectPosition, lastObjectPosition + limit),
+    ]);
+    setLastObjectPosition((prevState) => prevState + limit);
+  };
 
   const dateFormat = (date) => {
     return moment(date).format("lll");
   };
 
-  
+  const toggleScrollUp = (ref) => {
+    ref.current.scrollIntoView();
+  };
 
-  const filteredCommentsLength = postComments.filter(
-    (comment) => comment.postId === post._id
-  );
-
-  
-
-  const toggleScrollBottom = (ref) => {
-    ref.current.scroll({ top: ref.current.scrollHeight, behavior: "smooth" });
+  const handleDropDown = () => {
+    setShowDropDown(!showDropDown);
   };
 
   const handleViewRepliesClose = (_id) => {
@@ -64,31 +73,55 @@ const Comment = ({ setPostComments, postComments, post }) => {
   };
 
   useEffect(() => {
-    const arrowRef = ref.current;
-    const toggleArrow = () => {
-      if (ref.current.scrollTop < -100) {
-        setShowArrow(true);
-      } else {
-        setShowArrow(false);
-      }
+    const getComments = () => {
+      fetch(`/api/comment`, {
+        method: "GET",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          const filtered = data
+            .filter((comment) => comment.postId === post._id)
+            .map((filtered) => filtered);
+          setPostComments(filtered);
+        })
+        .catch((error) => {
+          setHasMore(false);
+          console.log(error);
+        });
     };
-    arrowRef.addEventListener("scroll", toggleArrow);
-    return () => {
-      arrowRef.removeEventListener("scroll", toggleArrow);
-    };
+    getComments();
   }, []);
 
   return (
     <CommentContainer>
+      <OptionContainer>
+        <CommentAmount ref={ref}>{postComments.length} Comments</CommentAmount>
+        <MdOutlineSort
+          size={28}
+          onClick={handleDropDown}
+          style={{ cursor: "pointer" }}
+        />
+        {showDropDown && <Filter />}
+      </OptionContainer>
+      <CommentForm setInfinite={setInfinite} />
+
       <ScrollContainer>
-        <CommentAmount>{filteredCommentsLength.length} Comments</CommentAmount>
-        <CommentForm setPostComments={setPostComments} />
-        <Scroll ref={ref}>
-          <ReverseScroll>
-            {postComments
-              .filter((comment) => comment.postId === post._id)
-              .map((filtered) => {
-                const { _id, user, content, date } = filtered;
+        {postComments.length === 0 ? (
+          <NoComments>No Comments</NoComments>
+        ) : (
+          <InfiniteScroll
+            dataLength={infinite.length}
+            next={fetchInfiniteData}
+            hasMore={lastObjectPosition < postComments.length}
+            loader={<Loader />}
+            endMessage={<End toggleScrollUp={() => toggleScrollUp(ref)} />}
+          >
+            {infinite
+              .sort((a, b) => a.date.localeCompare(b.date))
+              .map((comments) => {
+                const { _id, user, content, date } = comments;
                 return (
                   <CommentWrapper key={_id}>
                     <CommentUser>
@@ -110,9 +143,7 @@ const Comment = ({ setPostComments, postComments, post }) => {
                                 replyMode={replyMode}
                                 commentId={commentId}
                                 setCommentReply={setCommentReply}
-                              
                               />
-                              
                             </>
                           )}
                         </>
@@ -147,11 +178,8 @@ const Comment = ({ setPostComments, postComments, post }) => {
                   </CommentWrapper>
                 );
               })}
-          </ReverseScroll>
-        </Scroll>
-        <IconWrapper showArrow={showArrow}>
-          <StyledIcon onClick={() => toggleScrollBottom(ref)} size={25} />
-        </IconWrapper>
+          </InfiniteScroll>
+        )}
       </ScrollContainer>
     </CommentContainer>
   );
@@ -161,40 +189,15 @@ export default Comment;
 
 const CommentContainer = styled.section`
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
 `;
 
-const CommentAmount = styled.h4`
-  padding: 1rem 0;
-  border-bottom: ${(props) => props.theme.borderColor};
-`;
+const CommentAmount = styled.h4``;
 
-const ScrollContainer = styled.div`
-  
-  @media (max-width: 750px) {
-    margin: 0.5rem;
-  }
-`;
-
-const Scroll = styled.div`
-  display: flex;
-  flex-direction: column-reverse;
-  @media (max-width: 750px) {
-    overflow-y: scroll;
-    max-height: 400px;
-  }
-`;
-
-const ReverseScroll = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+const ScrollContainer = styled.div``;
 
 const CommentWrapper = styled.div`
   margin: 1rem 0;
   position: relative;
- 
 `;
 
 const CommentUser = styled.h4`
@@ -207,36 +210,6 @@ const CommentDate = styled.span`
 `;
 
 const CommentContent = styled.p``;
-
-const IconWrapper = styled.div`
-  display: none;
-  @media (max-width: 750px) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 500ms;
-    opacity: ${(props) => (props.showArrow ? "1" : "0")};
-    transform: translateY(-50%);
-  }
-`;
-
-const scale = keyframes`
-  0% {
-    transform: scale(1,1);
-  }
-
-  50% {
-    transform: scale(1.5,1.5);
-  }
-  
-  100% {
-    transform: scale(1,1);
-  }
-`;
-
-const StyledIcon = styled(FaAngleDoubleDown)`
-  animation: ${scale} 1s infinite;
-`;
 
 const RepliesContainer = styled.div`
   display: flex;
@@ -256,6 +229,7 @@ const ReplyLikeContainer = styled.div`
 const ReplyButton = styled.button`
   padding: 0;
   opacity: 0.5;
+  border: none;
 `;
 
 const ViewButton = styled.button`
@@ -266,4 +240,21 @@ const ViewButton = styled.button`
   color: rgb(62, 166, 255);
   font-size: 0.8rem;
   margin-left: -0.5rem;
+  border: none;
+`;
+
+const OptionContainer = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  border-bottom: 0.05rem solid rgb(0, 0, 0);
+  gap: 1rem;
+  padding: 1rem 0;
+`;
+
+const NoComments = styled.h3`
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
 `;

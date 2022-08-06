@@ -8,6 +8,10 @@ export const GlobalStyles = createGlobalStyle`
     font-family: 'Roboto', sans-serif;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: ${(props) => props.theme.body};
     color: ${(props) => props.theme.text};
@@ -15,7 +19,7 @@ export const GlobalStyles = createGlobalStyle`
 
 
   h1 {
-    font-size: 3rem;
+    font-size: 2rem;
     text-align: center;
   }
 
@@ -36,11 +40,11 @@ export const GlobalStyles = createGlobalStyle`
   button {
     font-size: 1rem;
     font-weight: 700;
-    border: none;
+    background-color: ${(props) => props.theme.body};
     padding: 0.5rem 2rem;
     color: ${(props) => props.theme.text};
     cursor: pointer;
-    background-color: transparent;
+    
     
   }
 

@@ -13,10 +13,10 @@ import {
 import { renderError } from "../../Validations/FormError";
 
 const CommentForm = ({
-  setPostComments,
   setCommentReply,
   replyMode,
   commentId,
+  setInfinite,
 }) => {
   const { query } = useRouter();
 
@@ -85,7 +85,7 @@ const CommentForm = ({
           return response.json();
         })
         .then((data) => {
-          setPostComments((prevState) => [...prevState, data]);
+          setInfinite((prevState) => [...prevState, data]);
           setCommentValue({
             user: "",
             content: "",

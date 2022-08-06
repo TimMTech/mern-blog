@@ -274,20 +274,23 @@ const OptionsContainer = styled.div`
 `;
 
 const HomeButton = styled.button`
+  background-color: rgba(128, 128, 128, 0.5);
   border: none;
   border-radius: 2rem;
   padding: 0.8rem 1.5rem;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(128, 128, 128, 0.8);
   }
 `;
 
 const EditButton = styled.button`
+  background-color: rgba(128, 128, 128, 0.5);
   border: none;
   border-radius: 2rem;
   padding: 0.8rem 1.5rem;
   &:hover {
     background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(128, 128, 128, 0.8);
   }
 `;
 

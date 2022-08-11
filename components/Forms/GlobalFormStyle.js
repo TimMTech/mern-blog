@@ -29,9 +29,13 @@ export const StyledForm = styled(Form)`
   height: auto;
   gap: 1.5rem;
   margin: ${(props) => (props.commentform ? "1rem 0" : null)};
-  
-  
 `;
+
+export const StandardForm = styled.form`
+display: flex;
+flex-direction: column;
+  
+`
 
 export const FieldContainer = styled.div`
   display: flex;
@@ -58,6 +62,10 @@ export const StyledField = styled(Field)`
     opacity: 0.7;
   }
 `;
+
+export const StandardField = styled.input``
+
+export const StandardTextarea = styled.textarea``
 
 export const ButtonContainer = styled.div`
   display: flex;

@@ -13,6 +13,7 @@ import {
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
 import LoginError from "../../Validations/LoginError";
+import GoogleLogin from "react-google-login";
 
 const LoginForm = () => {
   const contentType = "application/json";
@@ -68,6 +69,10 @@ const LoginForm = () => {
       });
   };
 
+  const testResponse = (response) => {
+    console.log(response)
+  }
+
   return (
     <Formik
       initialValues={loginValue}
@@ -77,6 +82,7 @@ const LoginForm = () => {
     >
       <FormContainer>
         <StyledForm method="POST">
+          <GoogleLogin onSuccess={testResponse}  />
           {loginFailed && <LoginError />}
           <FormTitle>Login to Your Account</FormTitle>
           <FieldContainer>

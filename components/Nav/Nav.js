@@ -87,8 +87,8 @@ const Nav = ({ toggleTheme, isDark }) => {
         </Logo>
       </NextLink>
       <SwitchLabel backgroundColor={backgroundColor} path={router.pathname}>
-        <SwitchInput type="checkbox" />
-        <Switch onClick={toggleTheme} />
+        <SwitchInput type="checkbox" onClick={toggleTheme} />
+        <Switch />
         {isDark ? "Dark" : "Light"}
       </SwitchLabel>
       <NavLinkContainer
@@ -246,14 +246,11 @@ const NavLinkContainer = styled.div`
   @media (max-width: 750px) {
     display: none;
   }
-
   color: ${(props) => (props.backgroundColor ? "black" : "white")};
   color: ${(props) => props.path !== "/" && "white"};
 `;
 
 const Logo = styled.a`
-  cursor: pointer;
-  font-weight: 900;
   color: ${(props) => (props.backgroundColor ? "black" : "white")};
   color: ${(props) => props.path !== "/" && "white"};
   color: ${(props) => props.showBurger && "black"};

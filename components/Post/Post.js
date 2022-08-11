@@ -167,7 +167,7 @@ export default Post;
 const EditContainer = styled.main``;
 
 const PostContainer = styled.main`
-  margin: 0 3rem;
+  margin: 0 5rem;
   padding-top: 1rem;
   @media (max-width: 750px) {
     margin: 0 1rem;
@@ -201,7 +201,7 @@ const PostImage = styled.img`
     padding: 0.5rem 0;
     float: none;
   }
-
+  
   float: left;
   width: 50%;
   padding-right: 0.5rem;

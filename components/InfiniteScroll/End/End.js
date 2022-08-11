@@ -9,7 +9,7 @@ const End = ({toggleScrollUp}) => {
 
   return (
     <EndContainer>
-      <Title>End of comments...</Title>
+      <Title>End of comments</Title>
       <FaAngleDoubleUp size={30} onClick={() => toggleScrollUp(ref)} style={{cursor: "pointer"}}/>
     </EndContainer>
   );
@@ -22,7 +22,6 @@ const EndContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  background-color: ${(props) => props.theme.body};
   gap: 0.5rem;
   padding: 1rem;
 `;

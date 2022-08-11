@@ -44,8 +44,13 @@ export const GlobalStyles = createGlobalStyle`
     padding: 0.5rem 2rem;
     color: ${(props) => props.theme.text};
     cursor: pointer;
-    
-    
+  }
+
+  a {
+    text-decoration: none;
+    color: ${(props) => props.theme.footerText};
+    cursor: pointer;
+    font-weight: 900;
   }
 
  

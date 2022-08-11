@@ -1,4 +1,5 @@
 import Nav from "../components/Nav/Nav";
+import Footer from "../components/Footer/Footer";
 import NextNProgress from "nextjs-progressbar";
 import Head from "next/head";
 import { useState } from "react";
@@ -26,6 +27,7 @@ const MyApp = ({ Component, pageProps }) => {
         <GlobalStyles />
         <Nav toggleTheme={toggleTheme} isDark={isDarkTheme} />
         <Component {...pageProps} />
+        <Footer />
       </ThemeProvider>
     </>
   );

@@ -38,11 +38,12 @@ export const GlobalStyles = createGlobalStyle`
     width: 100%;
   }
   button {
+    border: 0.05rem solid;
     font-size: 1rem;
-    font-weight: 700;
-    background-color: ${(props) => props.theme.body};
-    padding: 0.5rem 2rem;
-    color: ${(props) => props.theme.text};
+    font-weight: 900;
+    background-color: ${(props) => props.theme.buttonBackground};
+    padding: 1rem 2rem;
+    color: ${(props) => props.theme.buttonColor};
     cursor: pointer;
   }
 

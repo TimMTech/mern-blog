@@ -6,12 +6,12 @@ import SignupForm from "../Forms/SignupForm/SignupForm";
 import Cookies from "js-cookie";
 import Card from "../Card/Card";
 import Filter from "../Filter/Filter";
-import {AiOutlinePlus} from "react-icons/ai"
+import { AiOutlinePlus } from "react-icons/ai";
 
 const Dashboard = ({ user, posts }) => {
   const session = Cookies.get("token");
   const router = useRouter();
-  
+
   const [option, setOption] = useState("mostRecentDefault");
   const [mostLikedVisible, setMostLikedVisible] = useState(false);
   const [mostRecentDefaultVisible, setMostRecentDefaultVisible] =
@@ -204,9 +204,7 @@ const Dashboard = ({ user, posts }) => {
               <MenuContainer>
                 <Filter value={option} handleBlogOptions={handleBlogOptions} />
                 <NextLink href={"/post"}>
-                  <CreatePostIcon>
-                    <AiOutlinePlus size={35}/>
-                  </CreatePostIcon>
+                  <AiOutlinePlus size={35} style={{ cursor: "pointer" }} />
                 </NextLink>
               </MenuContainer>
               {showPublished && (
@@ -244,6 +242,7 @@ const HeaderContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
 `;
 
 const UserLogo = styled.span`
@@ -275,6 +274,7 @@ const OptionsContainer = styled.div`
 
 const HomeButton = styled.button`
   background-color: rgba(128, 128, 128, 0.5);
+  color: ${(props) => props.theme.text};
   border: none;
   border-radius: 2rem;
   padding: 0.8rem 1.5rem;
@@ -285,6 +285,7 @@ const HomeButton = styled.button`
 
 const EditButton = styled.button`
   background-color: rgba(128, 128, 128, 0.5);
+  color: ${(props) => props.theme.text};
   border: none;
   border-radius: 2rem;
   padding: 0.8rem 1.5rem;
@@ -329,13 +330,6 @@ const MenuContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: 2rem;
-`;
-
-const CreatePostIcon = styled.a`
-  &:hover {
-    transform: scale(1.1, 1.1);
-    cursor: pointer;
-  }
 `;
 
 const MasonryContainer = styled.div`

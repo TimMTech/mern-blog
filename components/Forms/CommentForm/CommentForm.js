@@ -160,7 +160,7 @@ const CommentForm = ({
             <ErrorMessage name="content" render={renderError} />
           </FieldContainer>
 
-          <SubmitButton type="submit">
+          <SubmitButton type="submit" commentform="true">
             {replyMode ? "Reply" : "Comment"}
           </SubmitButton>
         </StyledForm>

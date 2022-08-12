@@ -88,20 +88,31 @@ const FooterContainer = styled.footer`
   bottom: 0;
   text-align: center;
   width: 100%;
-  padding: 2rem 0;
-  margin-top: 2rem;
+  padding: 2.5rem 0;
   line-height: 2.5rem;
   box-shadow: ${(props) => props.theme.boxShadowFooter};
   background-color: ${(props) => props.theme.footerBody};
   color: ${(props) => props.theme.footerText};
-  display: ${(props) => props.path === "/post/[_id]" ? "none" : "grid"};
-  grid-template-columns: ${(props) => props.path !== "/post/[_id]" && "repeat(2, minmax(0, 1fr))"};
+  display: ${(props) =>
+    props.path === "/post/[_id]" || props.path === "/user/[_id]"
+      ? "none"
+      : "grid"};
+
+  grid-template-columns: ${(props) =>
+    props.path !== "/post/[_id]" && "repeat(2, minmax(0, 1fr))"};
+  grid-template-columns: ${(props) =>
+    props.path !== "/user/[_id]" && "repeat(2, minmax(0, 1fr))"};
   @media (max-width: 750px) {
-    grid-template-columns: repeat(1, minmax(0,1fr));
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    row-gap: 2rem;
   }
 `;
 
 const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `
 
 const Logo = styled.a`

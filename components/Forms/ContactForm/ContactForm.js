@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { FormContainer, StandardForm, StandardField,StandardTextarea, SubmitButton } from "../GlobalFormStyle";
+import {
+  FormContainer,
+  StandardForm,
+  StandardField,
+  StandardTextarea,
+  SubmitButton,
+  FormTitle,
+} from "../GlobalFormStyle";
 import { handleEmailjs } from "../../../config/emailjs/emailjsConfig";
 
 const ContactForm = () => {
@@ -17,18 +24,19 @@ const ContactForm = () => {
   };
 
   const handleContactSubmit = (e) => {
-      e.preventDefault()
-    handleEmailjs(contactValue)
+    e.preventDefault();
+    handleEmailjs(contactValue);
     setContactValue({
-        email: "",
-        message: ""
-    })
-  }
+      email: "",
+      message: "",
+    });
+    
+  };
 
   return (
     <FormContainer>
       <StandardForm onSubmit={handleContactSubmit}>
-        Contact Us!
+        <FormTitle>Contact Us!</FormTitle>
         <StandardField
           name="email"
           type="email"
@@ -49,4 +57,3 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
-

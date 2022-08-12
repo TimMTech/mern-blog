@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { Form, Field } from "formik";
 
-
 export const FormContainer = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
 `;
 
@@ -15,10 +15,7 @@ export const EditTitle = styled.p`
   padding-top: 3rem;
 `;
 
-export const FormTitle = styled.h1`
-  border-bottom: 0.05rem solid rgba(0, 0, 0, 0.3);
-  padding: 1rem;
-`;
+export const FormTitle = styled.h1``;
 
 export const StyledForm = styled(Form)`
   display: flex;
@@ -32,27 +29,28 @@ export const StyledForm = styled(Form)`
 `;
 
 export const StandardForm = styled.form`
-display: flex;
-flex-direction: column;
-  
-`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5rem;
+`;
 
 export const FieldContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: ${(props) => props.commentform?"100%" : "50%"};
+  width: ${(props) => (props.commentform ? "100%" : "50%")};
 `;
 
 export const StyledLabel = styled.label`
   width: 100%;
-`
+`;
 
 export const StyledField = styled(Field)`
-  border: 0.05rem solid rgb(0,0,0);
+  border: 0.05rem solid rgb(0, 0, 0);
   width: 100%;
-
   padding: 0.5rem;
   font-size: 1.5rem;
   &:focus {
@@ -63,19 +61,30 @@ export const StyledField = styled(Field)`
   }
 `;
 
-export const StandardField = styled.input``
+export const StandardField = styled.input`
+  width: 100%;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+`;
 
-export const StandardTextarea = styled.textarea``
+export const StandardTextarea = styled.textarea`
+  font-size: 1.5rem;
+  padding: 0.5rem;
+`;
 
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
 `;
 
-export const SubmitButton = styled.button``;
+export const SubmitButton = styled.button`
+  width: ${(props) => (props.commentform ? "100%" : "50%")};
+`;
 
-export const ExitButton = styled.button``;
-
-
+export const ExitButton = styled.button`
+  width: ${(props) => (props.commentform ? "100%" : "50%")};
+`;

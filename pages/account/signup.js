@@ -17,7 +17,11 @@ export default signup;
 
 const SignUpPageContainer = styled.main`
   width: 100%;
-  display: flex;
-  min-height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (max-width: 750px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  height: 100vh;
 `;
 

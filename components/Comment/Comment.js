@@ -230,6 +230,8 @@ const ReplyButton = styled.button`
   padding: 0;
   opacity: 0.5;
   border: none;
+  background-color: ${(props) => props.theme.body};
+  color: ${(props) => props.theme.text};
 `;
 
 const ViewButton = styled.button`
@@ -237,6 +239,7 @@ const ViewButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: ${(props) => props.theme.body};
   color: rgb(62, 166, 255);
   font-size: 0.8rem;
   margin-left: -0.5rem;

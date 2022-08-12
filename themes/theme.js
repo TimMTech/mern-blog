@@ -9,6 +9,8 @@ export const darkTheme = {
   borderColor: "0.1rem solid rgba(255,255,255,0.2);",
   border: "0.1rem solid",
   borderBackground: "rgb(255,255,255);",
+  buttonBackground: "rgb(255,255,255);",
+  buttonColor: "rgb(0,0,0);"
 };
 export const lightTheme = {
   body: "rgb(255,255,255)",
@@ -21,4 +23,6 @@ export const lightTheme = {
   borderColor: "0.1rem solid rgba(0,0,0,0.2);",
   border: "0.1rem solid",
   borderBackground: "rgb(0,0,0);",
+  buttonBackground: "rgb(62, 166, 255);",
+  buttonColor: "rgb(255,255,255);",
 };

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import Blog from "../components/Blog/Blog";
-import NextLink from "next/link";
 import NextImage from "next/image";
 import heroBG from "/public/static/images/heroBG.png";
 
@@ -9,14 +8,12 @@ const home = ({ posts }) => {
   return (
     <HomeContainer>
       <HeaderContainer>
-        <BlogImageWrapper>
+        <ImageWrapper>
           <NextImage src={heroBG} layout="fill" objectFit="cover" priority />
-        </BlogImageWrapper>
+        </ImageWrapper>
         <Title>TECHNOLOGY FOR INOVATORS</Title>
         <SubTitle>Where Developers Push Limits</SubTitle>
-        <NextLink href="/account/signup">
-          <SignupButton>GET STARTED</SignupButton>
-        </NextLink>
+        
         
       </HeaderContainer>
       <Blog posts={posts} />
@@ -48,7 +45,7 @@ const HeaderContainer = styled.div`
   position: relative;
 `;
 
-const BlogImageWrapper = styled.div`
+const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 500px;
@@ -71,10 +68,7 @@ const SubTitle = styled.h2`
   font-style: italic;
 `;
 
-const SignupButton = styled.button`
-  position: absolute;
-  top: 73%;
-`;
+
 
 
 

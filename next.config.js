@@ -20,6 +20,7 @@ module.exports = {
   }
 }
 
+
 module.exports = {
   // target: 'experimental-serverless-trace',
   webpack: (config) => {
@@ -28,5 +29,7 @@ module.exports = {
     return config;
   },
 };
+
+
 
 

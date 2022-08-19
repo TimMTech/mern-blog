@@ -9,7 +9,8 @@ import {
   AiFillInstagram,
   AiFillLinkedin,
 } from "react-icons/ai";
-const cookies = require("js-cookie");
+import { useSession, signOut } from "next-auth/react";
+
 const Framer = require("framer-motion");
 
 const backdrop = {
@@ -24,38 +25,14 @@ const menu = {
 
 const Nav = ({ toggleTheme, isDark }) => {
   const router = useRouter();
+  const { data: session } = useSession();
 
-  const [isAuth, setIsAuth] = useState(false);
-  const [user, setUser] = useState(null);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState(false);
 
   const toggleHamburger = () => {
     setHamburgerOpen(!hamburgerOpen);
   };
-
-  const getUser = () => {
-    fetch("/api/session", {
-      method: "GET",
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data) {
-          setUser(data);
-          setIsAuth(true);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        cookies.remove("token");
-        router.push("/404");
-      });
-  };
-  useEffect(() => {
-    getUser();
-  }, []);
 
   useEffect(() => {
     const changeNav = () => {
@@ -74,11 +51,6 @@ const Nav = ({ toggleTheme, isDark }) => {
     };
   }, [backgroundColor, router.pathname]);
 
-  const logout = () => {
-    cookies.remove("token");
-    window.location.href = "/account/login";
-  };
-
   return (
     <NavContainer backgroundColor={backgroundColor} path={router.pathname}>
       <NextLink href="/">
@@ -95,21 +67,19 @@ const Nav = ({ toggleTheme, isDark }) => {
         backgroundColor={backgroundColor}
         path={router.pathname}
       >
-        {isAuth ? (
+        {session ? (
           <LoggedInContainer>
-            <NextLink href={`/user/${user._id}`}>
-              <Username>{user.username}</Username>
+            <NextLink href={`/user/${session.user._id}`}>
+              <Username>{session.user.email}</Username>
             </NextLink>
-            <NextLink href="/account/login">
-              <Logout onClick={logout}>LOGOUT</Logout>
-            </NextLink>
+            <Logout onClick={() => signOut()}>LOGOUT</Logout>
           </LoggedInContainer>
         ) : (
           <LoggedOutContainer>
-            <NextLink href="/account/login">
+            <NextLink href="/auth/login">
               <Login>LOGIN</Login>
             </NextLink>
-            <NextLink href="/account/signup">
+            <NextLink href="/auth/signup">
               <Signup>SIGN-UP</Signup>
             </NextLink>
           </LoggedOutContainer>
@@ -136,22 +106,21 @@ const Nav = ({ toggleTheme, isDark }) => {
                 <Logo showBurger={hamburgerOpen}>EBLOG</Logo>
               </NextLink>
               <Paragraph>Let us discover new tech together!</Paragraph>
-              {isAuth ? (
+              {session ? (
                 <LoggedInContainer>
-                  <NextLink href={`/user/${user._id}`}>
-                    <Username>{user.username}</Username>
+                  <NextLink href={`/user/${session.user._id}`}>
+                    <Username>{session.user.email}</Username>
                   </NextLink>
-                  <NextLink href="/account/login">
-                    <Logout onClick={logout}>LOGOUT</Logout>
-                  </NextLink>
+
+                  <Logout onClick={() => signOut()}>LOGOUT</Logout>
                 </LoggedInContainer>
               ) : (
                 <LoggedOutContainer>
-                  <NextLink href="/account/login">
+                  <NextLink href="/auth/login">
                     <Login>LOGIN</Login>
                   </NextLink>
-                  <NextLink href="/account/signup">
-                    <Login>SIGN-UP</Login>
+                  <NextLink href="/auth/signup">
+                    <Signup>SIGN-UP</Signup>
                   </NextLink>
                 </LoggedOutContainer>
               )}
@@ -228,6 +197,8 @@ const NavContainer = styled.nav`
   z-index: 11;
   overflow-y: scroll;
   display: flex;
+  display: ${(props) => props.path === "/auth/login" && "none"};
+  display: ${(props) => props.path === "/auth/signup" && "none"};
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1rem;

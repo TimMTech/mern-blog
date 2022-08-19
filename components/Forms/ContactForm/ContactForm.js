@@ -50,7 +50,7 @@ const ContactForm = () => {
           onChange={(e) => handleContactChange(e)}
           placeholder="message"
         />
-        <SubmitButton type="submit">Contact</SubmitButton>
+        <SubmitButton type="submit" contactform="true">Contact</SubmitButton>
       </StandardForm>
     </FormContainer>
   );

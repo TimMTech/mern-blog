@@ -5,6 +5,9 @@ import { useState, useEffect } from "react";
 import PostForm from "../Forms/PostForm/PostForm";
 import Comment from "../Comment/Comment";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
+import { useSession } from "next-auth/react";
+
+
 
 const Post = ({ post }) => {
   const {
@@ -14,10 +17,10 @@ const Post = ({ post }) => {
     user: { username },
     date,
     imageUrl,
+    
   } = post;
   const router = useRouter();
-  const [user, setUser] = useState(null);
-
+  const { data: session } = useSession();
   const [postLikes, setPostLikes] = useState([]);
   const [liked, setLiked] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -84,10 +87,10 @@ const Post = ({ post }) => {
         return response.json();
       })
       .then((data) => {
-        if (data && data.user) {
-          setUser(data.user);
-          setPostLikes(data.post);
-          if (data.post.some((id) => id === data.decoded)) setLiked(true);
+       
+        if (data && data.post) {
+          setPostLikes([...new Set(data.post)]);
+          
         }
       })
       .catch((error) => {
@@ -116,30 +119,28 @@ const Post = ({ post }) => {
       ) : (
         <PostContainer>
           <PostCardContainer>
-            {user === username ? (
+            {session && (
               <OptionContainer>
-                <EditPost hidden={user ? false : true} onClick={handleEdit}>
+                <EditPost hidden={session ? false : true} onClick={handleEdit}>
                   Edit
                 </EditPost>
-                <DeletePost hidden={user ? false : true} onClick={handleDelete}>
+                <DeletePost
+                  hidden={session ? false : true}
+                  onClick={handleDelete}
+                >
                   Delete
                 </DeletePost>
               </OptionContainer>
-            ) : null}
+            )}
             <PostTitle>{title}</PostTitle>
-            <PostImage
-              src={
-                imageUrl ||
-                "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
-              }
-            />
+            <PostImage src={imageUrl || "/static/images/default.png"} />
 
             <PostContent>{content}</PostContent>
             <PostAuthor>
               by {username} / {dateFormat(date)}
             </PostAuthor>
             <LikesContainer
-              hidden={user ? false : true}
+              hidden={session ? false : true}
               onClick={handlePostLike}
             >
               {liked ? (
@@ -201,10 +202,10 @@ const PostImage = styled.img`
     padding: 0.5rem 0;
     float: none;
   }
-  
+
   float: left;
   width: 50%;
-  padding-right: 0.5rem;
+  padding-right: 2rem;
 `;
 
 const LikesContainer = styled.div`

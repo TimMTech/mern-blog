@@ -5,7 +5,11 @@ export const FormContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 1rem;
   width: 100%;
+  
+ 
 `;
 
 export const EditTitle = styled.p`
@@ -15,7 +19,12 @@ export const EditTitle = styled.p`
   padding-top: 3rem;
 `;
 
-export const FormTitle = styled.h1``;
+export const FormTitle = styled.h1`
+  width: 90%;
+  text-align: left;
+  padding: 1rem 0;
+  
+`;
 
 export const StyledForm = styled(Form)`
   display: flex;
@@ -32,8 +41,10 @@ export const StandardForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  gap: 0.5rem;
+  align-items: ${(props) => (props.loginform ? "center" : "flex-start")};
+  width: ${(props) => (props.loginform ? "100%" : null)};
+  gap: 1rem;
+  
 `;
 
 export const FieldContainer = styled.div`
@@ -42,6 +53,8 @@ export const FieldContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: ${(props) => (props.commentform ? "100%" : "50%")};
+  width: ${(props) => props.loginform && "90%"};
+  width: ${(props) => props.signupform && "90%"};
 `;
 
 export const StyledLabel = styled.label`
@@ -81,10 +94,42 @@ export const ButtonContainer = styled.div`
   width: 100%;
 `;
 
+export const LineBreakContainer = styled.div`
+  display: flex;
+  width: 75%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  opacity: 0.5;
+`;
+
+export const Line = styled.div`
+  height: 0.1rem;
+  border: 0.05rem solid;
+  background-color: ${(props) => props.theme.borderBackground};
+
+  width: 100%;
+`;
+
 export const SubmitButton = styled.button`
-  width: ${(props) => (props.commentform ? "100%" : "50%")};
+  width: ${(props) => (props.commentform ? "100%" : "90%")};
+  width: ${(props) => props.contactform && "100%"};
+`;
+
+export const LogoutButton = styled.button`
+  width: ${(props) => (props.commentform ? "100%" : "90%")};
 `;
 
 export const ExitButton = styled.button`
-  width: ${(props) => (props.commentform ? "100%" : "50%")};
+  width: ${(props) => (props.commentform ? "100%" : "90%")};
+`;
+
+export const DashButton = styled.button`
+  width: ${(props) => (props.commentform ? "100%" : "90%")};
+`;
+
+export const ErrorMessage = styled.p`
+  text-align: center;
+  font-size: 1.5rem;
+  color: rgb(255, 0, 0);
 `;

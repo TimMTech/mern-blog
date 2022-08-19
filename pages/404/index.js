@@ -7,10 +7,11 @@ const error404 = () => {
 }
 
 const ErrorContainer = styled.main`
-    margin-top: 10rem;
+   
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
 `
 
 export default error404;

@@ -38,6 +38,8 @@ export const GlobalStyles = createGlobalStyle`
     width: 100%;
   }
   button {
+    white-space: normal;
+    word-wrap: break-word;
     border: 0.05rem solid;
     font-size: 1rem;
     font-weight: 900;
@@ -52,6 +54,10 @@ export const GlobalStyles = createGlobalStyle`
     color: ${(props) => props.theme.footerText};
     cursor: pointer;
     font-weight: 900;
+  }
+
+  li {
+    font-size: 1.3rem;
   }
 
  

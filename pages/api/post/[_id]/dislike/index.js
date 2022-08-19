@@ -1,8 +1,11 @@
 import dbConnect from "../../../../../database/connectDB";
 const PostTemplate = require("../../../../../models/PostModel");
 const jwt = require("jsonwebtoken");
+import { getToken } from "next-auth/jwt";
 
 await dbConnect();
+
+const secret = process.env.NEXTAUTH_SECRET;
 
 const dislike = async (req, res) => {
   const {
@@ -11,51 +14,50 @@ const dislike = async (req, res) => {
   } = req;
 
   if (method === "PUT") {
-    if (!("token" in req.cookies)) {
+    if (!("next-auth.session-token" in req.cookies)) {
       return res.status(401).json({ error: "TOKEN NOT FOUND" });
     }
-    let decoded;
-    const token = req.cookies.token;
+    const token = await getToken({
+      req: req,
+      secret: secret,
+    });
     if (token) {
-      decoded = jwt.verify(token, "secretBlog");
-    } else {
-      return res.status(400).json({ error: "UNABLE TO VERIFY" });
-    }
-    if (decoded) {
       const post = await PostTemplate.findByIdAndUpdate(
         { _id: _id },
-        { $pull: { likes: decoded._id } }
+        { $pull: { likes: token.email } }
       );
+
       post
         .save()
         .then((data) => {
-          return res.status(200).json(data.likes);
+          return res.status(200).json(data);
         })
         .catch((error) => {
-          return res.status(400).json({ error: "FAILED TO DISLIKE" });
+          return res.status(400).json({ error: "FAILED UPDATE" });
         });
-    } else {
-      return res.status(400).json({ error: "FAILED TO DECODE" });
-    }
-  }
-  if (method === "GET") {
-    if (!("token" in req.cookies)) {
-      return res.status(401).json({ error: "TOKEN NOT FOUND" });
-    }
-    let decoded;
-    const token = req.cookies.token;
-    if (token) {
-      decoded = jwt.verify(token, "secretBlog");
     } else {
       return res.status(400).json({ error: "UNABLE TO VERIFY" });
     }
-    if (decoded) {
+  }
+  if (method === "GET") {
+    if (!("next-auth.session-token" in req.cookies)) {
+      return res.status(401).json({ error: "TOKEN NOT FOUND" });
+    }
+    const token = await getToken({
+      req: req,
+      secret: secret,
+      raw: true,
+    });
+    if (token) {
       const post = await PostTemplate.findById(_id);
-
       if (!post) {
         return res.status(400).json({ error: "NOT FOUND" });
       }
-      return res.status(200).json({ post: post.likes, decoded: decoded._id });
+      return res.status(200).json({
+        post: post.likes,
+      });
+    } else {
+      return res.status(400).json({ error: "UNABLE TO VERIFY" });
     }
   }
 };

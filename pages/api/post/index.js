@@ -2,42 +2,42 @@ import dbConnect from "../../../database/connectDB.js";
 const PostTemplate = require("../../../models/PostModel.js");
 const User = require("../../../models/UserModel.js");
 const jwt = require("jsonwebtoken");
+import { getToken } from "next-auth/jwt";
 
 await dbConnect();
+
+const secret = process.env.NEXTAUTH_SECRET;
 
 const post = async (req, res) => {
   const { method } = req;
 
   if (method === "POST") {
-    if (!("token" in req.cookies)) {
+    if (!("next-auth.session-token" in req.cookies)) {
       return res.status(401).json({ error: "TOKEN NOT FOUND" });
     }
-    let decoded;
-    const token = req.cookies.token;
+    const token = await getToken({
+      req: req,
+      secret: secret,
+    });
     if (token) {
-      decoded = jwt.verify(token, "secretBlog");
-    } else {
-      return res.status(400).json({ error: "UNABLE TO VERIFY" });
-    }
-    if (decoded) {
+      
       const post = await new PostTemplate({
         title: req.body.title,
         content: req.body.content,
         imageUrl: req.body.imageUrl,
-        user: decoded._id,
+        user: token.id,
         published: true,
-        
       });
       post
         .save()
         .then((data) => {
-          return res.status(200).json({ postData: data , token: token });
+          return res.status(200).json({ postData: data, token: token }).end();
         })
         .catch((error) => {
           return res.status(400).json(error);
         });
     } else {
-      return res.status(400).json({ message: "TOKEN NOT FOUND" });
+      return res.status(400).json({ error: "UNABLE TO VERIFY" });
     }
   }
   if (method === "GET") {

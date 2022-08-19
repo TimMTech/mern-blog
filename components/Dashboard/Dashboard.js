@@ -1,24 +1,22 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import NextLink from "next/link";
 import SignupForm from "../Forms/SignupForm/SignupForm";
-import Cookies from "js-cookie";
 import Card from "../Card/Card";
 import Filter from "../Filter/Filter";
 import { AiOutlinePlus } from "react-icons/ai";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const Dashboard = ({ user, posts }) => {
-  const session = Cookies.get("token");
+  const { data: session, status } = useSession();
   const router = useRouter();
-
   const [option, setOption] = useState("mostRecentDefault");
   const [mostLikedVisible, setMostLikedVisible] = useState(false);
   const [mostRecentDefaultVisible, setMostRecentDefaultVisible] =
     useState(false);
   const [mostViewedVisible, setMostViewedVisible] = useState(false);
 
-  const [isAuth, setIsAuth] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [showPublished, setShowPublished] = useState(false);
   const [showUnpublished, setShowUnpublished] = useState(false);
@@ -129,17 +127,16 @@ const Dashboard = ({ user, posts }) => {
   };
 
   useEffect(() => {
-    setShowPublished(true);
-  }, []);
+    if (status === "unauthenticated") {
+      router.push("/auth/login");
+    } else if (status === "authenticated") {
+      console.log("logged in");
+    }
+  }, [status, router]);
 
   useEffect(() => {
-    if (session) {
-      setIsAuth(true);
-    } else {
-      setIsAuth(false);
-      router.push("/404");
-    }
-  }, [session, router]);
+    setShowPublished(true);
+  }, []);
 
   useEffect(() => {
     option === "mostRecentDefault"
@@ -156,7 +153,7 @@ const Dashboard = ({ user, posts }) => {
 
   return (
     <>
-      {isAuth && (
+      {session && (
         <>
           {editMode ? (
             <EditContainer>
@@ -203,8 +200,11 @@ const Dashboard = ({ user, posts }) => {
               </HeaderContainer>
               <MenuContainer>
                 <Filter value={option} handleBlogOptions={handleBlogOptions} />
+
                 <NextLink href={"/post"}>
-                  <AiOutlinePlus size={35} style={{ cursor: "pointer" }} />
+                  <IconWrapper>
+                    <AiOutlinePlus size={35} />
+                  </IconWrapper>
                 </NextLink>
               </MenuContainer>
               {showPublished && (
@@ -340,3 +340,7 @@ const MasonryContainer = styled.div`
   column-width: var(--masonry-brick-width);
   padding: 1rem;
 `;
+
+const IconWrapper = styled.span`
+
+cursor: pointer;`

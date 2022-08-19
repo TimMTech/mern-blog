@@ -1,114 +1,101 @@
-import * as Yup from "yup";
-import { Formik, ErrorMessage } from "formik";
-import { useState } from "react";
-import Cookies from "js-cookie";
 import {
   FormContainer,
-  FieldContainer,
-  StyledLabel,
-  StyledField,
-  StyledForm,
-  FormTitle,
   SubmitButton,
+  LogoutButton,
+  DashButton,
+  StandardField,
+  ErrorMessage,
+  FieldContainer,
+  StandardForm,
+  StyledLabel,
+  LineBreakContainer,
+  FormTitle,
+  Line,
 } from "../GlobalFormStyle";
-import { renderError } from "../../Validations/FormError";
-import LoginError from "../../Validations/LoginError";
-import GoogleLogin from "react-google-login";
+import Loading from "../../Loading/Loading";
+import { useSession, signIn, signOut } from "next-auth/react";
+import NextLink from "next/link";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 const LoginForm = () => {
-  const contentType = "application/json";
-  const [loginValue, setLoginValues] = useState({
-    username: "",
-    password: "",
-  });
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
-  const [loginFailed, setLoginFailed] = useState(false);
+  const [message, setMessage] = useState(null);
 
-  const validationSchema = Yup.object({
-    username: Yup.string()
-      .required("*Required")
-      .min(1, "*Please Enter a Valid Username"),
-    password: Yup.string()
-      .required("*Required")
-      .min(1, "*Please Enter a Valid Password"),
-  });
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleLoginChange = (e) => {
-    const { name, value } = e.target;
-    setLoginValues((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    let options = { redirect: false, username, password };
+    const res = await signIn("credentials", options);
+    setMessage(null);
+
+    if (res?.error) {
+      setMessage("Invalid Username/Password");
+    } else {
+      console.log("success");
+    }
   };
 
-  const handleLoginSubmit = () => {
-    fetch("/api/auth", {
-      method: "POST",
-      headers: {
-        "Content-Type": contentType,
-      },
-      body: JSON.stringify(loginValue),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data && data.error) {
-          console.log("FAILED LOGIN");
-          setLoginFailed(true);
-        }
-        if (data && data.token) {
-          console.log("Success");
-          setLoginFailed(false);
-          Cookies.set("token", data.token, { expires: 1});
-          window.location.href = `/user/${data._id}`;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const testResponse = (response) => {
-    console.log(response)
-  }
-
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      console.log("not logged in");
+    } else if (status === "authenticated") {
+      console.log("logged in");
+    }
+  }, [status, router]);
   return (
-    <Formik
-      initialValues={loginValue}
-      validationSchema={validationSchema}
-      enableReinitialize
-      onSubmit={handleLoginSubmit}
-    >
-      <FormContainer>
-        <StyledForm method="POST">
-          <GoogleLogin onSuccess={testResponse}  />
-          {loginFailed && <LoginError />}
-          <FormTitle>Login to Your Account</FormTitle>
-          <FieldContainer>
+    <FormContainer>
+      <FormTitle>Login to your account</FormTitle>
+      {!session && (
+        <SubmitButton
+          onClick={() => signIn("google", { redirect: "/auth/login" })}
+        >
+          Login with Google
+        </SubmitButton>
+      )}
+      {!session && (
+        <StandardForm onSubmit={handleSubmit} loginform="true">
+          <LineBreakContainer>
+            <Line />
+            or
+            <Line />
+          </LineBreakContainer>
+          <FieldContainer loginform="true">
             <StyledLabel>Username</StyledLabel>
-            <StyledField
-              value={loginValue.username}
+            <StandardField
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               type="text"
               name="username"
-              onChange={(e) => handleLoginChange(e)}
             />
-            <ErrorMessage name="username" render={renderError} />
-          </FieldContainer>
-          <FieldContainer>
             <StyledLabel>Password</StyledLabel>
-            <StyledField
-              value={loginValue.password}
+            <StandardField
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               type="password"
               name="password"
-              onChange={(e) => handleLoginChange(e)}
             />
-            <ErrorMessage name="password" render={renderError} />
           </FieldContainer>
           <SubmitButton type="submit">Login</SubmitButton>
-        </StyledForm>
-      </FormContainer>
-    </Formik>
+        </StandardForm>
+      )}
+      {session && (
+        <>
+          <LogoutButton onClick={() => signOut()}>
+            Log out {session.user.email}
+          </LogoutButton>
+          <NextLink href={`/user/${session.user._id}`}>
+            <DashButton>Go to dashboard</DashButton>
+          </NextLink>
+        </>
+      )}
+      {message && <ErrorMessage>{message}</ErrorMessage>}
+    </FormContainer>
   );
 };
 

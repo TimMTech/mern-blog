@@ -13,6 +13,7 @@ import { MdPublishedWithChanges, MdUnpublished } from "react-icons/md";
 import moment from "moment";
 import { useRouter } from "next/router";
 
+
 const menu = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
@@ -80,12 +81,7 @@ const Card = ({ post, user, index, showPublished, showUnpublished }) => {
   return (
     <CardContainer>
       <ImageContainer>
-        <CardImage
-          src={
-            post.imageUrl ||
-            "https://blog.codeminer42.com/wp-content/uploads/2021/02/nextjs-cover.jpg"
-          }
-        />
+        <CardImage src={post.imageUrl || "/static/images/default.png"} />
 
         <OverlayContainer dashboard={user}>
           <CardHeaderContainer>
@@ -120,7 +116,6 @@ const Card = ({ post, user, index, showPublished, showUnpublished }) => {
                           <MdUnpublished
                             size={22}
                             onClick={() => handleUnpublish(post._id)}
-                            
                           />
                           <AiOutlineDelete
                             size={22}
@@ -191,7 +186,7 @@ const CardFooterContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   margin: auto;
 `;
 
@@ -233,6 +228,7 @@ const IconContainer = styled.div`
 `;
 
 const ViewPostContainer = styled.div`
+  background-color: ${(props) => props.theme.body};
   box-shadow: ${(props) => props.theme.boxShadow};
   border-bottom-left-radius: 0.75rem;
   border-bottom-right-radius: 0.75rem;

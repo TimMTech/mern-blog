@@ -16,6 +16,7 @@ import {
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
 
+
 const SignupForm = ({ editMode, userId, setEditMode }) => {
   const router = useRouter();
   const contentType = "application/json";
@@ -117,7 +118,7 @@ const SignupForm = ({ editMode, userId, setEditMode }) => {
                 Welcome to Our Community!
               </FormTitle>
             )}
-            <FieldContainer>
+            <FieldContainer signupform="true">
               <StyledLabel>Username</StyledLabel>
               <StyledField
                 value={signUpValue.username}
@@ -127,7 +128,7 @@ const SignupForm = ({ editMode, userId, setEditMode }) => {
               />
               <ErrorMessage name="username" render={renderError} />
             </FieldContainer>
-            <FieldContainer>
+            <FieldContainer signupform="true">
               <StyledLabel>Email</StyledLabel>
               <StyledField
                 value={signUpValue.email}
@@ -137,7 +138,7 @@ const SignupForm = ({ editMode, userId, setEditMode }) => {
               />
               <ErrorMessage name="email" render={renderError} />
             </FieldContainer>
-            <FieldContainer>
+            <FieldContainer signupform="true">
               <StyledLabel>Password</StyledLabel>
               <StyledField
                 value={signUpValue.password}

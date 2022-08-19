@@ -90,6 +90,7 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
           return response.json();
         })
         .then((data) => {
+          console.log(data)
           if (data && data.error) {
             console.log("FAILED POST");
           }

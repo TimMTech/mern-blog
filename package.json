@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emailjs/browser": "^3.6.2",
     "@tinymce/tinymce-react": "^4.1.0",
+    "@types/js-cookie": "^3.0.2",
     "babel-plugin-styled-components": "^2.0.7",
     "bcrypt": "^5.0.1",
     "dotenv": "^16.0.1",
@@ -20,19 +22,18 @@
     "moment": "^2.29.4",
     "mongoose": "^6.5.1",
     "next": "12.1.6",
+    "next-auth": "^4.10.3",
     "nextjs-progressbar": "0.0.14",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-icons": "^4.4.0",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-responsive-carousel": "^3.2.23",
     "styled-components": "^5.3.5",
     "yup": "^0.32.11"
   },
   "devDependencies": {
-    "@emailjs/browser": "^3.6.2",
-    "@types/js-cookie": "^3.0.2",
     "eslint": "8.17.0",
-    "eslint-config-next": "12.1.6",
-    "react-google-login": "^5.2.2",
-    "react-icons": "^4.4.0",
-    "react-infinite-scroll-component": "^6.1.0"
+    "eslint-config-next": "12.1.6"
   }
 }

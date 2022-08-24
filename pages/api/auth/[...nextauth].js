@@ -19,6 +19,7 @@ export default NextAuth({
       clientId:
         "95837275647-feg9uv6bok35fedb4eq2ppc2ugun5c67.apps.googleusercontent.com",
       clientSecret: "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",
+      
     }),
     CredentialsProvider({
       name: "Credentials",

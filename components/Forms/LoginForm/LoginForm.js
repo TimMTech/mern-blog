@@ -25,8 +25,6 @@ const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
- 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -54,7 +52,9 @@ const LoginForm = () => {
       </FormTitle>
       {!session && (
         <SubmitButton
-          onClick={() => signIn("google", { redirect: "/auth/login" })}
+          onClick={() =>
+            signIn("google", { redirect: "/auth/login" }, { prompt: "login" })
+          }
         >
           Login with Google
         </SubmitButton>

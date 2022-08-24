@@ -16,10 +16,16 @@ export default Filter;
 
 const Select = styled.select`
   width: 8rem;
-  height: 1.5rem;
+  height: 2rem;
   text-align: center;
-
   border-radius: 0.2rem;
+  margin: 1rem;
+  font-size: 1rem;
+  @media (max-width: 750px) {
+    width: 100%;
+    margin: 1rem;
+    font-size: 1.2rem;
+  }
 `;
 
 const Option = styled.option``;

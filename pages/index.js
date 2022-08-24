@@ -4,7 +4,8 @@ import NextImage from "next/image";
 import heroBG from "/public/static/images/heroBG.png";
 
 
-const home = ({ posts }) => {
+
+const home = ({ posts}) => {
   return (
     <HomeContainer>
       <HeaderContainer>
@@ -22,11 +23,12 @@ const home = ({ posts }) => {
 };
 
 export const getStaticProps = async () => {
+ 
   const res = await fetch("http://localhost:3000/api/post");
-  const json = await res.json();
+  const posts = await res.json();
 
   return {
-    props: { posts: json },
+    props: { posts },
   };
 };
 

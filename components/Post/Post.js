@@ -1,51 +1,24 @@
 import styled from "styled-components";
 import moment from "moment";
-import { useRouter } from "next/router";
+
 import { useState, useEffect } from "react";
-import PostForm from "../Forms/PostForm/PostForm";
+
 import Comment from "../Comment/Comment";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { useSession } from "next-auth/react";
 
-
-
 const Post = ({ post }) => {
   const {
-    _id,
     title,
     content,
-    user: { username },
+    user: { username, email },
     date,
     imageUrl,
-    
   } = post;
-  const router = useRouter();
+
   const { data: session } = useSession();
   const [postLikes, setPostLikes] = useState([]);
   const [liked, setLiked] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-
-  const handleEdit = () => {
-    setEditMode(true);
-  };
-
-  const handleDelete = () => {
-    fetch(`/api/post/${post._id}`, {
-      method: "DELETE",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          console.log("Server Error");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        router.push("/");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   const handlePostLike = () => {
     if (liked) {
@@ -87,10 +60,9 @@ const Post = ({ post }) => {
         return response.json();
       })
       .then((data) => {
-       
         if (data && data.post) {
-          setPostLikes([...new Set(data.post)]);
-          
+          setPostLikes(data.post);
+          if (data.post.some((element) => element === email)) setLiked(true);
         }
       })
       .catch((error) => {
@@ -107,65 +79,38 @@ const Post = ({ post }) => {
   };
 
   return (
-    <>
-      {editMode ? (
-        <EditContainer>
-          <PostForm
-            editMode={editMode}
-            postId={_id}
-            setEditMode={setEditMode}
-          />
-        </EditContainer>
-      ) : (
-        <PostContainer>
-          <PostCardContainer>
-            {session && (
-              <OptionContainer>
-                <EditPost hidden={session ? false : true} onClick={handleEdit}>
-                  Edit
-                </EditPost>
-                <DeletePost
-                  hidden={session ? false : true}
-                  onClick={handleDelete}
-                >
-                  Delete
-                </DeletePost>
-              </OptionContainer>
-            )}
-            <PostTitle>{title}</PostTitle>
-            <PostImage src={imageUrl || "/static/images/default.png"} />
+    <PostContainer>
+      <PostCardContainer>
+        <PostTitle>{title}</PostTitle>
+        <PostImage src={imageUrl || "/static/images/default.png"} />
 
-            <PostContent>{content}</PostContent>
-            <PostAuthor>
-              by {username} / {dateFormat(date)}
-            </PostAuthor>
-            <LikesContainer
-              hidden={session ? false : true}
-              onClick={handlePostLike}
-            >
-              {liked ? (
-                <ImageWrapper>
-                  <AiFillLike size={17} />
-                </ImageWrapper>
-              ) : (
-                <ImageWrapper>
-                  <AiOutlineLike size={17} />
-                </ImageWrapper>
-              )}
-              <PostLikeAmount>{postLikes.length}</PostLikeAmount>
-            </LikesContainer>
-          </PostCardContainer>
+        <PostContent>{content}</PostContent>
+        <PostAuthor>
+          by {username} / {dateFormat(date)}
+        </PostAuthor>
+        <LikesContainer
+          hidden={session ? false : true}
+          onClick={handlePostLike}
+        >
+          {liked ? (
+            <ImageWrapper>
+              <AiFillLike size={17} />
+            </ImageWrapper>
+          ) : (
+            <ImageWrapper>
+              <AiOutlineLike size={17} />
+            </ImageWrapper>
+          )}
+          <PostLikeAmount>{postLikes.length}</PostLikeAmount>
+        </LikesContainer>
+      </PostCardContainer>
 
-          <Comment post={post} />
-        </PostContainer>
-      )}
-    </>
+      <Comment post={post} />
+    </PostContainer>
   );
 };
 
 export default Post;
-
-const EditContainer = styled.main``;
 
 const PostContainer = styled.main`
   margin: 0 5rem;
@@ -175,17 +120,6 @@ const PostContainer = styled.main`
   }
 `;
 
-const OptionContainer = styled.div`
-  padding-top: 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-const EditPost = styled.button``;
-
-const DeletePost = styled.button``;
 const PostTitle = styled.h1`
   padding-top: 0.5rem;
   text-align: left;

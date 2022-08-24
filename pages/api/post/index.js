@@ -25,13 +25,13 @@ const post = async (req, res) => {
         title: req.body.title,
         content: req.body.content,
         imageUrl: req.body.imageUrl,
-        user: token.id,
+        user: req.body.userId,
         published: true,
       });
       post
         .save()
         .then((data) => {
-          return res.status(200).json({ postData: data, token: token }).end();
+          return res.status(200).json({ postData: data, token: token });
         })
         .catch((error) => {
           return res.status(400).json(error);

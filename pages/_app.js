@@ -6,17 +6,22 @@ import { useState } from "react";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "../themes/theme";
 import { GlobalStyles } from "../globalstyle/globalStyle";
-import { SessionProvider } from "next-auth/react";
+import {  SessionProvider } from "next-auth/react";
 
-const MyApp = ({ Component, pageProps: {session, ...pageProps} }) => {
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const MyApp = ({ Component, pageProps}) => {
   const [theme, setTheme] = useState("light");
+
   const isDarkTheme = theme === "dark";
-  
+
   const toggleTheme = () => {
     setTheme(isDarkTheme ? "light" : "dark");
   };
-
   
+
+
 
   return (
     <>
@@ -28,16 +33,18 @@ const MyApp = ({ Component, pageProps: {session, ...pageProps} }) => {
       <NextNProgress color="red" height={3} showOnShallow={true} />
       <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
         <GlobalStyles />
-        <SessionProvider session={session}>
-        <Nav toggleTheme={toggleTheme} isDark={isDarkTheme} />
-        <Component {...pageProps} />
-        <Footer />
+        <ToastContainer />
+        <SessionProvider session={pageProps.session}>
+          <Nav toggleTheme={toggleTheme} isDark={isDarkTheme} />
+          <Component {...pageProps} />
+          <Footer />
         </SessionProvider>
       </ThemeProvider>
     </>
   );
 };
 
+
+
+
 export default MyApp;
-
-

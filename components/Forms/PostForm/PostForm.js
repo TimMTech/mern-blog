@@ -16,15 +16,21 @@ import {
   ExitButton,
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
+import { useSession } from "next-auth/react";
+import {toast} from "react-toastify"
 
-const PostForm = ({ editMode, postId, setEditMode }) => {
+const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
   const contentType = "application/json";
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [post, setPost] = useState({
     title: "",
     content: "",
     imageUrl: "",
+    userId: session.user._id
   });
+
+  console.log(status)
 
   const validationSchema = Yup.object({
     title: Yup.string().required("*Required").min(1, "*Please Provide A Title"),
@@ -35,7 +41,7 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
   });
 
   const handleExitEdit = () => {
-    setEditMode(false);
+    setPostEditMode(false);
   };
 
   const handlePostChange = (e) => {
@@ -54,8 +60,8 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
   };
 
   const handleSubmitPost = () => {
-    if (editMode) {
-      fetch(`/api/post/${postId}`, {
+    if (postEditMode) {
+      fetch(`/api/post/${postId}/edit`, {
         method: "PUT",
         headers: {
           "Content-Type": contentType,
@@ -68,11 +74,14 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
         .then((data) => {
           if (data && data.error) {
             console.log("FAILED EDIT");
+            toast.error("Server Error Occured.")
+
           }
           if (data) {
-            setEditMode(false);
             router.push(`/post/${data._id}`);
+            setPostEditMode(false);
             console.log("POST EDITED");
+            toast.success("Post Edited! Redirecting....")
           }
         })
         .catch((error) => {
@@ -90,13 +99,15 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
           return response.json();
         })
         .then((data) => {
-          console.log(data)
+          console.log(data);
           if (data && data.error) {
             console.log("FAILED POST");
+            toast.error("Server Error Occured.")
           }
           if (data && data.token) {
             router.push(`/post/${data.postData._id}`);
             console.log("Success");
+            toast.success("Post Created! Redirecting....")
           }
         })
         .catch((error) => {
@@ -114,12 +125,12 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
     >
       <FormContainer>
         <StyledForm method="POST">
-          {editMode ? (
+          {postEditMode ? (
             <EditTitle>Edit</EditTitle>
           ) : (
             <FormTitle>What is on your mind....</FormTitle>
           )}
-          <FieldContainer>
+          <FieldContainer postform="true">
             <StyledLabel>Title</StyledLabel>
             <StyledField
               value={post.title}
@@ -129,7 +140,7 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
             />
             <ErrorMessage name="title" render={renderError} />
           </FieldContainer>
-          <FieldContainer>
+          <FieldContainer postform="true">
             <StyledLabel>Content</StyledLabel>
             <Editor
               name="content"
@@ -151,7 +162,7 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
             />
             <ErrorMessage name="content" render={renderError} />
           </FieldContainer>
-          <FieldContainer>
+          <FieldContainer postform="true">
             <StyledLabel>Image (Optional)</StyledLabel>
             <StyledField
               value={post.imageUrl}
@@ -163,9 +174,11 @@ const PostForm = ({ editMode, postId, setEditMode }) => {
           </FieldContainer>
           <ButtonContainer>
             <SubmitButton type="submit">
-              {editMode ? "Save" : "Create Post"}
+              {postEditMode ? "Save" : "Create Post"}
             </SubmitButton>
-            {editMode && <ExitButton onClick={handleExitEdit}>Exit</ExitButton>}
+            {postEditMode && (
+              <ExitButton onClick={handleExitEdit}>Exit</ExitButton>
+            )}
           </ButtonContainer>
         </StyledForm>
       </FormContainer>

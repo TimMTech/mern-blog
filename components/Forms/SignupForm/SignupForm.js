@@ -13,11 +13,16 @@ import {
   SubmitButton,
   ExitButton,
   ButtonContainer,
+  LineBreakContainer,
+  Line,
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
+import { signIn } from "next-auth/react";
+import {toast} from "react-toastify"
 
 
-const SignupForm = ({ editMode, userId, setEditMode }) => {
+
+const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
   const router = useRouter();
   const contentType = "application/json";
   const [signUpValue, setSignUpValue] = useState({
@@ -39,7 +44,7 @@ const SignupForm = ({ editMode, userId, setEditMode }) => {
   });
 
   const handleExitEdit = () => {
-    setEditMode(false)
+    setProfileEditMode(false)
   }
 
   const handleSignUpChange = (e) => {
@@ -51,7 +56,7 @@ const SignupForm = ({ editMode, userId, setEditMode }) => {
   };
 
   const handleSignUpSubmit = () => {
-    if (editMode) {
+    if (profileEditMode) {
       fetch(`/api/user/${userId}`, {
         method: "PUT",
         headers: {
@@ -65,11 +70,14 @@ const SignupForm = ({ editMode, userId, setEditMode }) => {
         .then((data) => {
           if (data && data.error) {
             console.log("FAILED EDIT");
+            toast.error("Server Error Occurred")
           }
           if (data) {
             setEditMode(false);
             router.push(`/user/${data._id}`);
             console.log("PROFILE EDITED");
+            toast.success("Saved!")
+
           }
         })
         .catch((error) => {
@@ -88,11 +96,11 @@ const SignupForm = ({ editMode, userId, setEditMode }) => {
         })
         .then((data) => {
           if (data && data.error) {
-            console.log("SIGN UP ERROR");
+            toast.error("Server Error Occurred.")
           }
           if (data && data.success) {
-            router.push("/account/login");
-            console.log("success");
+            router.push("/auth/login");
+            toast.success("Sign up successfull!")
           }
         })
         .catch((error) => {
@@ -110,13 +118,21 @@ const SignupForm = ({ editMode, userId, setEditMode }) => {
     >
       {() => (
         <FormContainer>
+          {profileEditMode ? (
+            <EditTitle>Edit Profile</EditTitle>
+          ) : (
+            <FormTitle>Create your account</FormTitle>
+          )}
+          {!profileEditMode && (
+            <SubmitButton onClick={() => signIn("google")}>Google</SubmitButton>
+          )}
           <StyledForm method="POST">
-            {editMode ? (
-              <EditTitle>Edit Profile</EditTitle>
-            ) : (
-              <FormTitle>
-                Welcome to Our Community!
-              </FormTitle>
+            {!profileEditMode && (
+              <LineBreakContainer>
+                <Line />
+                or
+                <Line />
+              </LineBreakContainer>
             )}
             <FieldContainer signupform="true">
               <StyledLabel>Username</StyledLabel>
@@ -150,9 +166,9 @@ const SignupForm = ({ editMode, userId, setEditMode }) => {
             </FieldContainer>
             <ButtonContainer>
               <SubmitButton type="submit">
-                {editMode ? "Save" : "Sign up"}
+                {profileEditMode ? "Save" : "Sign up"}
               </SubmitButton>
-              {editMode && (
+              {profileEditMode && (
                 <ExitButton onClick={handleExitEdit}>Exit</ExitButton>
               )}
             </ButtonContainer>

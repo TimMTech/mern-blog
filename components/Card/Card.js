@@ -8,23 +8,37 @@ import {
   AiOutlineMenu,
   AiOutlineFieldNumber,
   AiOutlineDelete,
+  AiOutlineEdit,
 } from "react-icons/ai";
 import { MdPublishedWithChanges, MdUnpublished } from "react-icons/md";
 import moment from "moment";
 import { useRouter } from "next/router";
-
+import {toast} from "react-toastify"
 
 const menu = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
 };
 
-const Card = ({ post, user, index, showPublished, showUnpublished }) => {
+const Card = ({
+  post,
+  user,
+  index,
+  showPublished,
+  showUnpublished,
+  getPostParam,
+  setPostEditMode,
+}) => {
   const router = useRouter();
   const [showCardMenu, setShowCardMenu] = useState(false);
 
   const toggleCardMenu = () => {
     setShowCardMenu(!showCardMenu);
+  };
+
+  const handleEdit = (_id) => {
+    getPostParam(_id);
+    setPostEditMode(true);
   };
 
   const handleUnpublish = (_id) => {
@@ -36,9 +50,11 @@ const Card = ({ post, user, index, showPublished, showUnpublished }) => {
       })
       .then((data) => {
         router.push(`/user/${user._id}`);
+        toast.success("Unpublished Post")
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Server Error Occured")
       });
   };
 
@@ -51,14 +67,16 @@ const Card = ({ post, user, index, showPublished, showUnpublished }) => {
       })
       .then((data) => {
         router.push(`/user/${user._id}`);
+        toast.success("Published Post")
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Server Error Occured")
       });
   };
 
   const handleDelete = (_id) => {
-    fetch(`/api/post/${_id}`, {
+    fetch(`/api/post/${_id}/delete`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -69,9 +87,11 @@ const Card = ({ post, user, index, showPublished, showUnpublished }) => {
       })
       .then((data) => {
         router.push(`/user/${user._id}`);
+        toast.success("Post Deleted")
       })
       .catch((error) => {
         console.log(error);
+        toast.error("Server Error Occured")
       });
   };
   const dateFormat = (date) => {
@@ -121,6 +141,10 @@ const Card = ({ post, user, index, showPublished, showUnpublished }) => {
                             size={22}
                             onClick={() => handleDelete(post._id)}
                           />
+                          <AiOutlineEdit
+                            size={22}
+                            onClick={() => handleEdit(post._id)}
+                          />
                         </IconContainer>
                       )}
                       {showUnpublished && (
@@ -128,6 +152,14 @@ const Card = ({ post, user, index, showPublished, showUnpublished }) => {
                           <MdPublishedWithChanges
                             size={22}
                             onClick={() => handlePublish(post._id)}
+                          />
+                          <AiOutlineDelete
+                            size={22}
+                            onClick={() => handleDelete(post._id)}
+                          />
+                          <AiOutlineEdit
+                            size={22}
+                            onClick={() => handleEdit(post._id)}
                           />
                         </IconContainer>
                       )}
@@ -155,6 +187,14 @@ const Card = ({ post, user, index, showPublished, showUnpublished }) => {
 };
 
 export default Card;
+const EditContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vh;
+  height: 100vh;
+  z-index: 999;
+`;
 
 const CardContainer = styled.div`
   break-inside: avoid;

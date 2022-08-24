@@ -2,15 +2,23 @@ import styled from "styled-components";
 import { FaAngleDoubleUp } from "react-icons/fa";
 import { useRef } from "react";
 
-
-const End = ({toggleScrollUp}) => {
-
-    const ref = useRef(null)
+const End = ({ toggleScrollUp, infinite }) => {
+  const ref = useRef(null);
 
   return (
     <EndContainer>
-      <Title>End of comments</Title>
-      <FaAngleDoubleUp size={30} onClick={() => toggleScrollUp(ref)} style={{cursor: "pointer"}}/>
+      {infinite.length === 0 ? (
+        <Title>No Comments</Title>
+      ) : (
+        <>
+          <Title>End of comments</Title>
+          <FaAngleDoubleUp
+            size={30}
+            onClick={() => toggleScrollUp(ref)}
+            style={{ cursor: "pointer" }}
+          />
+        </>
+      )}
     </EndContainer>
   );
 };
@@ -27,5 +35,3 @@ const EndContainer = styled.div`
 `;
 
 const Title = styled.h3``;
-
-

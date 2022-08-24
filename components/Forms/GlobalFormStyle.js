@@ -23,6 +23,7 @@ export const FormTitle = styled.h1`
   width: 90%;
   text-align: left;
   padding: 1rem 0;
+  word-wrap: break-word;
   
 `;
 
@@ -55,6 +56,7 @@ export const FieldContainer = styled.div`
   width: ${(props) => (props.commentform ? "100%" : "50%")};
   width: ${(props) => props.loginform && "90%"};
   width: ${(props) => props.signupform && "90%"};
+  width: ${(props) => props.postform && "90%"};
 `;
 
 export const StyledLabel = styled.label`
@@ -96,7 +98,7 @@ export const ButtonContainer = styled.div`
 
 export const LineBreakContainer = styled.div`
   display: flex;
-  width: 75%;
+  width: 90%;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
@@ -133,3 +135,8 @@ export const ErrorMessage = styled.p`
   font-size: 1.5rem;
   color: rgb(255, 0, 0);
 `;
+
+export const Span = styled.span`
+cursor: pointer;
+opacity: 0.5;
+`

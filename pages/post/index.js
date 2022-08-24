@@ -1,7 +1,8 @@
+import { getSession } from "next-auth/react";
 import styled from "styled-components";
-import PostForm from "../../components/Forms/PostForm/PostForm"
+import PostForm from "../../components/Forms/PostForm/PostForm";
 
-const blog = () => {
+const postform = () => {
   return (
     <PostFormPageContainer>
       <PostForm />
@@ -9,7 +10,23 @@ const blog = () => {
   );
 };
 
-export default blog;
+export const getServerSideProps = async (context) => {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/login",
+      },
+    };
+  }
+  return {
+    props: {
+      session,
+    },
+  };
+};
+
+export default postform;
 
 const PostFormPageContainer = styled.main`
   width: 100%;
@@ -19,5 +36,3 @@ const PostFormPageContainer = styled.main`
   justify-content: center;
   align-items: center;
 `;
-
-

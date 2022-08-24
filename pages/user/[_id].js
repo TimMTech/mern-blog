@@ -1,3 +1,4 @@
+import { getSession } from "next-auth/react";
 import styled from "styled-components";
 import DashBoard from "../../components/Dashboard/Dashboard";
 
@@ -13,22 +14,7 @@ const dashboard = ({ user, posts }) => {
 
 export default dashboard;
 
-export const getStaticPaths = async () => {
-  const res = await fetch("http://localhost:3000/api/users");
-  const data = await res.json();
-
-  const paths = data.map((user) => {
-    return {
-      params: { _id: user._id.toString() },
-    };
-  });
-  return {
-    paths,
-    fallback: false,
-  };
-};
-
-export const getStaticProps = async (context) => {
+export const getServerSideProps = async (context) => {
   const _id = context.params._id;
   const res = await fetch(`http://localhost:3000/api/user/${_id}`);
   const data = await res.json();
@@ -36,9 +22,19 @@ export const getStaticProps = async (context) => {
   const resPost = await fetch(`http://localhost:3000/api/post`);
   const postData = await resPost.json();
 
-  return {
-    props: { user: data, posts: postData },
-  };
+  const session = await getSession(context);
+
+  if (session) {
+    return {
+      props: { user: data, posts: postData },
+    };
+  } else {
+    return {
+      redirect: {
+        destination: "/auth/login",
+      },
+    };
+  }
 };
 
 const DashboardContainer = styled.main`

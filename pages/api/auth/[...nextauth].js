@@ -56,10 +56,12 @@ export default NextAuth({
       if (user) {
         token.id = user._id;
       }
+      
       return token;
     },
 
     session: async ({ session, token }) => {
+      
       const user = await UserTemplate.findOne({
         email: session.user.email,
       });
@@ -93,7 +95,7 @@ export default NextAuth({
             username: user.username,
             email: user.email,
             _id: user._id,
-            token: token,
+            token: token
           },
         };
       }

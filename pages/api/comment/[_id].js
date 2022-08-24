@@ -21,12 +21,15 @@ const commentReplies = async (req, res) => {
             commentId: req.body.commentId,
           }),
         },
+      },
+      {
+        new: true
       }
     );
     replies
       .save()
       .then((data) => {
-        return res.status(200).json(data.commentReplies);
+        return res.status(200).json(data.commentReplies)
       })
       .catch((error) => {
         return res.status(400).json(error);
@@ -34,14 +37,12 @@ const commentReplies = async (req, res) => {
   }
   if (method === "GET") {
     const comment = await CommentTemplate.findById(_id);
-    
+
     if (!comment) {
       return res.status(400).json({ error: "NOT FOUND" });
     }
-    return res.status(200).json(
-      comment.commentReplies,
-    );
+    return res.status(200).json(comment.commentReplies);
   }
 };
 
-export default commentReplies;
+export default commentReplies

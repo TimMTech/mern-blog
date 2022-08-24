@@ -29,6 +29,7 @@ const login = () => {
           layout="fill"
           objectFit="cover"
           quality={100}
+          priority
         />
         <OverlayContainer>
           <Title>Connect With People All Over The World!</Title>
@@ -107,6 +108,7 @@ const Paragraph = styled.div`
 `;
 
 const Span = styled.span`
+  
   cursor: pointer;
   display: block;
   color: ${(props) => props.theme.text};
@@ -130,6 +132,6 @@ const LinkWrapper = styled.div`
   bottom: 2%;
   left: 0;
   padding: 4rem;
-  color: black;
+  color: rgb(0,0,0);
   font-weight: 800;
 `;

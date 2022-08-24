@@ -68,14 +68,13 @@ const MasonryContainer = styled.div`
   column-gap: var(--masonry-gap);
   column-fill: initial;
   column-width: var(--masonry-brick-width);
-  padding: 1rem;
+  padding: 0 1rem 1rem 1rem;
 `;
 
 const OptionContainer = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-  padding: 1rem 0 0 1rem;
   gap: 0.5rem;
 `;
 

@@ -4,7 +4,6 @@ import {
   LogoutButton,
   DashButton,
   StandardField,
-  ErrorMessage,
   FieldContainer,
   StandardForm,
   StyledLabel,
@@ -12,45 +11,47 @@ import {
   FormTitle,
   Line,
 } from "../GlobalFormStyle";
-import Loading from "../../Loading/Loading";
+
 import { useSession, signIn, signOut } from "next-auth/react";
 import NextLink from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const LoginForm = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  const [message, setMessage] = useState(null);
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     let options = { redirect: false, username, password };
     const res = await signIn("credentials", options);
-    setMessage(null);
 
     if (res?.error) {
-      setMessage("Invalid Username/Password");
+      toast.error("Invalid username/password");
     } else {
-      console.log("success");
+      console.log("logged in!");
     }
   };
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      console.log("not logged in");
+      console.log("success logout");
     } else if (status === "authenticated") {
-      console.log("logged in");
+      toast.success("Logged in!");
     }
   }, [status, router]);
   return (
     <FormContainer>
-      <FormTitle>Login to your account</FormTitle>
+      <FormTitle>
+        {session ? `Welcome ${session.user.email}!` : "Login to your account"}
+      </FormTitle>
       {!session && (
         <SubmitButton
           onClick={() => signIn("google", { redirect: "/auth/login" })}
@@ -94,7 +95,6 @@ const LoginForm = () => {
           </NextLink>
         </>
       )}
-      {message && <ErrorMessage>{message}</ErrorMessage>}
     </FormContainer>
   );
 };

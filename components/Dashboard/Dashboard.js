@@ -5,22 +5,27 @@ import SignupForm from "../Forms/SignupForm/SignupForm";
 import Card from "../Card/Card";
 import Filter from "../Filter/Filter";
 import { AiOutlinePlus } from "react-icons/ai";
+import PostForm from "../Forms/PostForm/PostForm";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const Dashboard = ({ user, posts }) => {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+  const { status } = useSession();
+
   const [option, setOption] = useState("mostRecentDefault");
   const [mostLikedVisible, setMostLikedVisible] = useState(false);
   const [mostRecentDefaultVisible, setMostRecentDefaultVisible] =
     useState(false);
   const [mostViewedVisible, setMostViewedVisible] = useState(false);
-
-  const [editMode, setEditMode] = useState(false);
+  const [profileEditMode, setProfileEditMode] = useState(false);
   const [showPublished, setShowPublished] = useState(false);
   const [showUnpublished, setShowUnpublished] = useState(false);
+  const [postEditMode, setPostEditMode] = useState(false);
+  const [postParam, setPostParam] = useState("");
 
+  const getPostParam = (postId) => {
+    setPostParam(postId);
+  };
   const filteredMyPosts = posts.filter((post) => post.user._id === user._id);
 
   const publishedPosts = filteredMyPosts.filter(
@@ -40,6 +45,8 @@ const Dashboard = ({ user, posts }) => {
         index={index}
         user={user}
         showPublished={showPublished}
+        setPostEditMode={setPostEditMode}
+        getPostParam={getPostParam}
       />
     ));
 
@@ -53,6 +60,8 @@ const Dashboard = ({ user, posts }) => {
         index={index}
         user={user}
         showPublished={showPublished}
+        setPostEditMode={setPostEditMode}
+        getPostParam={getPostParam}
       />
     ));
 
@@ -66,6 +75,8 @@ const Dashboard = ({ user, posts }) => {
         index={index}
         user={user}
         showPublished={showPublished}
+        setPostEditMode={setPostEditMode}
+        getPostParam={getPostParam}
       />
     ));
 
@@ -79,6 +90,8 @@ const Dashboard = ({ user, posts }) => {
         index={index}
         user={user}
         showUnpublished={showUnpublished}
+        setPostEditMode={setPostEditMode}
+        getPostParam={getPostParam}
       />
     ));
 
@@ -92,6 +105,8 @@ const Dashboard = ({ user, posts }) => {
         index={index}
         user={user}
         showUnpublished={showUnpublished}
+        setPostEditMode={setPostEditMode}
+        getPostParam={getPostParam}
       />
     ));
 
@@ -105,6 +120,8 @@ const Dashboard = ({ user, posts }) => {
         index={index}
         user={user}
         showUnpublished={showUnpublished}
+        setPostEditMode={setPostEditMode}
+        getPostParam={getPostParam}
       />
     ));
 
@@ -112,8 +129,8 @@ const Dashboard = ({ user, posts }) => {
     setOption(e.target.value);
   };
 
-  const handleEditMode = () => {
-    setEditMode(true);
+  const handleProfileEditMode = () => {
+    setProfileEditMode(true);
   };
 
   const handleShowPublished = () => {
@@ -127,12 +144,10 @@ const Dashboard = ({ user, posts }) => {
   };
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/auth/login");
-    } else if (status === "authenticated") {
-      console.log("logged in");
+    if (status === "authenticated") {
+      toast.success(`Welcome ${user.email}`);
     }
-  }, [status, router]);
+  }, [status]);
 
   useEffect(() => {
     setShowPublished(true);
@@ -153,77 +168,81 @@ const Dashboard = ({ user, posts }) => {
 
   return (
     <>
-      {session && (
-        <>
-          {editMode ? (
-            <EditContainer>
-              <SignupForm
-                editMode={editMode}
-                userId={user._id}
-                setEditMode={setEditMode}
-              />
-            </EditContainer>
-          ) : (
-            <DashContainer>
-              <HeaderContainer>
-                <UserLogo variant={/[A-Ma-m]/}>
-                  {user.username.slice(0, 1)}
-                </UserLogo>
+      {postEditMode && (
+        <EditContainer>
+          <PostForm
+            postEditMode={postEditMode}
+            postId={postParam}
+            setPostEditMode={setPostEditMode}
+          />
+        </EditContainer>
+      )}
+      {profileEditMode && (
+        <EditContainer>
+          <SignupForm
+            profileEditMode={profileEditMode}
+            userId={user._id}
+            setProfileEditMode={setProfileEditMode}
+          />
+        </EditContainer>
+      )}
+      {!postEditMode && !profileEditMode && (
+        <DashContainer>
+          <HeaderContainer>
+            <UserLogo variant={/[A-Ma-m]/}>
+              {user.username.slice(0, 1)}
+            </UserLogo>
 
-                <Username>{user.username}</Username>
-                <UserEmail>{user.email}</UserEmail>
-                <UserPosts>{filteredMyPosts.length} Posts</UserPosts>
-                <OptionsContainer>
-                  <NextLink href={"/"}>
-                    <HomeButton>Home</HomeButton>
-                  </NextLink>
-                  <EditButton onClick={handleEditMode}>Edit Profile</EditButton>
-                </OptionsContainer>
-                <ViewContainer>
-                  <PublishedContainer>
-                    <ViewPublished onClick={handleShowPublished}>
-                      Published
-                    </ViewPublished>
-                    <Underline
-                      hidden={showPublished ? false : true}
-                    ></Underline>
-                  </PublishedContainer>
-                  <UnpublishedContainer>
-                    <ViewUnpublished onClick={handleShowUnpublished}>
-                      Unpublished
-                    </ViewUnpublished>
-                    <Underline
-                      hidden={showUnpublished ? false : true}
-                    ></Underline>
-                  </UnpublishedContainer>
-                </ViewContainer>
-              </HeaderContainer>
-              <MenuContainer>
-                <Filter value={option} handleBlogOptions={handleBlogOptions} />
+            <Username>{user.username}</Username>
+            <UserEmail>{user.email}</UserEmail>
+            <UserPosts>{filteredMyPosts.length} Posts</UserPosts>
+            <OptionsContainer>
+              <NextLink href={"/"}>
+                <HomeButton>Home</HomeButton>
+              </NextLink>
+              <EditButton onClick={handleProfileEditMode}>
+                Edit Profile
+              </EditButton>
+            </OptionsContainer>
+            <ViewContainer>
+              <PublishedContainer>
+                <ViewPublished onClick={handleShowPublished}>
+                  Published
+                </ViewPublished>
+                <Underline hidden={showPublished ? false : true}></Underline>
+              </PublishedContainer>
+              <UnpublishedContainer>
+                <ViewUnpublished onClick={handleShowUnpublished}>
+                  Unpublished
+                </ViewUnpublished>
+                <Underline hidden={showUnpublished ? false : true}></Underline>
+              </UnpublishedContainer>
+            </ViewContainer>
+          </HeaderContainer>
+          <MenuContainer>
+            <Filter value={option} handleBlogOptions={handleBlogOptions} />
 
-                <NextLink href={"/post"}>
-                  <IconWrapper>
-                    <AiOutlinePlus size={35} />
-                  </IconWrapper>
-                </NextLink>
-              </MenuContainer>
-              {showPublished && (
-                <MasonryContainer>
-                  {mostRecentDefaultVisible && mostRecentPublished}
-                  {mostLikedVisible && mostLikesPublished}
-                  {mostViewedVisible && mostViewedPublished}
-                </MasonryContainer>
-              )}
-              {showUnpublished && (
-                <MasonryContainer>
-                  {mostRecentDefaultVisible && mostRecentUnpublished}
-                  {mostLikedVisible && mostLikesUnpublished}
-                  {mostViewedVisible && mostViewedUnpublished}
-                </MasonryContainer>
-              )}
-            </DashContainer>
+            <NextLink href={"/post"}>
+              <IconWrapper>
+                <AiOutlinePlus size={35} />
+              </IconWrapper>
+            </NextLink>
+          </MenuContainer>
+          {showPublished && (
+            <MasonryContainer>
+              {mostRecentDefaultVisible && mostRecentPublished}
+              {mostLikedVisible && mostLikesPublished}
+              {mostViewedVisible && mostViewedPublished}
+            </MasonryContainer>
           )}
-        </>
+          {showUnpublished && (
+            <MasonryContainer>
+              {mostRecentDefaultVisible && mostRecentUnpublished}
+              {mostLikedVisible && mostLikesUnpublished}
+              {mostViewedVisible && mostViewedUnpublished}
+            </MasonryContainer>
+          )}
+        </DashContainer>
       )}
     </>
   );
@@ -342,5 +361,5 @@ const MasonryContainer = styled.div`
 `;
 
 const IconWrapper = styled.span`
-
-cursor: pointer;`
+  cursor: pointer;
+`;

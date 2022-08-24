@@ -13,6 +13,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Loader from "../InfiniteScroll/Loader/Loader";
 import End from "../InfiniteScroll/End/End";
 
+
 const Comment = ({ post }) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [commentId, setCommentId] = useState("");
@@ -25,7 +26,7 @@ const Comment = ({ post }) => {
   const ref = useRef(null);
 
   const fetchInfiniteData = () => {
-    const limit = 5;
+    const limit = 3;
     setInfinite((prevState) => [
       ...prevState,
       ...postComments.slice(lastObjectPosition, lastObjectPosition + limit),
@@ -81,10 +82,14 @@ const Comment = ({ post }) => {
           return response.json();
         })
         .then((data) => {
+          
           const filtered = data
             .filter((comment) => comment.postId === post._id)
             .map((filtered) => filtered);
-          setPostComments(filtered);
+          setPostComments(filtered)
+          
+          
+          
         })
         .catch((error) => {
           setHasMore(false);
@@ -94,6 +99,7 @@ const Comment = ({ post }) => {
     getComments();
   }, []);
 
+ 
   return (
     <CommentContainer>
       <OptionContainer>
@@ -105,18 +111,16 @@ const Comment = ({ post }) => {
         />
         {showDropDown && <Filter />}
       </OptionContainer>
-      <CommentForm setInfinite={setInfinite} />
+      <CommentForm setInfinite={setInfinite}  />
 
       <ScrollContainer>
-        {postComments.length === 0 ? (
-          <NoComments>No Comments</NoComments>
-        ) : (
+          
           <InfiniteScroll
             dataLength={infinite.length}
             next={fetchInfiniteData}
             hasMore={lastObjectPosition < postComments.length}
             loader={<Loader />}
-            endMessage={<End toggleScrollUp={() => toggleScrollUp(ref)} />}
+            endMessage={<End toggleScrollUp={() => toggleScrollUp(ref)} infinite={infinite} />}
           >
             {infinite
               .sort((a, b) => a.date.localeCompare(b.date))
@@ -132,7 +136,7 @@ const Comment = ({ post }) => {
                       <ReplyLikeContainer>
                         <AiOutlineLike size={17} />
                         <ReplyButton onClick={() => handleReply(_id)}>
-                          REPLY
+                          Reply
                         </ReplyButton>
                       </ReplyLikeContainer>
                       {replyMode && (
@@ -143,6 +147,7 @@ const Comment = ({ post }) => {
                                 replyMode={replyMode}
                                 commentId={commentId}
                                 setCommentReply={setCommentReply}
+                                setReplyMode={setReplyMode}
                               />
                             </>
                           )}
@@ -171,7 +176,12 @@ const Comment = ({ post }) => {
                       </>
                       <>
                         {viewReplies && (
-                          <Replies _id={_id} commentReply={commentReply} />
+                          <Replies
+                            _id={_id}
+                            commentReply={commentReply}
+                            
+                            
+                          />
                         )}
                       </>
                     </RepliesContainer>
@@ -179,7 +189,7 @@ const Comment = ({ post }) => {
                 );
               })}
           </InfiniteScroll>
-        )}
+        
       </ScrollContainer>
     </CommentContainer>
   );

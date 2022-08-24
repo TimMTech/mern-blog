@@ -8,6 +8,7 @@ import {
   FormTitle,
 } from "../GlobalFormStyle";
 import { handleEmailjs } from "../../../config/emailjs/emailjsConfig";
+import {toast} from "react-toastify"
 
 const ContactForm = () => {
   const [contactValue, setContactValue] = useState({
@@ -25,12 +26,17 @@ const ContactForm = () => {
 
   const handleContactSubmit = (e) => {
     e.preventDefault();
-    handleEmailjs(contactValue);
+    handleEmailjs(contactValue, (response) => {
+      if (response.text === "OK") {
+        toast.success("Email sent!")
+      } else {
+        toast.error("Server Error Occured")
+      }
+    })
     setContactValue({
       email: "",
       message: "",
     });
-    
   };
 
   return (
@@ -50,7 +56,9 @@ const ContactForm = () => {
           onChange={(e) => handleContactChange(e)}
           placeholder="message"
         />
-        <SubmitButton type="submit" contactform="true">Contact</SubmitButton>
+        <SubmitButton type="submit" contactform="true">
+          Contact
+        </SubmitButton>
       </StandardForm>
     </FormContainer>
   );

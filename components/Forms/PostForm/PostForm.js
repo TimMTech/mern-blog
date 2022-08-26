@@ -17,7 +17,7 @@ import {
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
 import { useSession } from "next-auth/react";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
 
 const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
   const contentType = "application/json";
@@ -27,10 +27,10 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
     title: "",
     content: "",
     imageUrl: "",
-    userId: session.user._id
+    userId: session.user._id,
   });
 
-  console.log(status)
+  
 
   const validationSchema = Yup.object({
     title: Yup.string().required("*Required").min(1, "*Please Provide A Title"),
@@ -74,14 +74,13 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
         .then((data) => {
           if (data && data.error) {
             console.log("FAILED EDIT");
-            toast.error("Server Error Occured.")
-
+            toast.error("Server Error Occured.");
           }
           if (data) {
             router.push(`/post/${data._id}`);
             setPostEditMode(false);
             console.log("POST EDITED");
-            toast.success("Post Edited! Redirecting....")
+            toast.success("Post Edited! Redirecting....");
           }
         })
         .catch((error) => {
@@ -102,12 +101,12 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
           console.log(data);
           if (data && data.error) {
             console.log("FAILED POST");
-            toast.error("Server Error Occured.")
+            toast.error("Server Error Occured.");
           }
           if (data && data.token) {
             router.push(`/post/${data.postData._id}`);
             console.log("Success");
-            toast.success("Post Created! Redirecting....")
+            toast.success("Post Created! Redirecting....");
           }
         })
         .catch((error) => {
@@ -152,13 +151,18 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
                 height: 500,
                 width: "100%",
                 menubar: false,
-                plugins: "autoresize link lists emoticons image",
+                plugins: "autoresize link lists emoticons image paste",
+                paste_as_text: true,
+                invalid_elements: "br",
+                entity_encoding: "raw",
                 max_height: 500,
                 toolbar_location: "bottom",
                 toolbar:
                   "bold italic strikethrough link numlist bullist blockquote emoticons image",
               }}
+                
               onEditorChange={handleEditorChange}
+              
             />
             <ErrorMessage name="content" render={renderError} />
           </FieldContainer>

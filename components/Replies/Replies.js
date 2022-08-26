@@ -7,6 +7,7 @@ import { useState } from "react";
 const Replies = ({ _id, commentReply }) => {
   const [replyToComment, setReplyToComment] = useState(false);
   const [commentId, setCommentId] = useState("");
+  
 
   const dateFormat = (date) => {
     return moment(date).format("lll");
@@ -16,9 +17,6 @@ const Replies = ({ _id, commentReply }) => {
     setCommentId(_id);
     setReplyToComment(!replyToComment);
   };
-
-  
-
 
   return (
     <ReplyContainer>
@@ -43,6 +41,7 @@ const Replies = ({ _id, commentReply }) => {
                   {commentId === _id && (
                     <>
                       <CommentForm
+                     
                         commentId={_id}
                         replyToComment={replyToComment}
                         setReplyToComment={setReplyToComment}
@@ -71,7 +70,6 @@ const ReplyWrapper = styled.div`
   align-items: flex-start;
   gap: 0.2rem;
   margin: 0.75rem 0;
-  
 `;
 
 const ReplyUser = styled.h4``;

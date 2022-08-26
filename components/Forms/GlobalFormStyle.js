@@ -130,6 +130,11 @@ export const DashButton = styled.button`
   width: ${(props) => (props.commentform ? "100%" : "90%")};
 `;
 
+export const DeleteButton = styled.button`
+  width: ${(props) => props.commentform ? "100%" : "90%"};
+  background-color: rgb(255,0,0);
+`
+
 export const ErrorMessage = styled.p`
   text-align: center;
   font-size: 1.5rem;

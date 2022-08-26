@@ -14,6 +14,7 @@ import { MdPublishedWithChanges, MdUnpublished } from "react-icons/md";
 import moment from "moment";
 import { useRouter } from "next/router";
 import {toast} from "react-toastify"
+import {signOut} from "next-auth/react"
 
 const menu = {
   hidden: { opacity: 0 },
@@ -51,6 +52,7 @@ const Card = ({
       .then((data) => {
         router.push(`/user/${user._id}`);
         toast.success("Unpublished Post")
+     
       })
       .catch((error) => {
         console.log(error);

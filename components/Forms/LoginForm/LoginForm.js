@@ -52,9 +52,7 @@ const LoginForm = () => {
       </FormTitle>
       {!session && (
         <SubmitButton
-          onClick={() =>
-            signIn("google", { redirect: "/auth/login" }, { prompt: "login" })
-          }
+          onClick={() => signIn("google", { redirect: "/auth/login" })}
         >
           Login with Google
         </SubmitButton>

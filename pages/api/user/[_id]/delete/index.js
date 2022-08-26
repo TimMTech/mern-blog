@@ -1,16 +1,16 @@
 import dbConnect from "../../../../../database/connectDB";
+const UserTemplate = require("../../../../../models/UserModel");
 const PostTemplate = require("../../../../../models/PostModel");
-const jwt = require("jsonwebtoken");
 import { getToken } from "next-auth/jwt";
 
 await dbConnect();
 
 const secret = process.env.NEXTAUTH_SECRET;
 
-const deletePost = async (req, res) => {
+const deleteUser = async (req, res) => {
   const {
-    query: { _id },
     method,
+    query: { _id },
   } = req;
 
   if (method === "DELETE") {
@@ -22,16 +22,15 @@ const deletePost = async (req, res) => {
       secret: secret,
     });
     if (token) {
-        const post = await PostTemplate.findByIdAndDelete({
-          _id: _id,
-        });
-        if (post) return res.status(200).json(post);
-        return res.status(400).json({ error: "FAILED TO CASCADE DELETE" });
-      
+      const user = await UserTemplate.findByIdAndDelete({
+        _id: _id
+      })
+      if (user) return res.status(200).json(user)
+      return res.status(400).json({error:"FAILED TO CASCADE DELETE"})
     } else {
       return res.status(400).json({ error: "UNABLE TO VERIFY" });
     }
   }
 };
 
-export default deletePost;
+export default deleteUser;

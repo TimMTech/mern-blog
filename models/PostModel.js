@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const CommentTemplate = require("./CommentModel")
 
 const PostTemplate = new mongoose.Schema({
     title: {
@@ -38,5 +39,14 @@ const PostTemplate = new mongoose.Schema({
         default: 0
     }
 })
+
+PostTemplate.post("findOneAndDelete", async function (doc) {
+  if (doc) {
+    const deleteCommentResult = await CommentTemplate.deleteMany({
+      postId: doc._id,
+    });
+    console.log("COMMENTS DELETED", deleteCommentResult);
+  }
+});
 
 module.exports = mongoose.models.Post ||  mongoose.model("Post", PostTemplate)

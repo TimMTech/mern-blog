@@ -21,8 +21,8 @@ const CommentForm = ({
   setReplyMode,
   setReplyToComment,
   commentId,
+
   setInfinite,
-  
 }) => {
   const { query } = useRouter();
 
@@ -62,9 +62,7 @@ const CommentForm = ({
 
   const handleReplyToComment = () => {
     setReplyToComment(false);
-  }
-
-
+  };
 
   const handleCommentSubmit = () => {
     if (replyMode || replyToComment) {
@@ -76,11 +74,9 @@ const CommentForm = ({
         body: JSON.stringify(commentValue),
       })
         .then((response) => {
-          console.log(response)
           return response.json();
         })
         .then((data) => {
-         
           const mostRecent = data.slice(-1)[0];
           setCommentReply((prevState) => [...prevState, mostRecent]);
           setCommentValue({
@@ -89,6 +85,7 @@ const CommentForm = ({
             postId: query._id,
             commentId: commentId,
           });
+          setCommentReply((prevState) => [...prevState, data]);
           toast.success("Comment Reply Successful");
         })
         .catch((error) => {
@@ -107,8 +104,7 @@ const CommentForm = ({
           return response.json();
         })
         .then((data) => {
-          
-          setInfinite((prevState) => [...prevState, data])
+          setInfinite((prevState) => [...prevState, data]);
           setCommentValue({
             user: "",
             content: "",
@@ -154,7 +150,10 @@ const CommentForm = ({
                   height: 500,
                   width: "100%",
                   menubar: false,
-                  plugins: "autoresize emoticons",
+                  plugins: "autoresize emoticons paste",
+                  paste_as_text: true,
+                  invalid_elements: "br",
+                  entity_encoding: "raw",
                   max_height: 500,
                   toolbar_location: "bottom",
                   toolbar: "emoticons",
@@ -173,7 +172,10 @@ const CommentForm = ({
                   height: 500,
                   width: "100%",
                   menubar: false,
-                  plugins: "autoresize emoticons",
+                  plugins: "autoresize emoticons paste",
+                  paste_as_text: true,
+                  invalid_elements: "br",
+                  entity_encoding: "raw",
                   max_height: 500,
                   toolbar_location: "bottom",
                   toolbar: "emoticons",
@@ -181,27 +183,26 @@ const CommentForm = ({
                 onEditorChange={handleEditorChange}
               />
             )}
-            {!replyMode && !replyToComment && 
-            (
-            <Editor
-              id="COMMENT_MODE"
-              name="content"
-              apiKey={process.env.NEXT_PUBLIC_TINYMCU_API_KEY}
-              value={commentValue.content}
-              init={{
-                forced_root_block: "false",
-                height: 500,
-                width: "100%",
-                menubar: false,
-                statusbar: false,
-                plugins: "autoresize link lists emoticons image",
-                max_height: 500,
-                toolbar_location: "bottom",
-                toolbar:
-                  "bold italic strikethrough link numlist bullist blockquote emoticons image",
-              }}
-              onEditorChange={handleEditorChange}
-            />
+            {!replyMode && !replyToComment && (
+              <Editor
+                id="COMMENT_MODE"
+                name="content"
+                apiKey={process.env.NEXT_PUBLIC_TINYMCU_API_KEY}
+                value={commentValue.content}
+                init={{
+                  forced_root_block: "false",
+                  height: 500,
+                  width: "100%",
+                  menubar: false,
+                  statusbar: false,
+                  plugins: "autoresize link lists emoticons image",
+                  max_height: 500,
+                  toolbar_location: "bottom",
+                  toolbar:
+                    "bold italic strikethrough link numlist bullist blockquote emoticons image",
+                }}
+                onEditorChange={handleEditorChange}
+              />
             )}
             <ErrorMessage name="content" render={renderError} />
           </FieldContainer>
@@ -215,10 +216,9 @@ const CommentForm = ({
             </ExitButton>
           )}
           {replyToComment && (
-            <ExitButton
-              commentform="true"
-              onClick={handleReplyToComment}
-            >Close</ExitButton>
+            <ExitButton commentform="true" onClick={handleReplyToComment}>
+              Close
+            </ExitButton>
           )}
         </StyledForm>
       </FormContainer>

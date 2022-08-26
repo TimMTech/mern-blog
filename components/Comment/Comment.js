@@ -5,7 +5,7 @@ import Filter from "../Filter/Filter";
 import moment from "moment";
 import { useRef, useEffect } from "react";
 import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
-
+import { useSession } from "next-auth/react";
 import { AiOutlineLike } from "react-icons/ai";
 import { MdOutlineSort } from "react-icons/md";
 import { useState } from "react";
@@ -13,8 +13,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Loader from "../InfiniteScroll/Loader/Loader";
 import End from "../InfiniteScroll/End/End";
 
-
 const Comment = ({ post }) => {
+  const { data: session } = useSession();
+
   const [showDropDown, setShowDropDown] = useState(false);
   const [commentId, setCommentId] = useState("");
   const [replyMode, setReplyMode] = useState(false);
@@ -23,6 +24,8 @@ const Comment = ({ post }) => {
   const [postComments, setPostComments] = useState([]);
   const [infinite, setInfinite] = useState([]);
   const [lastObjectPosition, setLastObjectPosition] = useState(0);
+  const [liked, setLiked] = useState(false);
+  const [commentLikes, setCommentLikes] = useState([]);
   const ref = useRef(null);
 
   const fetchInfiniteData = () => {
@@ -73,6 +76,34 @@ const Comment = ({ post }) => {
     setReplyMode(!replyMode);
   };
 
+  const handleCommentLike = (_id) => {
+    if (liked) {
+      fetch(`/api/comment/${_id}/dislike`, {
+        method: "PUT",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setLiked(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      fetch(`/api/comment/${_id}/like`, {
+        method: "PUT",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
   useEffect(() => {
     const getComments = () => {
       fetch(`/api/comment`, {
@@ -82,15 +113,12 @@ const Comment = ({ post }) => {
           return response.json();
         })
         .then((data) => {
-          
           const filtered = data
             .filter((comment) => comment.postId === post._id)
             .map((filtered) => filtered);
-          setPostComments(filtered)
-          
-          
-          
+          setPostComments(filtered);
         })
+
         .catch((error) => {
           setHasMore(false);
           console.log(error);
@@ -98,8 +126,8 @@ const Comment = ({ post }) => {
     };
     getComments();
   }, []);
+  
 
- 
   return (
     <CommentContainer>
       <OptionContainer>
@@ -111,85 +139,84 @@ const Comment = ({ post }) => {
         />
         {showDropDown && <Filter />}
       </OptionContainer>
-      <CommentForm setInfinite={setInfinite}  />
+      <CommentForm setInfinite={setInfinite} />
 
       <ScrollContainer>
-          
-          <InfiniteScroll
-            dataLength={infinite.length}
-            next={fetchInfiniteData}
-            hasMore={lastObjectPosition < postComments.length}
-            loader={<Loader />}
-            endMessage={<End toggleScrollUp={() => toggleScrollUp(ref)} infinite={infinite} />}
-          >
-            {infinite
-              .sort((a, b) => a.date.localeCompare(b.date))
-              .map((comments) => {
-                const { _id, user, content, date } = comments;
-                return (
-                  <CommentWrapper key={_id}>
-                    <CommentUser>
-                      {user} / <CommentDate>{dateFormat(date)}</CommentDate>
-                    </CommentUser>
-                    <CommentContent>{content}</CommentContent>
-                    <RepliesContainer>
-                      <ReplyLikeContainer>
+        <InfiniteScroll
+          dataLength={infinite.length}
+          next={fetchInfiniteData}
+          hasMore={lastObjectPosition < postComments.length}
+          loader={<Loader />}
+          endMessage={
+            <End
+              toggleScrollUp={() => toggleScrollUp(ref)}
+              infinite={infinite}
+            />
+          }
+        >
+          {infinite
+            .sort((a, b) => a.date.localeCompare(b.date))
+            .map((comments) => {
+              const { _id, user, content, date } = comments;
+              return (
+                <CommentWrapper key={_id}>
+                  <CommentUser>
+                    {user} / <CommentDate>{dateFormat(date)}</CommentDate>
+                  </CommentUser>
+                  <CommentContent>{content}</CommentContent>
+                  <RepliesContainer>
+                    <ReplyLikeContainer hidden={session ? false : true}>
+                      <button onClick={() => handleCommentLike(_id)}>
                         <AiOutlineLike size={17} />
-                        <ReplyButton onClick={() => handleReply(_id)}>
-                          Reply
-                        </ReplyButton>
-                      </ReplyLikeContainer>
-                      {replyMode && (
-                        <>
-                          {commentId === _id && (
-                            <>
-                              <CommentForm
-                                replyMode={replyMode}
-                                commentId={commentId}
-                                setCommentReply={setCommentReply}
-                                setReplyMode={setReplyMode}
-                              />
-                            </>
-                          )}
-                        </>
-                      )}
+                      </button>
+
+                      <ReplyButton onClick={() => handleReply(_id)}>
+                        Reply
+                      </ReplyButton>
+                    </ReplyLikeContainer>
+                    {replyMode && (
                       <>
-                        {commentId === _id && viewReplies ? (
-                          <ViewButton
-                            onClick={() => handleViewRepliesClose(_id)}
-                          >
-                            <MdOutlineArrowDropUp
-                              size={28}
-                              style={{ color: "rgb(62,166,255)" }}
+                        {commentId === _id && (
+                          <>
+                            <CommentForm
+                              replyMode={replyMode}
+                              commentId={commentId}
+                              setCommentReply={setCommentReply}
+                              setReplyMode={setReplyMode}
                             />
-                            VIEW REPLIES
-                          </ViewButton>
-                        ) : (
-                          <ViewButton onClick={() => handleViewReplies(_id)}>
-                            <MdOutlineArrowDropDown
-                              size={28}
-                              style={{ color: "rgb(62,166,255)" }}
-                            />
-                            VIEW REPLIES
-                          </ViewButton>
+                          </>
                         )}
                       </>
-                      <>
-                        {viewReplies && (
-                          <Replies
-                            _id={_id}
-                            commentReply={commentReply}
-                            
-                            
+                    )}
+                    <>
+                      {commentId === _id && viewReplies ? (
+                        <ViewButton onClick={() => handleViewRepliesClose(_id)}>
+                          <MdOutlineArrowDropUp
+                            size={28}
+                            style={{ color: "rgb(62,166,255)" }}
                           />
-                        )}
-                      </>
-                    </RepliesContainer>
-                  </CommentWrapper>
-                );
-              })}
-          </InfiniteScroll>
-        
+                          VIEW REPLIES
+                        </ViewButton>
+                      ) : (
+                        <ViewButton onClick={() => handleViewReplies(_id)}>
+                          <MdOutlineArrowDropDown
+                            size={28}
+                            style={{ color: "rgb(62,166,255)" }}
+                          />
+                          VIEW REPLIES
+                        </ViewButton>
+                      )}
+                    </>
+                    <>
+                      {viewReplies && (
+                        <Replies _id={_id} commentReply={commentReply} />
+                      )}
+                    </>
+                  </RepliesContainer>
+                </CommentWrapper>
+              );
+            })}
+        </InfiniteScroll>
       </ScrollContainer>
     </CommentContainer>
   );

@@ -1,5 +1,5 @@
-import dbConnect from "../../../database/connectDB";
-const UserTemplate = require("../../../models/UserModel");
+import dbConnect from "../../../../database/connectDB";
+const UserTemplate = require("../../../../models/UserModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 import { getToken } from "next-auth/jwt";

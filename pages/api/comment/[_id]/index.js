@@ -1,5 +1,5 @@
-import dbConnect from "../../../database/connectDB";
-const CommentTemplate = require("../../../models/CommentModel");
+import dbConnect from "../../../../database/connectDB";
+const CommentTemplate = require("../../../../models/CommentModel");
 
 await dbConnect();
 
@@ -11,7 +11,7 @@ const commentReplies = async (req, res) => {
 
   if (method === "POST") {
     const replies = await CommentTemplate.findByIdAndUpdate(
-      { _id: req.body.commentId },
+      { _id: _id },
       {
         $push: {
           commentReplies: new CommentTemplate({
@@ -23,13 +23,14 @@ const commentReplies = async (req, res) => {
         },
       },
       {
-        new: true
+        new: true,
       }
     );
+
     replies
       .save()
       .then((data) => {
-        return res.status(200).json(data.commentReplies)
+        return res.status(200).json(data.commentReplies);
       })
       .catch((error) => {
         return res.status(400).json(error);
@@ -45,4 +46,4 @@ const commentReplies = async (req, res) => {
   }
 };
 
-export default commentReplies
+export default commentReplies;

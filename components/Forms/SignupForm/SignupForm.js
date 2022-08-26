@@ -12,15 +12,14 @@ import {
   EditTitle,
   SubmitButton,
   ExitButton,
+  DeleteButton,
   ButtonContainer,
   LineBreakContainer,
   Line,
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
-import { signIn } from "next-auth/react";
-import {toast} from "react-toastify"
-
-
+import { signIn, signOut } from "next-auth/react";
+import { toast } from "react-toastify";
 
 const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
   const router = useRouter();
@@ -44,8 +43,8 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
   });
 
   const handleExitEdit = () => {
-    setProfileEditMode(false)
-  }
+    setProfileEditMode(false);
+  };
 
   const handleSignUpChange = (e) => {
     const { name, value } = e.target;
@@ -53,6 +52,24 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const handleDeleteUser = () => {
+    if (profileEditMode) {
+      fetch(`/api/user/${userId}/delete`, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          toast.success("User Deleted");
+          signOut();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const handleSignUpSubmit = () => {
@@ -70,14 +87,13 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
         .then((data) => {
           if (data && data.error) {
             console.log("FAILED EDIT");
-            toast.error("Server Error Occurred")
+            toast.error("Server Error Occurred");
           }
           if (data) {
             setEditMode(false);
             router.push(`/user/${data._id}`);
             console.log("PROFILE EDITED");
-            toast.success("Saved!")
-
+            toast.success("Saved!");
           }
         })
         .catch((error) => {
@@ -96,11 +112,11 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
         })
         .then((data) => {
           if (data && data.error) {
-            toast.error("Server Error Occurred.")
+            toast.error("Server Error Occurred.");
           }
           if (data && data.success) {
             router.push("/auth/login");
-            toast.success("Sign up successfull!")
+            toast.success("Sign up successfull!");
           }
         })
         .catch((error) => {
@@ -124,7 +140,17 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
             <FormTitle>Create your account</FormTitle>
           )}
           {!profileEditMode && (
-            <SubmitButton onClick={() => signIn("google")}>Google</SubmitButton>
+            <SubmitButton
+              onClick={() =>
+                signIn(
+                  "google",
+
+                  { prompt: "login" }
+                )
+              }
+            >
+              Google
+            </SubmitButton>
           )}
           <StyledForm method="POST">
             {!profileEditMode && (
@@ -173,6 +199,9 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
               )}
             </ButtonContainer>
           </StyledForm>
+          {profileEditMode && (
+            <DeleteButton onClick={handleDeleteUser}>Delete User</DeleteButton>
+          )}
         </FormContainer>
       )}
     </Formik>
@@ -180,7 +209,3 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
 };
 
 export default SignupForm;
-
-
-
-

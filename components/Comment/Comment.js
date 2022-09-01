@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import CommentForm from "../Forms/CommentForm/CommentForm";
 import Replies from "../Replies/Replies";
-import Filter from "../Filter/Filter";
 import moment from "moment";
 import { useRef, useEffect } from "react";
 import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
@@ -24,7 +23,7 @@ const Comment = ({ post }) => {
   const [lastObjectPosition, setLastObjectPosition] = useState(0);
 
   const { data: session } = useSession();
-  
+
   const ref = useRef(null);
 
   const fetchInfiniteData = () => {
@@ -37,7 +36,7 @@ const Comment = ({ post }) => {
   };
 
   const dateFormat = (date) => {
-    return moment(date).format("lll");
+    return moment(date).fromNow()
   };
 
   const toggleScrollUp = (ref) => {
@@ -119,8 +118,10 @@ const Comment = ({ post }) => {
   return (
     <CommentContainer>
       <OptionContainer>
-        <CommentAmount ref={ref}>{postComments.length} Comments</CommentAmount>
-        <Filter />
+        <CommentAmount ref={ref}>
+          {postComments.length}{" "}
+          {postComments.length === 1 ? "Comment" : "Comments"}
+        </CommentAmount>
       </OptionContainer>
       {session && <CommentForm setInfinite={setInfinite} />}
 
@@ -140,11 +141,11 @@ const Comment = ({ post }) => {
           {infinite
             .sort((a, b) => a.date.localeCompare(b.date))
             .map((comments) => {
-              const { _id, user, userId, content, date, commentReplies } = comments;
+              const { _id, user, userId, content, date, commentReplies } =
+                comments;
               return (
                 <CommentWrapper key={_id}>
                   <CommentUser>
-                  
                     {user} / <CommentDate>{dateFormat(date)}</CommentDate>
                   </CommentUser>
                   <CommentContent>{ReactHtmlParser(content)}</CommentContent>
@@ -157,7 +158,9 @@ const Comment = ({ post }) => {
                       {session && (
                         <>
                           {userId === session.user._id && (
-                            <DeleteButton onClick={() => handleDeleteComment(_id)}>
+                            <DeleteButton
+                              onClick={() => handleDeleteComment(_id)}
+                            >
                               Delete
                             </DeleteButton>
                           )}

@@ -16,7 +16,7 @@ const Post = ({ post }) => {
   const {
     title,
     content,
-    user: { username, email },
+    user: { username },
     date,
     imageUrl,
     socialMedia: { twitterLink, facebookLink, instagramLink },
@@ -25,7 +25,7 @@ const Post = ({ post }) => {
   const { data: session } = useSession();
   const [postLikes, setPostLikes] = useState([]);
   const [liked, setLiked] = useState(false);
-
+console.log(postLikes)
   const handlePostLike = () => {
     if (liked) {
       fetch(`/api/post/${post._id}/dislike`, {
@@ -35,6 +35,7 @@ const Post = ({ post }) => {
           return response.json();
         })
         .then((data) => {
+         
           setPostLikes(data);
           setLiked(false);
         })
@@ -49,6 +50,7 @@ const Post = ({ post }) => {
           return response.json();
         })
         .then((data) => {
+          
           setPostLikes(data);
           setLiked(true);
         })
@@ -68,7 +70,8 @@ const Post = ({ post }) => {
       .then((data) => {
         if (data && data.post) {
           setPostLikes(data.post);
-          if (data.post.some((element) => element === email)) setLiked(true);
+          
+          if (data.post.some((element) => element === session.user?.email)) setLiked(true);
         }
       })
       .catch((error) => {
@@ -135,10 +138,11 @@ export default Post;
 
 const PostContainer = styled.main`
   margin: 0 5rem;
-  padding-top: 1rem;
+  
   @media (max-width: 750px) {
     margin: 0 1rem;
   }
+  
 `;
 const PostInfoContainer = styled.div`
   display: flex;
@@ -148,8 +152,11 @@ const PostInfoContainer = styled.div`
 `;
 
 const PostTitle = styled.h1`
-  padding: 1.5rem 0;
+  padding: 3.5rem 0 1.5rem 0;
   text-align: left;
+  @media (max-width: 750px) {
+    padding: 2.5rem 0 0.1rem 0;
+  }
 `;
 
 const PostCardContainer = styled.div`

@@ -26,7 +26,7 @@ const likes = async (req, res) => {
     });
     if (token) {
       
-      
+      console.log(token)
       const post = await PostTemplate.findByIdAndUpdate(
         { _id: _id },
         { $push: { likes: token.email } }

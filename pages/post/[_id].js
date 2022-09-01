@@ -38,6 +38,5 @@ export const getStaticProps = async(context) => {
 }
 
 const PostContainer = styled.main`
-    padding-top: 1rem;
   
-`
+`;

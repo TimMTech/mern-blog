@@ -22,6 +22,7 @@ const dislike = async (req, res) => {
       secret: secret,
     });
     if (token) {
+      
       const post = await PostTemplate.findByIdAndUpdate(
         { _id: _id },
         { $pull: { likes: token.email } }

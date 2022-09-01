@@ -214,7 +214,7 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
 
           <ButtonContainer>
             <DropDownButton type="button" onClick={handleSocialLinkDropDown}>
-              {socialLinkDropDown ? "Close" : "Add Social Media Links"}
+              {socialLinkDropDown ? "Hide" : "Add Social Media Links"}
             </DropDownButton>
             <SubmitButton type="submit">
               {postEditMode ? "Save" : "Create Post"}

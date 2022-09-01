@@ -1,44 +1,57 @@
-const mongoose = require("mongoose")
-const CommentTemplate = require("./CommentModel")
+const mongoose = require("mongoose");
+const CommentTemplate = require("./CommentModel");
 
 const PostTemplate = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true
+  title: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
+  socialMedia: {
+    twitterLink: {
+      type: String,
     },
-    content: {
-        type: String,
-        required: true,
+    facebookLink: {
+      type: String,
     },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: "User"
+    instagramLink: {
+      type: String,
     },
-    comments: {
-        type: [],
-        default: []
-    },
-    published: {
-        type: Boolean,
-        default: false
-    },
-    date: {
-        type: Date,
-        default: Date.now
-    },
-    imageUrl: {
-        type: String
-    },
-    likes: {
-        type: [],
-        default: []
-    },
-    viewCounter: {
-        type: Number,
-        default: 0
-    }
-})
+  },
+
+  comments: {
+    type: [],
+    default: [],
+  },
+
+  published: {
+    type: Boolean,
+    default: false,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  imageUrl: {
+    type: String,
+  },
+  likes: {
+    type: [],
+    default: [],
+  },
+  viewCounter: {
+    type: Number,
+    default: 0,
+  },
+});
 
 PostTemplate.post("findOneAndDelete", async function (doc) {
   if (doc) {
@@ -49,4 +62,4 @@ PostTemplate.post("findOneAndDelete", async function (doc) {
   }
 });
 
-module.exports = mongoose.models.Post ||  mongoose.model("Post", PostTemplate)
+module.exports = mongoose.models.Post || mongoose.model("Post", PostTemplate);

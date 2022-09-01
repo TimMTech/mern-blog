@@ -1,22 +1,13 @@
 import styled from "styled-components";
 import moment from "moment";
-import { AiOutlineLike } from "react-icons/ai";
-import CommentForm from "../Forms/CommentForm/CommentForm";
-import { useState } from "react";
+import ReactHtmlParser from "react-html-parser";
 
 const Replies = ({ _id, commentReply }) => {
-  const [replyToComment, setReplyToComment] = useState(false);
-  const [commentId, setCommentId] = useState("");
-  
-
   const dateFormat = (date) => {
     return moment(date).format("lll");
   };
 
-  const handleReply = (_id) => {
-    setCommentId(_id);
-    setReplyToComment(!replyToComment);
-  };
+  
 
   return (
     <ReplyContainer>
@@ -29,27 +20,7 @@ const Replies = ({ _id, commentReply }) => {
               <ReplyUser>
                 {user} / <ReplyDate>{dateFormat(date)}</ReplyDate>
               </ReplyUser>
-              <ReplyContent>{content}</ReplyContent>
-              <ReplyLikeContainer>
-                <AiOutlineLike size={17} />
-                <ReplyButton onClick={() => handleReply(_id)}>
-                  Reply
-                </ReplyButton>
-              </ReplyLikeContainer>
-              {replyToComment && (
-                <>
-                  {commentId === _id && (
-                    <>
-                      <CommentForm
-                     
-                        commentId={_id}
-                        replyToComment={replyToComment}
-                        setReplyToComment={setReplyToComment}
-                      />
-                    </>
-                  )}
-                </>
-              )}
+              <ReplyContent>{ReactHtmlParser(content)}</ReplyContent>
             </ReplyWrapper>
           );
         })}
@@ -79,7 +50,7 @@ const ReplyDate = styled.span`
   opacity: 0.5;
 `;
 
-const ReplyContent = styled.p`
+const ReplyContent = styled.div`
   word-break: break-all;
 `;
 

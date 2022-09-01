@@ -1,10 +1,15 @@
 import styled from "styled-components";
 import moment from "moment";
-
 import { useState, useEffect } from "react";
-
+import ReactHtmlParser from "react-html-parser";
 import Comment from "../Comment/Comment";
-import { AiFillLike, AiOutlineLike } from "react-icons/ai";
+import {
+  AiFillLike,
+  AiOutlineLike,
+  AiFillFacebook,
+  AiFillInstagram,
+  AiFillTwitterSquare,
+} from "react-icons/ai";
 import { useSession } from "next-auth/react";
 
 const Post = ({ post }) => {
@@ -14,6 +19,7 @@ const Post = ({ post }) => {
     user: { username, email },
     date,
     imageUrl,
+    socialMedia: { twitterLink, facebookLink, instagramLink },
   } = post;
 
   const { data: session } = useSession();
@@ -84,10 +90,25 @@ const Post = ({ post }) => {
         <PostTitle>{title}</PostTitle>
         <PostImage src={imageUrl || "/static/images/default.png"} />
 
-        <PostContent>{content}</PostContent>
-        <PostAuthor>
-          by {username} / {dateFormat(date)}
-        </PostAuthor>
+        <PostContent>{ReactHtmlParser(content)}</PostContent>
+        <PostInfoContainer>
+          <PostAuthor>
+            by {username} / {dateFormat(date)}
+          </PostAuthor>
+          <SocialMediaContainer>
+            <LinkWrapper href={twitterLink} target="_blank" rel="noreferrer">
+              <AiFillTwitterSquare size={40} />
+            </LinkWrapper>
+
+            <LinkWrapper href={facebookLink} target="_blank" rel="noreferrer">
+              <AiFillFacebook size={40} />
+            </LinkWrapper>
+
+            <LinkWrapper href={instagramLink} target="_blank" rel="noreferrer">
+              <AiFillInstagram size={40} />
+            </LinkWrapper>
+          </SocialMediaContainer>
+        </PostInfoContainer>
         <LikesContainer
           hidden={session ? false : true}
           onClick={handlePostLike}
@@ -119,9 +140,15 @@ const PostContainer = styled.main`
     margin: 0 1rem;
   }
 `;
+const PostInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+`;
 
 const PostTitle = styled.h1`
-  padding-top: 0.5rem;
+  padding: 1.5rem 0;
   text-align: left;
 `;
 
@@ -139,7 +166,7 @@ const PostImage = styled.img`
 
   float: left;
   width: 50%;
-  padding-right: 2rem;
+  padding-right: 1rem;
 `;
 
 const LikesContainer = styled.div`
@@ -147,6 +174,16 @@ const LikesContainer = styled.div`
   border: none;
   background-color: transparent;
   display: ${(props) => (props.hidden ? "none" : "flex")};
+`;
+
+const SocialMediaContainer = styled.div`
+  display: flex;
+  padding: 1rem 0;
+  align-items: center;
+`;
+
+const LinkWrapper = styled.a`
+  color: ${(props) => props.theme.text};
 `;
 
 const ImageWrapper = styled.div`
@@ -160,11 +197,17 @@ const PostLikeAmount = styled.span`
 const PostAuthor = styled.h4`
   font-weight: 700;
   opacity: 0.5;
-  padding: 1rem 0;
+  padding-top: 1rem;
 `;
 
-const PostContent = styled.p`
+const PostContent = styled.div`
   width: 100%;
-  text-align: left;
   line-height: 1.5rem;
+
+  & > ul,
+  ol {
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+    overflow: auto;
+  }
 `;

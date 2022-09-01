@@ -32,7 +32,8 @@ const PostFormPageContainer = styled.main`
   width: 100%;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: auto;
   justify-content: center;
   align-items: center;
+  margin-top: 4rem;
 `;

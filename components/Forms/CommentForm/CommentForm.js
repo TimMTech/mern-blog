@@ -6,48 +6,35 @@ import { useRouter } from "next/router";
 import {
   FormContainer,
   FieldContainer,
-  StyledField,
   StyledForm,
   SubmitButton,
   ExitButton,
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
 import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
 
 const CommentForm = ({
   setCommentReply,
   replyMode,
-  replyToComment,
   setReplyMode,
-  setReplyToComment,
   commentId,
-
   setInfinite,
 }) => {
   const { query } = useRouter();
-
+  const { data: session } = useSession();
   const contentType = "application/json";
   const [commentValue, setCommentValue] = useState({
-    user: "",
+    user: session.user?.username,
     content: "",
     postId: query._id,
     commentId: commentId,
+    userId: session.user?._id,
   });
 
   const validationSchema = Yup.object({
-    user: Yup.string()
-      .required("*Required")
-      .min(1, "*Please Provide A Username"),
     content: Yup.string().required("*Required").min(1, "*Please Enter Comment"),
   });
-
-  const handleCommentChange = (e) => {
-    const { name, value } = e.target;
-    setCommentValue((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
 
   const handleEditorChange = (content) => {
     setCommentValue((prevState) => ({
@@ -60,12 +47,8 @@ const CommentForm = ({
     setReplyMode(false);
   };
 
-  const handleReplyToComment = () => {
-    setReplyToComment(false);
-  };
-
   const handleCommentSubmit = () => {
-    if (replyMode || replyToComment) {
+    if (replyMode) {
       fetch(`/api/comment/${commentId}`, {
         method: "POST",
         headers: {
@@ -77,15 +60,17 @@ const CommentForm = ({
           return response.json();
         })
         .then((data) => {
+          console.log(data)
           const mostRecent = data.slice(-1)[0];
+
           setCommentReply((prevState) => [...prevState, mostRecent]);
           setCommentValue({
-            user: "",
             content: "",
             postId: query._id,
             commentId: commentId,
+            userId: session.user?._id
           });
-          setCommentReply((prevState) => [...prevState, data]);
+
           toast.success("Comment Reply Successful");
         })
         .catch((error) => {
@@ -106,9 +91,10 @@ const CommentForm = ({
         .then((data) => {
           setInfinite((prevState) => [...prevState, data]);
           setCommentValue({
-            user: "",
             content: "",
             postId: query._id,
+            commentId: commentId,
+            userId: session.user?._id
           });
           toast.success("Comment Successful");
         })
@@ -129,16 +115,6 @@ const CommentForm = ({
       <FormContainer>
         <StyledForm method="POST" commentform="true">
           <FieldContainer commentform="true">
-            <StyledField
-              placeholder="Username"
-              type="text"
-              name="user"
-              value={commentValue.user}
-              onChange={(e) => handleCommentChange(e)}
-            />
-            <ErrorMessage name="user" render={renderError} />
-          </FieldContainer>
-          <FieldContainer commentform="true">
             {replyMode && (
               <Editor
                 id="POST_COMMENT"
@@ -146,60 +122,34 @@ const CommentForm = ({
                 apiKey={process.env.NEXT_PUBLIC_TINYMCU_API_KEY}
                 value={commentValue.content}
                 init={{
-                  forced_root_block: "false",
                   height: 500,
                   width: "100%",
                   menubar: false,
-                  plugins: "autoresize emoticons paste",
+                  plugins: "autoresize link emoticons preview",
                   paste_as_text: true,
-                  invalid_elements: "br",
-                  entity_encoding: "raw",
                   max_height: 500,
-                  toolbar_location: "bottom",
-                  toolbar: "emoticons",
+                  toolbar_location: "top",
+                  toolbar: "emoticons preview",
                 }}
                 onEditorChange={handleEditorChange}
               />
             )}
-            {replyToComment && (
-              <Editor
-                id="COMMENT_REPLY"
-                name="content"
-                apiKey={process.env.NEXT_PUBLIC_TINYMCU_API_KEY}
-                value={commentValue.content}
-                init={{
-                  forced_root_block: "false",
-                  height: 500,
-                  width: "100%",
-                  menubar: false,
-                  plugins: "autoresize emoticons paste",
-                  paste_as_text: true,
-                  invalid_elements: "br",
-                  entity_encoding: "raw",
-                  max_height: 500,
-                  toolbar_location: "bottom",
-                  toolbar: "emoticons",
-                }}
-                onEditorChange={handleEditorChange}
-              />
-            )}
-            {!replyMode && !replyToComment && (
+
+            {!replyMode && (
               <Editor
                 id="COMMENT_MODE"
                 name="content"
                 apiKey={process.env.NEXT_PUBLIC_TINYMCU_API_KEY}
                 value={commentValue.content}
                 init={{
-                  forced_root_block: "false",
                   height: 500,
                   width: "100%",
                   menubar: false,
-                  statusbar: false,
-                  plugins: "autoresize link lists emoticons image",
+                  plugins: "autoresize link emoticons preview",
+                  paste_as_text: true,
                   max_height: 500,
-                  toolbar_location: "bottom",
-                  toolbar:
-                    "bold italic strikethrough link numlist bullist blockquote emoticons image",
+                  toolbar_location: "top",
+                  toolbar: "emoticons preview",
                 }}
                 onEditorChange={handleEditorChange}
               />
@@ -208,15 +158,10 @@ const CommentForm = ({
           </FieldContainer>
 
           <SubmitButton type="submit" commentform="true">
-            {replyMode || replyToComment ? "Reply" : "Comment"}
+            {replyMode ? "Reply" : "Comment"}
           </SubmitButton>
           {replyMode && (
             <ExitButton commentform="true" onClick={handleReplyMode}>
-              Close
-            </ExitButton>
-          )}
-          {replyToComment && (
-            <ExitButton commentform="true" onClick={handleReplyToComment}>
               Close
             </ExitButton>
           )}

@@ -40,7 +40,7 @@ const ContactForm = () => {
   };
 
   return (
-    <FormContainer>
+    <FormContainer id="contact">
       <StandardForm onSubmit={handleContactSubmit}>
         <FormTitle>Contact Us!</FormTitle>
         <StandardField

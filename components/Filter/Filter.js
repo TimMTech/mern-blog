@@ -19,8 +19,9 @@ const Select = styled.select`
   height: 2rem;
   text-align: center;
   border-radius: 0.2rem;
+  border: 0.15rem solid rgb(0,0,0);
   margin: 1rem;
-  font-size: 1rem;
+  
   @media (max-width: 750px) {
     width: 100%;
     margin: 1rem;
@@ -28,4 +29,6 @@ const Select = styled.select`
   }
 `;
 
-const Option = styled.option``;
+const Option = styled.option`
+  
+`;

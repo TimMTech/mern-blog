@@ -9,11 +9,11 @@ import {
   StyledLabel,
   StyledField,
   StyledForm,
-  FormTitle,
   EditTitle,
   SubmitButton,
   ButtonContainer,
   ExitButton,
+  DropDownButton,
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
 import { useSession } from "next-auth/react";
@@ -22,15 +22,17 @@ import { toast } from "react-toastify";
 const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
   const contentType = "application/json";
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [post, setPost] = useState({
     title: "",
     content: "",
     imageUrl: "",
+    twitterLink: "",
+    facebookLink: "",
+    instagramLink: "",
     userId: session.user._id,
   });
-
-  
+  const [socialLinkDropDown, setSocialLinkDropDown] = useState(false);
 
   const validationSchema = Yup.object({
     title: Yup.string().required("*Required").min(1, "*Please Provide A Title"),
@@ -38,7 +40,14 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
       .required("*Required")
       .min(1, "*Please Provide Content"),
     imageUrl: Yup.string(),
+    twitterLink: Yup.string(),
+    facebookLink: Yup.string(),
+    instagramLink: Yup.string()
   });
+
+  const handleSocialLinkDropDown = () => {
+    setSocialLinkDropDown(!socialLinkDropDown)
+  }
 
   const handleExitEdit = () => {
     setPostEditMode(false);
@@ -121,14 +130,12 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
       validationSchema={validationSchema}
       enableReinitialize
       onSubmit={handleSubmitPost}
+      validateOnBlur={false}
+      validateOnChange={false}
     >
       <FormContainer>
         <StyledForm method="POST">
-          {postEditMode ? (
-            <EditTitle>Edit</EditTitle>
-          ) : (
-            <FormTitle>What is on your mind....</FormTitle>
-          )}
+          {postEditMode && <EditTitle>Edit</EditTitle>}
           <FieldContainer postform="true">
             <StyledLabel>Title</StyledLabel>
             <StyledField
@@ -147,22 +154,17 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
               apiKey={process.env.NEXT_PUBLIC_TINYMCU_API_KEY}
               value={post.content}
               init={{
-                forced_root_block: "false",
                 height: 500,
                 width: "100%",
                 menubar: false,
-                plugins: "autoresize link lists emoticons image paste",
+                plugins: "autoresize link lists emoticons image preview",
                 paste_as_text: true,
-                invalid_elements: "br",
-                entity_encoding: "raw",
                 max_height: 500,
-                toolbar_location: "bottom",
+                toolbar_location: "top",
                 toolbar:
-                  "bold italic strikethrough link numlist bullist blockquote emoticons image",
+                  "bold italic strikethrough link numlist bullist blockquote emoticons image preview outdent indent",
               }}
-                
               onEditorChange={handleEditorChange}
-              
             />
             <ErrorMessage name="content" render={renderError} />
           </FieldContainer>
@@ -176,7 +178,43 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
             />
             <ErrorMessage name="imageUrl" render={renderError} />
           </FieldContainer>
+
+          {socialLinkDropDown && (
+            <>
+              <FieldContainer postform="true">
+                <StyledLabel>Twitter</StyledLabel>
+                <StyledField
+                  value={post.twitterLink}
+                  type="text"
+                  name="twitterLink"
+                  onChange={(e) => handlePostChange(e)}
+                />
+              </FieldContainer>
+              <FieldContainer postform="true">
+                <StyledLabel>Facebook</StyledLabel>
+                <StyledField
+                  value={post.facebookLink}
+                  type="text"
+                  name="facebookLink"
+                  onChange={(e) => handlePostChange(e)}
+                />
+              </FieldContainer>
+              <FieldContainer postform="true">
+                <StyledLabel>Instagram</StyledLabel>
+                <StyledField
+                  value={post.instagramLink}
+                  type="text"
+                  name="instagramLink"
+                  onChange={(e) => handlePostChange(e)}
+                />
+              </FieldContainer>
+            </>
+          )}
+
           <ButtonContainer>
+            <DropDownButton type="button" onClick={handleSocialLinkDropDown}>
+              {socialLinkDropDown ? "Close" : "Add Social Media Links"}
+            </DropDownButton>
             <SubmitButton type="submit">
               {postEditMode ? "Save" : "Create Post"}
             </SubmitButton>

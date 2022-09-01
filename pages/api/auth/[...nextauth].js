@@ -19,7 +19,11 @@ export default NextAuth({
       clientId:
         "95837275647-feg9uv6bok35fedb4eq2ppc2ugun5c67.apps.googleusercontent.com",
       clientSecret: "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",
-      
+      authorization: {
+        params: {
+          prompt: "consent",
+        },
+      },
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -47,6 +51,7 @@ export default NextAuth({
           user.password
         );
         if (isPasswordValid) {
+          
           return user;
         }
       },
@@ -54,10 +59,13 @@ export default NextAuth({
   ],
   callbacks: {
     jwt: ({ token, user }) => {
+     
+     
       if (user) {
+        
         token.id = user._id;
       }
-      
+
       return token;
     },
 
@@ -79,24 +87,25 @@ export default NextAuth({
           email: session.user.email,
           password: securePassword,
         });
-        newUser.save()
+        newUser.save();
         session.id = token.id;
         return {
           user: {
             username: newUser.username,
             email: newUser.email,
             _id: newUser._id,
-            token:token
-          }
-        }
+            token: token,
+          },
+        };
       } else {
         session.id = token.id;
+        
         return {
           user: {
             username: user.username,
             email: user.email,
             _id: user._id,
-            token: token
+            token: token,
           },
         };
       }
@@ -105,5 +114,9 @@ export default NextAuth({
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,
     encryption: true,
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 1 * 60 * 60,
   },
 });

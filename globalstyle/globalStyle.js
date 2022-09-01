@@ -56,8 +56,10 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: 900;
   }
 
+
   li {
     font-size: 1.3rem;
+    
   }
 
  

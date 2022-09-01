@@ -8,9 +8,10 @@ export const FormContainer = styled.div`
   flex-direction: column;
   gap: 1rem;
   width: 100%;
-  
- 
+  padding: 1rem 0;
 `;
+
+
 
 export const EditTitle = styled.p`
   font-weight: 700;
@@ -24,7 +25,6 @@ export const FormTitle = styled.h1`
   text-align: left;
   padding: 1rem 0;
   word-wrap: break-word;
-  
 `;
 
 export const StyledForm = styled(Form)`
@@ -45,7 +45,6 @@ export const StandardForm = styled.form`
   align-items: ${(props) => (props.loginform ? "center" : "flex-start")};
   width: ${(props) => (props.loginform ? "100%" : null)};
   gap: 1rem;
-  
 `;
 
 export const FieldContainer = styled.div`
@@ -53,6 +52,7 @@ export const FieldContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+ 
   width: ${(props) => (props.commentform ? "100%" : "50%")};
   width: ${(props) => props.loginform && "90%"};
   width: ${(props) => props.signupform && "90%"};
@@ -112,6 +112,11 @@ export const Line = styled.div`
 
   width: 100%;
 `;
+export const DropDownButton = styled.button`
+  width: ${(props) => (props.commentform ? "100%" : "90%")};
+  width: ${(props) => props.contactform && "100%"};
+`;
+
 
 export const SubmitButton = styled.button`
   width: ${(props) => (props.commentform ? "100%" : "90%")};
@@ -131,9 +136,9 @@ export const DashButton = styled.button`
 `;
 
 export const DeleteButton = styled.button`
-  width: ${(props) => props.commentform ? "100%" : "90%"};
-  background-color: rgb(255,0,0);
-`
+  width: ${(props) => (props.commentform ? "100%" : "90%")};
+  background-color: rgb(255, 0, 0);
+`;
 
 export const ErrorMessage = styled.p`
   text-align: center;
@@ -142,6 +147,6 @@ export const ErrorMessage = styled.p`
 `;
 
 export const Span = styled.span`
-cursor: pointer;
-opacity: 0.5;
-`
+  cursor: pointer;
+  opacity: 0.5;
+`;

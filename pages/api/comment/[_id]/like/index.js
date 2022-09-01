@@ -16,7 +16,6 @@ const likes = async (req, res) => {
   if (method === "PUT") {
     
     if (!("next-auth.session-token" in req.cookies)) {
-      
       return res.status(401).json({ error: "TOKEN NOT FOUND" });
     }
     const token = await getToken({
@@ -24,9 +23,10 @@ const likes = async (req, res) => {
       secret: secret,
     });
     if (token) {
+      
       const comment = await CommentTemplate.findByIdAndUpdate(
         { _id: _id },
-        { $push: { likes: token.id } }
+        { $push: { likes: token.email } }
       );
 
       comment

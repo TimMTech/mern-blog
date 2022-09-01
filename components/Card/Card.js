@@ -13,8 +13,7 @@ import {
 import { MdPublishedWithChanges, MdUnpublished } from "react-icons/md";
 import moment from "moment";
 import { useRouter } from "next/router";
-import {toast} from "react-toastify"
-import {signOut} from "next-auth/react"
+import { toast } from "react-toastify";
 
 const menu = {
   hidden: { opacity: 0 },
@@ -29,6 +28,7 @@ const Card = ({
   showUnpublished,
   getPostParam,
   setPostEditMode,
+  
 }) => {
   const router = useRouter();
   const [showCardMenu, setShowCardMenu] = useState(false);
@@ -51,12 +51,11 @@ const Card = ({
       })
       .then((data) => {
         router.push(`/user/${user._id}`);
-        toast.success("Unpublished Post")
-     
+        toast.success("Unpublished Post");
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Server Error Occured")
+        toast.error("Server Error Occured");
       });
   };
 
@@ -69,11 +68,11 @@ const Card = ({
       })
       .then((data) => {
         router.push(`/user/${user._id}`);
-        toast.success("Published Post")
+        toast.success("Published Post");
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Server Error Occured")
+        toast.error("Server Error Occured");
       });
   };
 
@@ -89,11 +88,11 @@ const Card = ({
       })
       .then((data) => {
         router.push(`/user/${user._id}`);
-        toast.success("Post Deleted")
+        toast.success("Post Deleted");
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Server Error Occured")
+        toast.error("Server Error Occured");
       });
   };
   const dateFormat = (date) => {
@@ -135,6 +134,7 @@ const Card = ({
                     >
                       {showPublished && (
                         <IconContainer>
+                         
                           <MdUnpublished
                             size={22}
                             onClick={() => handleUnpublish(post._id)}
@@ -189,14 +189,6 @@ const Card = ({
 };
 
 export default Card;
-const EditContainer = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vh;
-  height: 100vh;
-  z-index: 999;
-`;
 
 const CardContainer = styled.div`
   break-inside: avoid;
@@ -208,7 +200,7 @@ const Modal = styled(motion.div)``;
 const CardNumber = styled.span``;
 
 const CardTitle = styled.h4`
-  font-size: 1.5rem;
+  
 `;
 
 const CardImage = styled.img``;
@@ -228,8 +220,9 @@ const CardFooterContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  margin: auto;
+  align-items: flex-start;
+  flex-grow: 2;
+  padding: 0 1.5rem;
 `;
 
 const ImageContainer = styled.div`
@@ -246,6 +239,7 @@ const OverlayContainer = styled.div`
   color: #ffffff;
   display: flex;
   flex-direction: column;
+
   opacity: ${(props) => (props.dashboard ? "1" : "0")};
   transition: opacity 0.25s;
   ${CardContainer}:hover & {

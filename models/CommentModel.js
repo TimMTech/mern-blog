@@ -1,14 +1,21 @@
 const mongoose = require("mongoose");
+const PostTemplate = require("../models/PostModel");
 
 const CommentTemplate = new mongoose.Schema({
   user: {
     type: String,
-    required: true,
-    maxlength: 30,
+  },
+  email: {
+    type: String,
   },
   content: {
     type: String,
     required: true,
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
   },
   postId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -21,15 +28,14 @@ const CommentTemplate = new mongoose.Schema({
   commentReplies: {
     type: [],
   },
-  likes: {
-    type: [],
-    default: [],
-  },
+
   date: {
     type: Date,
     default: Date.now,
   },
 });
+
+
 
 module.exports =
   mongoose.models.Comment || mongoose.model("Comment", CommentTemplate);

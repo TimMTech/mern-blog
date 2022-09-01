@@ -2,26 +2,38 @@ import Nav from "../components/Nav/Nav";
 import Footer from "../components/Footer/Footer";
 import NextNProgress from "nextjs-progressbar";
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "../themes/theme";
 import { GlobalStyles } from "../globalstyle/globalStyle";
-import {  SessionProvider } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const MyApp = ({ Component, pageProps}) => {
+const MyApp = ({ Component, pageProps }) => {
   const [theme, setTheme] = useState("light");
 
   const isDarkTheme = theme === "dark";
 
   const toggleTheme = () => {
     setTheme(isDarkTheme ? "light" : "dark");
+    localStorage.setItem(
+      "theme",
+      JSON.stringify(isDarkTheme ? "light" : "dark")
+    );
   };
-  
 
-
+  useEffect(() => {
+    const localStoredTheme = localStorage.getItem("theme");
+    const mode = JSON.parse(localStoredTheme);
+    if (mode === "dark") {
+      setTheme("dark");
+    }
+    if (mode === "light") {
+      setTheme("light");
+    }
+  }, [isDarkTheme]);
 
   return (
     <>
@@ -43,8 +55,5 @@ const MyApp = ({ Component, pageProps}) => {
     </>
   );
 };
-
-
-
 
 export default MyApp;

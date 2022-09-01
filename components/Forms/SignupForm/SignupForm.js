@@ -112,7 +112,7 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
         })
         .then((data) => {
           if (data && data.error) {
-            toast.error("Server Error Occurred.");
+            toast.error("Email Already Exists");
           }
           if (data && data.success) {
             router.push("/auth/login");
@@ -140,17 +140,7 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
             <FormTitle>Create your account</FormTitle>
           )}
           {!profileEditMode && (
-            <SubmitButton
-              onClick={() =>
-                signIn(
-                  "google",
-
-                  { prompt: "login" }
-                )
-              }
-            >
-              Google
-            </SubmitButton>
+            <SubmitButton onClick={() => signIn("google")}>Google</SubmitButton>
           )}
           <StyledForm method="POST">
             {!profileEditMode && (

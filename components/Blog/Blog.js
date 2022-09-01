@@ -64,7 +64,7 @@ export default Blog;
 
 const MasonryContainer = styled.div`
   --masonry-gap: 1.2rem;
-  --masonry-brick-width: 300px;
+  --masonry-brick-width: 400px;
   column-gap: var(--masonry-gap);
   column-fill: initial;
   column-width: var(--masonry-brick-width);

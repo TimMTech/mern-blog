@@ -81,11 +81,14 @@ const IconWrapper = styled.div`
 
 const LinkWrapper = styled.div`
   position: absolute;
-  bottom: 11%;
+  bottom: 8%;
 
   right: 0;
   padding-right: 4rem;
 
   font-weight: 800;
   z-index: 1;
+  @media (max-width: 750px) {
+    bottom: 11%;
+  }
 `;

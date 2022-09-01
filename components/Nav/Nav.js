@@ -60,7 +60,7 @@ const Nav = ({ toggleTheme, isDark }) => {
       </NextLink>
       <SwitchLabel backgroundColor={backgroundColor} path={router.pathname}>
         <SwitchInput type="checkbox" onClick={toggleTheme} />
-        <Switch />
+        <Switch isDark={isDark} />
         {isDark ? "Dark" : "Light"}
       </SwitchLabel>
       <NavLinkContainer
@@ -111,16 +111,27 @@ const Nav = ({ toggleTheme, isDark }) => {
                   <NextLink href={`/user/${session.user._id}`}>
                     <Username>{session.user.email}</Username>
                   </NextLink>
-
-                  <Logout onClick={() => signOut()}>LOGOUT</Logout>
+                  <Logout onClick={() => signOut()}>Log out</Logout>
+                  <NextLink href="/#contact">
+                    <Contact>Contact Me</Contact>
+                  </NextLink>
+                  <NextLink href="/">
+                    <Blog>Blog</Blog>
+                  </NextLink>
                 </LoggedInContainer>
               ) : (
                 <LoggedOutContainer>
                   <NextLink href="/auth/login">
-                    <Login>LOGIN</Login>
+                    <Login>Login</Login>
                   </NextLink>
                   <NextLink href="/auth/signup">
-                    <Signup>SIGN-UP</Signup>
+                    <Signup>Sign up</Signup>
+                  </NextLink>
+                  <NextLink href="/#contact">
+                    <Contact>Contact Me</Contact>
+                  </NextLink>
+                  <NextLink href="/">
+                    <Blog>Blog</Blog>
                   </NextLink>
                 </LoggedOutContainer>
               )}
@@ -253,24 +264,17 @@ const Switch = styled.div`
     width: 28px;
     height: 28px;
     border-radius: 35px;
-    top: 50%;
+    top: 5%;
     left: 4px;
-    background-color: rgb(255, 255, 255);
-    transform: translate(0, -50%);
+    background-color: ${(props) =>
+      props.isDark ? "rgb(0,0,0);" : "rgb(255, 255, 255)"};
+    transform: ${(props) => props.isDark && "translateX(100%)"};
   }
 `;
 const SwitchInput = styled.input`
   opacity: 0;
   position: absolute;
   display: none;
-
-  &:checked + ${Switch} {
-    background-color: #b3b3b3;
-    &:before {
-      transform: translate(32px, -50%);
-      background-color: #15171e;
-    }
-  }
 `;
 
 const Modal = styled(Framer.motion.div)`
@@ -351,6 +355,21 @@ const Login = styled.li`
 `;
 
 const Signup = styled.li`
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1, 1.1);
+  }
+`;
+const Contact = styled.li`
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1, 1.1);
+  }
+`;
+
+const Blog = styled.li`
   cursor: pointer;
 
   &:hover {

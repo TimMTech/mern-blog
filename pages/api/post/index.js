@@ -19,14 +19,18 @@ const post = async (req, res) => {
       req: req,
       secret: secret,
     });
-    if (token) {
-      
+    if (token) {  
       const post = await new PostTemplate({
         title: req.body.title,
         content: req.body.content,
         imageUrl: req.body.imageUrl,
         user: req.body.userId,
         published: true,
+        socialMedia: {
+          twitterLink: req.body.twitterLink,
+          facebookLink: req.body.facebookLink,
+          instagramLink: req.body.instagramLink,
+        },
       });
       post
         .save()
@@ -53,7 +57,6 @@ const post = async (req, res) => {
         return res.status(200).json(posts);
       });
   }
-  
 };
 
 export default post;

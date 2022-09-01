@@ -47,6 +47,8 @@ const Dashboard = ({ user, posts }) => {
         showPublished={showPublished}
         setPostEditMode={setPostEditMode}
         getPostParam={getPostParam}
+        postEditMode={postEditMode}
+        
       />
     ));
 
@@ -62,6 +64,7 @@ const Dashboard = ({ user, posts }) => {
         showPublished={showPublished}
         setPostEditMode={setPostEditMode}
         getPostParam={getPostParam}
+        postEditMode={postEditMode}
       />
     ));
 
@@ -77,6 +80,7 @@ const Dashboard = ({ user, posts }) => {
         showPublished={showPublished}
         setPostEditMode={setPostEditMode}
         getPostParam={getPostParam}
+        postEditMode={postEditMode}
       />
     ));
 
@@ -92,6 +96,7 @@ const Dashboard = ({ user, posts }) => {
         showUnpublished={showUnpublished}
         setPostEditMode={setPostEditMode}
         getPostParam={getPostParam}
+        postEditMode={postEditMode}
       />
     ));
 
@@ -107,6 +112,7 @@ const Dashboard = ({ user, posts }) => {
         showUnpublished={showUnpublished}
         setPostEditMode={setPostEditMode}
         getPostParam={getPostParam}
+        postEditMode={postEditMode}
       />
     ));
 
@@ -122,6 +128,7 @@ const Dashboard = ({ user, posts }) => {
         showUnpublished={showUnpublished}
         setPostEditMode={setPostEditMode}
         getPostParam={getPostParam}
+        postEditMode={postEditMode}
       />
     ));
 
@@ -195,7 +202,10 @@ const Dashboard = ({ user, posts }) => {
 
             <Username>{user.username}</Username>
             <UserEmail>{user.email}</UserEmail>
-            <UserPosts>{filteredMyPosts.length} Posts</UserPosts>
+            <UserPosts>
+              {filteredMyPosts.length}{" "}
+              {filteredMyPosts.length === 1 ? "Post" : "Posts"}
+            </UserPosts>
             <OptionsContainer>
               <NextLink href={"/"}>
                 <HomeButton>Home</HomeButton>
@@ -224,7 +234,7 @@ const Dashboard = ({ user, posts }) => {
 
             <NextLink href={"/post"}>
               <IconWrapper>
-                <AiOutlinePlus size={35} />
+                <AiOutlinePlus size={44} />
               </IconWrapper>
             </NextLink>
           </MenuContainer>
@@ -353,7 +363,7 @@ const MenuContainer = styled.div`
 
 const MasonryContainer = styled.div`
   --masonry-gap: 1.2rem;
-  --masonry-brick-width: 300px;
+  --masonry-brick-width: 400px;
   column-gap: var(--masonry-gap);
   column-fill: initial;
   column-width: var(--masonry-brick-width);

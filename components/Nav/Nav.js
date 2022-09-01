@@ -264,7 +264,7 @@ const Switch = styled.div`
     width: 28px;
     height: 28px;
     border-radius: 35px;
-    top: 5%;
+    top: 6%;
     left: 4px;
     background-color: ${(props) =>
       props.isDark ? "rgb(0,0,0);" : "rgb(255, 255, 255)"};

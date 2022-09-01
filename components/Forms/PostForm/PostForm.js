@@ -154,12 +154,13 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
               apiKey={process.env.NEXT_PUBLIC_TINYMCU_API_KEY}
               value={post.content}
               init={{
-                height: 500,
+                height: 400,
                 width: "100%",
+                resize: true,
                 menubar: false,
                 plugins: "autoresize link lists emoticons image preview",
                 paste_as_text: true,
-                max_height: 500,
+                min_height: 400,
                 toolbar_location: "top",
                 toolbar:
                   "bold italic strikethrough link numlist bullist blockquote emoticons image preview outdent indent",

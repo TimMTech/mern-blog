@@ -25,7 +25,7 @@ const Post = ({ post }) => {
   const { data: session } = useSession();
   const [postLikes, setPostLikes] = useState([]);
   const [liked, setLiked] = useState(false);
-console.log(postLikes)
+
   const handlePostLike = () => {
     if (liked) {
       fetch(`/api/post/${post._id}/dislike`, {

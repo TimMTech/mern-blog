@@ -231,6 +231,7 @@ const CommentContainer = styled.section`
 
 const CommentAmount = styled.h4`
   width: 100%;
+  font-size: 1.5rem;
 `;
 
 const ScrollContainer = styled.div``;

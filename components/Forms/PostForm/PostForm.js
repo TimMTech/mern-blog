@@ -1,7 +1,7 @@
 import { Editor } from "@tinymce/tinymce-react";
 import * as Yup from "yup";
 import { Formik, ErrorMessage } from "formik";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import {
   FormContainer,
@@ -23,6 +23,7 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
   const contentType = "application/json";
   const router = useRouter();
   const { data: session } = useSession();
+
   const [post, setPost] = useState({
     title: "",
     content: "",
@@ -33,6 +34,7 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
     userId: session.user._id,
   });
   const [socialLinkDropDown, setSocialLinkDropDown] = useState(false);
+  const [postDataForEdit, setPostDataForEdit] = useState();
 
   const validationSchema = Yup.object({
     title: Yup.string().required("*Required").min(1, "*Please Provide A Title"),
@@ -42,12 +44,12 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
     imageUrl: Yup.string(),
     twitterLink: Yup.string(),
     facebookLink: Yup.string(),
-    instagramLink: Yup.string()
+    instagramLink: Yup.string(),
   });
 
   const handleSocialLinkDropDown = () => {
-    setSocialLinkDropDown(!socialLinkDropDown)
-  }
+    setSocialLinkDropDown(!socialLinkDropDown);
+  };
 
   const handleExitEdit = () => {
     setPostEditMode(false);
@@ -123,6 +125,31 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
         });
     }
   };
+
+  useEffect(() => {
+    if (postEditMode) {
+      fetch(`/api/post/${postId}`, {
+        method: "GET",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setPost({
+            title: data.title,
+            content: data.content,
+            imageUrl: data.imageUrl,
+            twitterLink: data.socialMedia.twitterLink,
+            facebookLink: data.socialMedia.facebookLink,
+            instagramLink: data.socialMedia.instagramLink,
+            userId: session.user._id,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [postEditMode, postId, session.user._id]);
 
   return (
     <Formik
@@ -215,6 +242,7 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
           <ButtonContainer>
             <DropDownButton type="button" onClick={handleSocialLinkDropDown}>
               {socialLinkDropDown ? "Hide" : "Add Social Media Links"}
+              
             </DropDownButton>
             <SubmitButton type="submit">
               {postEditMode ? "Save" : "Create Post"}

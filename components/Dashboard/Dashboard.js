@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 
 const Dashboard = ({ user, posts }) => {
   const { status } = useSession();
-
+  
   const [option, setOption] = useState("mostRecentDefault");
   const [mostLikedVisible, setMostLikedVisible] = useState(false);
   const [mostRecentDefaultVisible, setMostRecentDefaultVisible] =

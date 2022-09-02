@@ -20,6 +20,7 @@ import {
 import { renderError } from "../../Validations/FormError";
 import { signIn, signOut } from "next-auth/react";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
   const router = useRouter();
@@ -124,6 +125,30 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
         });
     }
   };
+
+  useEffect(() => {
+    if (profileEditMode) {
+      fetch(`/api/user/${userId}`, {
+        method: "GET",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          const {
+            data: { username, email },
+          } = data;
+          setSignUpValue({
+            username: username,
+            password: "",
+            email: email,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [profileEditMode, userId]);
 
   return (
     <Formik

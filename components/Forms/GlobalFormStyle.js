@@ -85,6 +85,8 @@ export const StandardField = styled.input`
 export const StandardTextarea = styled.textarea`
   font-size: 1.5rem;
   padding: 0.5rem;
+  resize: vertical;
+  
 `;
 
 export const ButtonContainer = styled.div`

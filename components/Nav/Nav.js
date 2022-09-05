@@ -288,7 +288,7 @@ const Modal = styled(Framer.motion.div)`
   position: fixed;
   top: 0;
   right: 0;
-  width: 75%;
+  width: 85%;
   height: 100%;
   & > ul {
     display: flex;

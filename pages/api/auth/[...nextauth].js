@@ -27,18 +27,7 @@ export default NextAuth({
     }),
     CredentialsProvider({
       name: "Credentials",
-      credentials: {
-        username: {
-          label: "Username",
-          type: "text",
-          placeholder: "Username",
-        },
-        password: {
-          label: "Password",
-          type: "password",
-          placeholder: "Password",
-        },
-      },
+
       async authorize(credentials) {
         const user = await UserTemplate.findOne({
           username: credentials.username,
@@ -51,7 +40,6 @@ export default NextAuth({
           user.password
         );
         if (isPasswordValid) {
-          
           return user;
         }
       },
@@ -59,10 +47,7 @@ export default NextAuth({
   ],
   callbacks: {
     jwt: ({ token, user }) => {
-     
-     
       if (user) {
-        
         token.id = user._id;
       }
 
@@ -70,7 +55,6 @@ export default NextAuth({
     },
 
     session: async ({ session, token }) => {
-      
       const user = await UserTemplate.findOne({
         email: session.user.email,
       });
@@ -99,7 +83,7 @@ export default NextAuth({
         };
       } else {
         session.id = token.id;
-        
+
         return {
           user: {
             username: user.username,

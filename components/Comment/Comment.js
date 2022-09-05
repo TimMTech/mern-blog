@@ -49,7 +49,7 @@ const Comment = ({ post }) => {
 
   const handleViewReplies = (_id) => {
     setCommentId(_id);
-    setViewReplies(true);
+    
     fetch(`/api/comment/${_id}`, {
       method: "GET",
     })
@@ -57,6 +57,7 @@ const Comment = ({ post }) => {
         return response.json();
       })
       .then((data) => {
+        setViewReplies(true);
         setCommentReply(data);
       })
       .catch((error) => {

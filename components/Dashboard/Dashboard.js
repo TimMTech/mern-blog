@@ -8,10 +8,12 @@ import { AiOutlinePlus } from "react-icons/ai";
 import PostForm from "../Forms/PostForm/PostForm";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
+import { FcGoogle } from "react-icons/fc";
 
 const Dashboard = ({ user, posts }) => {
-  const { status } = useSession();
-  
+  const { data: session, status } = useSession();
+
+  const [googleProvider, setGoogleProvider] = useState(false);
   const [option, setOption] = useState("mostRecentDefault");
   const [mostLikedVisible, setMostLikedVisible] = useState(false);
   const [mostRecentDefaultVisible, setMostRecentDefaultVisible] =
@@ -48,7 +50,6 @@ const Dashboard = ({ user, posts }) => {
         setPostEditMode={setPostEditMode}
         getPostParam={getPostParam}
         postEditMode={postEditMode}
-        
       />
     ));
 
@@ -173,6 +174,16 @@ const Dashboard = ({ user, posts }) => {
       : setMostViewedVisible(false);
   }, [option]);
 
+  useEffect(() => {
+    if (session) {
+      if (session.user?.token.picture) {
+        setGoogleProvider(true);
+      } else {
+        setGoogleProvider(false);
+      }
+    }
+  }, [googleProvider, session]);
+
   return (
     <>
       {postEditMode && (
@@ -210,9 +221,19 @@ const Dashboard = ({ user, posts }) => {
               <NextLink href={"/"}>
                 <HomeButton>Home</HomeButton>
               </NextLink>
-              <EditButton onClick={handleProfileEditMode}>
-                Edit Profile
-              </EditButton>
+              {googleProvider ? (
+                <LinkWrapper
+                  href="https://myaccount.google.com/?utm_source=OGB&utm_medium=app"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <FcGoogle size={35} />
+                </LinkWrapper>
+              ) : (
+                <EditButton onClick={handleProfileEditMode}>
+                  Edit Profile
+                </EditButton>
+              )}
             </OptionsContainer>
             <ViewContainer>
               <PublishedContainer>
@@ -373,3 +394,5 @@ const MasonryContainer = styled.div`
 const IconWrapper = styled.span`
   cursor: pointer;
 `;
+
+const LinkWrapper = styled.a``;

@@ -1,10 +1,10 @@
-import { getSession } from "next-auth/react";
+import {  getSession } from "next-auth/react";
 import styled from "styled-components";
 import DashBoard from "../../components/Dashboard/Dashboard";
 
 const dashboard = ({ user, posts }) => {
   const { data } = user;
-
+  
   return (
     <DashboardContainer>
       <DashBoard user={data} posts={posts} />
@@ -24,6 +24,7 @@ export const getServerSideProps = async (context) => {
 
   const session = await getSession(context);
 
+  
   if (session) {
     return {
       props: { user: data, posts: postData },

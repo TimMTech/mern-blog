@@ -34,7 +34,6 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
     userId: session.user._id,
   });
   const [socialLinkDropDown, setSocialLinkDropDown] = useState(false);
-  const [postDataForEdit, setPostDataForEdit] = useState();
 
   const validationSchema = Yup.object({
     title: Yup.string().required("*Required").min(1, "*Please Provide A Title"),
@@ -80,17 +79,16 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
         body: JSON.stringify(post),
       })
         .then((response) => {
+          if (!response.ok) console.log("Server Error Occured");
           return response.json();
         })
         .then((data) => {
           if (data && data.error) {
-            console.log("FAILED EDIT");
-            toast.error("Server Error Occured.");
+            toast.error("Can't Edit Post");
           }
           if (data) {
             router.push(`/post/${data._id}`);
             setPostEditMode(false);
-            console.log("POST EDITED");
             toast.success("Post Edited! Redirecting....");
           }
         })
@@ -106,17 +104,18 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
         body: JSON.stringify(post),
       })
         .then((response) => {
+          if (!response.ok) console.log("Server Error Occured")
           return response.json();
         })
         .then((data) => {
-          console.log(data);
+          
           if (data && data.error) {
-            console.log("FAILED POST");
-            toast.error("Server Error Occured.");
+            
+            toast.error("Failed to Create Post");
           }
           if (data && data.token) {
             router.push(`/post/${data.postData._id}`);
-            console.log("Success");
+            
             toast.success("Post Created! Redirecting....");
           }
         })
@@ -132,6 +131,7 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
         method: "GET",
       })
         .then((response) => {
+          if (!response.ok) console.log("Server Error Occured")
           return response.json();
         })
         .then((data) => {
@@ -242,7 +242,6 @@ const PostForm = ({ postEditMode, postId, setPostEditMode }) => {
           <ButtonContainer>
             <DropDownButton type="button" onClick={handleSocialLinkDropDown}>
               {socialLinkDropDown ? "Hide" : "Add Social Media Links"}
-              
             </DropDownButton>
             <SubmitButton type="submit">
               {postEditMode ? "Save" : "Create Post"}

@@ -28,7 +28,6 @@ const Card = ({
   showUnpublished,
   getPostParam,
   setPostEditMode,
-  
 }) => {
   const router = useRouter();
   const [showCardMenu, setShowCardMenu] = useState(false);
@@ -47,6 +46,7 @@ const Card = ({
       method: "POST",
     })
       .then((response) => {
+        if (!response.ok) console.log("Server Error Occured");
         return response.json();
       })
       .then((data) => {
@@ -64,6 +64,7 @@ const Card = ({
       method: "POST",
     })
       .then((response) => {
+        if (!response.ok) console.log("Server Error Occured");
         return response.json();
       })
       .then((data) => {
@@ -81,18 +82,15 @@ const Card = ({
       method: "DELETE",
     })
       .then((response) => {
-        if (!response.ok) {
-          console.log("Server Error");
-        }
+        if (!response.ok) console.log("Server Error Occured");
         return response.json();
       })
       .then((data) => {
+        toast.success("Post Deleted!")
         router.push(`/user/${user._id}`);
-        toast.success("Post Deleted");
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Server Error Occured");
       });
   };
   const dateFormat = (date) => {
@@ -134,7 +132,6 @@ const Card = ({
                     >
                       {showPublished && (
                         <IconContainer>
-                         
                           <MdUnpublished
                             size={22}
                             onClick={() => handleUnpublish(post._id)}
@@ -199,9 +196,7 @@ const Modal = styled(motion.div)``;
 
 const CardNumber = styled.span``;
 
-const CardTitle = styled.h4`
-  
-`;
+const CardTitle = styled.h4``;
 
 const CardImage = styled.img``;
 

@@ -11,6 +11,7 @@ import {
   AiFillTwitterSquare,
 } from "react-icons/ai";
 import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 const Post = ({ post }) => {
   const {
@@ -32,12 +33,16 @@ const Post = ({ post }) => {
         method: "PUT",
       })
         .then((response) => {
+          if (!response.ok) console.log("Server Error Occured");
           return response.json();
         })
         .then((data) => {
-         
-          setPostLikes(data);
-          setLiked(false);
+          if (data && data.error) {
+            toast.info("Please Login to Dislike Posts");
+          } else {
+            setPostLikes(data);
+            setLiked(false);
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -47,12 +52,16 @@ const Post = ({ post }) => {
         method: "PUT",
       })
         .then((response) => {
+          if (!response.ok) console.log("Server Error Occured");
           return response.json();
         })
         .then((data) => {
-          
-          setPostLikes(data);
-          setLiked(true);
+          if (data && data.error) {
+            toast.info("Please Login to Like Posts");
+          } else {
+            setPostLikes(data);
+            setLiked(true);
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -65,13 +74,15 @@ const Post = ({ post }) => {
       method: "GET",
     })
       .then((response) => {
+        if (!response.ok) console.log("Server Error Occured");
         return response.json();
       })
       .then((data) => {
         if (data && data.post) {
           setPostLikes(data.post);
-          
-          if (data.post.some((element) => element === session.user?.email)) setLiked(true);
+
+          if (data.post.some((element) => element === session.user?.email))
+            setLiked(true);
         }
       })
       .catch((error) => {
@@ -112,10 +123,7 @@ const Post = ({ post }) => {
             </LinkWrapper>
           </SocialMediaContainer>
         </PostInfoContainer>
-        <LikesContainer
-          hidden={session ? false : true}
-          onClick={handlePostLike}
-        >
+        <LikesContainer onClick={handlePostLike}>
           {liked ? (
             <ImageWrapper>
               <AiFillLike size={17} />
@@ -138,11 +146,10 @@ export default Post;
 
 const PostContainer = styled.main`
   margin: 0 5rem;
-  
+
   @media (max-width: 750px) {
     margin: 0 1rem;
   }
-  
 `;
 const PostInfoContainer = styled.div`
   display: flex;

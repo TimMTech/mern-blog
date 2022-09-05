@@ -57,10 +57,11 @@ const CommentForm = ({
         body: JSON.stringify(commentValue),
       })
         .then((response) => {
+          if (!response.ok) console.log("Server Error Occured")
           return response.json();
         })
         .then((data) => {
-          console.log(data)
+          
           const mostRecent = data.slice(-1)[0];
 
           setCommentReply((prevState) => [...prevState, mostRecent]);
@@ -75,7 +76,7 @@ const CommentForm = ({
         })
         .catch((error) => {
           console.log(error);
-          toast.error("Server Error Occured.");
+          
         });
     } else {
       fetch("/api/comment", {
@@ -86,6 +87,7 @@ const CommentForm = ({
         body: JSON.stringify(commentValue),
       })
         .then((response) => {
+          if (!response.ok) console.log("Server Error Occured")
           return response.json();
         })
         .then((data) => {
@@ -100,7 +102,7 @@ const CommentForm = ({
         })
         .catch((error) => {
           console.log(error);
-          toast.error("Server Error Occured");
+       
         });
     }
   };

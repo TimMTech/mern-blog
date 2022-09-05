@@ -54,6 +54,7 @@ const Comment = ({ post }) => {
       method: "GET",
     })
       .then((response) => {
+        if (!response.ok) console.log("Server Error Occured")
         return response.json();
       })
       .then((data) => {
@@ -76,9 +77,7 @@ const Comment = ({ post }) => {
       method: "DELETE",
     })
       .then((response) => {
-        if (!response.ok) {
-          console.log("Server Error");
-        }
+        if (!response.ok) console.log("Server Error Occured")
         return response.json();
       })
       .then((data) => {
@@ -99,6 +98,7 @@ const Comment = ({ post }) => {
         method: "GET",
       })
         .then((response) => {
+          if (!response.ok) console.log("Server Error Occured")
           return response.json();
         })
         .then((data) => {

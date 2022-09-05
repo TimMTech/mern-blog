@@ -22,7 +22,6 @@ const dislike = async (req, res) => {
       secret: secret,
     });
     if (token) {
-      
       const post = await PostTemplate.findByIdAndUpdate(
         { _id: _id },
         { $pull: { likes: token.email } }
@@ -41,25 +40,13 @@ const dislike = async (req, res) => {
     }
   }
   if (method === "GET") {
-    if (!("next-auth.session-token" in req.cookies)) {
-      return res.status(401).json({ error: "TOKEN NOT FOUND" });
+    const post = await PostTemplate.findById(_id);
+    if (!post) {
+      return res.status(400).json({ error: "NOT FOUND" });
     }
-    const token = await getToken({
-      req: req,
-      secret: secret,
-      raw: true,
+    return res.status(200).json({
+      post: post.likes,
     });
-    if (token) {
-      const post = await PostTemplate.findById(_id);
-      if (!post) {
-        return res.status(400).json({ error: "NOT FOUND" });
-      }
-      return res.status(200).json({
-        post: post.likes,
-      });
-    } else {
-      return res.status(400).json({ error: "UNABLE TO VERIFY" });
-    }
   }
 };
 

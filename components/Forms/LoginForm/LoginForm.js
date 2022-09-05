@@ -30,13 +30,10 @@ const LoginForm = () => {
 
     let options = { redirect: false, username, password };
     const res = await signIn("credentials", options);
-    
     if (res?.error) {
       toast.error("Invalid username/password");
-    } else {
-      console.log("logged in!");
-      
     }
+    
   };
 
   useEffect(() => {

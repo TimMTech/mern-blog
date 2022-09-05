@@ -61,10 +61,11 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
         method: "DELETE",
       })
         .then((response) => {
+          if (!response.ok) console.log("Server Error Occured");
           return response.json();
         })
         .then((data) => {
-          toast.success("User Deleted");
+          if (data) toast.loading("Deleting User...");
           signOut();
         })
         .catch((error) => {
@@ -83,18 +84,18 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
         body: JSON.stringify(signUpValue),
       })
         .then((response) => {
+          if (!response.ok) console.log("Server Error Occured");
           return response.json();
         })
         .then((data) => {
           if (data && data.error) {
-            console.log("FAILED EDIT");
-            toast.error("Server Error Occurred");
+            toast.error("Can't Edit Profile");
           }
           if (data) {
-            setEditMode(false);
+            setProfileEditMode(false);
             router.push(`/user/${data._id}`);
-            console.log("PROFILE EDITED");
-            toast.success("Saved!");
+
+            toast.success("Saved Profile!");
           }
         })
         .catch((error) => {
@@ -109,6 +110,7 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
         body: JSON.stringify(signUpValue),
       })
         .then((response) => {
+          if (!response.ok) console.log("Server Error Occured");
           return response.json();
         })
         .then((data) => {
@@ -132,6 +134,7 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
         method: "GET",
       })
         .then((response) => {
+          if (!response.ok) console.log("Server Error Occured");
           return response.json();
         })
         .then((data) => {

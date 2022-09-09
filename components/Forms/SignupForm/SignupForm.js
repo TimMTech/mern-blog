@@ -16,11 +16,13 @@ import {
   ButtonContainer,
   LineBreakContainer,
   Line,
+  Span
 } from "../GlobalFormStyle";
 import { renderError } from "../../Validations/FormError";
 import { signIn, signOut } from "next-auth/react";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import { FcGoogle } from "react-icons/fc";
 
 const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
   const router = useRouter();
@@ -73,6 +75,8 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
         });
     }
   };
+
+  
 
   const handleSignUpSubmit = () => {
     if (profileEditMode) {
@@ -168,7 +172,11 @@ const SignupForm = ({ profileEditMode, userId, setProfileEditMode }) => {
             <FormTitle>Create your account</FormTitle>
           )}
           {!profileEditMode && (
-            <SubmitButton onClick={() => signIn("google")}>Google</SubmitButton>
+            <SubmitButton onClick={() => signIn("google", {callbackUrl: "/auth/login"})}>Google
+              <Span>
+                <FcGoogle size={25}/>
+              </Span>
+            </SubmitButton>
           )}
           <StyledForm method="POST">
             {!profileEditMode && (

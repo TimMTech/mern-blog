@@ -123,6 +123,10 @@ export const DropDownButton = styled.button`
 export const SubmitButton = styled.button`
   width: ${(props) => (props.commentform ? "100%" : "90%")};
   width: ${(props) => props.contactform && "100%"};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 `;
 
 export const LogoutButton = styled.button`

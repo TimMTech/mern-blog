@@ -10,6 +10,7 @@ import {
   LineBreakContainer,
   FormTitle,
   Line,
+  Span
 } from "../GlobalFormStyle";
 
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -17,6 +18,7 @@ import NextLink from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import { FcGoogle } from "react-icons/fc";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -53,6 +55,9 @@ const LoginForm = () => {
           onClick={() => signIn("google", { redirect: "/auth/login" })}
         >
           Login with Google
+          <Span>
+            <FcGoogle size={25} />
+          </Span>
         </SubmitButton>
       )}
       {!session && (

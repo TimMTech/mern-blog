@@ -116,10 +116,10 @@ const Span = styled.span`
 
 const IconWrapper = styled.div`
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 8.5%;
+  right: 9%;
   z-index: 1;
-  padding: 4rem;
+  
   color: rgb(255, 255, 255);
   @media (max-width: 750px) {
     color: rgb(0, 0, 0);

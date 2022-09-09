@@ -3,7 +3,9 @@ const PostTemplate = require("../models/PostModel");
 
 const CommentTemplate = new mongoose.Schema({
   user: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
   },
   email: {
     type: String,
@@ -12,11 +14,7 @@ const CommentTemplate = new mongoose.Schema({
     type: String,
     required: true,
   },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
-  },
+
   postId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -34,8 +32,6 @@ const CommentTemplate = new mongoose.Schema({
     default: Date.now,
   },
 });
-
-
 
 module.exports =
   mongoose.models.Comment || mongoose.model("Comment", CommentTemplate);

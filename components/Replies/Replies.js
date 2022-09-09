@@ -4,10 +4,8 @@ import ReactHtmlParser from "react-html-parser";
 
 const Replies = ({ _id, commentReply }) => {
   const dateFormat = (date) => {
-    return moment(date).format("lll");
+    return moment(date).fromNow();
   };
-
-  
 
   return (
     <ReplyContainer>
@@ -18,7 +16,7 @@ const Replies = ({ _id, commentReply }) => {
           return (
             <ReplyWrapper key={_id}>
               <ReplyUser>
-                {user} / <ReplyDate>{dateFormat(date)}</ReplyDate>
+                {user.username} / <ReplyDate>{dateFormat(date)}</ReplyDate>
               </ReplyUser>
               <ReplyContent>{ReactHtmlParser(content)}</ReplyContent>
             </ReplyWrapper>

@@ -1,5 +1,7 @@
 import dbConnect from "../../../../database/connectDB";
 const CommentTemplate = require("../../../../models/CommentModel");
+const PostTemplate = require("../../../../models/PostModel");
+const User = require("../../../../models/UserModel");
 import { getToken } from "next-auth/jwt";
 await dbConnect();
 
@@ -25,9 +27,8 @@ const commentReplies = async (req, res) => {
         {
           $push: {
             commentReplies: new CommentTemplate({
-              user: token.name,
+              user: req.body.user,
               email: token.email,
-              userId: req.body.userId,
               content: req.body.content,
               postId: req.body.postId,
               commentId: req.body.commentId,
@@ -38,10 +39,25 @@ const commentReplies = async (req, res) => {
           new: true,
         }
       );
-
+      
       replies
-        .save()
-        .then((data) => {
+        
+        .populate({
+          path: "commentReplies",
+          populate: {
+            path: "user",
+            model: User,
+          },
+        })
+        .then(async (data) => {
+          const mostRecentReply = data.commentReplies.slice(-1)
+          await PostTemplate.updateMany(
+            { _id: req.body.postId },
+            {
+              $push: { "comments.$[].commentReplies": mostRecentReply[0] },
+            }
+          );
+
           return res.status(200).json(data.commentReplies);
         })
         .catch((error) => {
@@ -50,11 +66,18 @@ const commentReplies = async (req, res) => {
     }
   }
   if (method === "GET") {
-    const comment = await CommentTemplate.findById(_id);
+    const comment = await CommentTemplate.findById(_id).populate({
+      path: "commentReplies",
+      populate: {
+        path: "user",
+        model: User,
+      },
+    });
 
     if (!comment) {
       return res.status(400).json({ error: "NOT FOUND" });
     }
+
     return res.status(200).json(comment.commentReplies);
   }
 };

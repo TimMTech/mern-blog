@@ -36,7 +36,7 @@ const Comment = ({ post }) => {
   };
 
   const dateFormat = (date) => {
-    return moment(date).fromNow()
+    return moment(date).fromNow();
   };
 
   const toggleScrollUp = (ref) => {
@@ -49,15 +49,17 @@ const Comment = ({ post }) => {
 
   const handleViewReplies = (_id) => {
     setCommentId(_id);
-    
+
     fetch(`/api/comment/${_id}`, {
       method: "GET",
     })
       .then((response) => {
-        if (!response.ok) console.log("Server Error Occured")
+       
+        if (!response.ok) console.log("Server Error Occured");
         return response.json();
       })
       .then((data) => {
+       
         setViewReplies(true);
         setCommentReply(data);
       })
@@ -77,7 +79,7 @@ const Comment = ({ post }) => {
       method: "DELETE",
     })
       .then((response) => {
-        if (!response.ok) console.log("Server Error Occured")
+        if (!response.ok) console.log("Server Error Occured");
         return response.json();
       })
       .then((data) => {
@@ -98,10 +100,11 @@ const Comment = ({ post }) => {
         method: "GET",
       })
         .then((response) => {
-          if (!response.ok) console.log("Server Error Occured")
+          if (!response.ok) console.log("Server Error Occured");
           return response.json();
         })
         .then((data) => {
+          
           const filtered = data
             .filter((comment) => comment.postId === post._id)
             .map((filtered) => filtered);
@@ -115,13 +118,12 @@ const Comment = ({ post }) => {
     };
     getComments();
   }, []);
-
+  
   return (
     <CommentContainer>
       <OptionContainer>
         <CommentAmount ref={ref}>
-          {postComments.length}{" "}
-          {postComments.length === 1 ? "Comment" : "Comments"}
+          {infinite.length} {infinite.length === 1 ? "Comment" : "Comments"}
         </CommentAmount>
       </OptionContainer>
       {session && <CommentForm setInfinite={setInfinite} />}
@@ -142,12 +144,12 @@ const Comment = ({ post }) => {
           {infinite
             .sort((a, b) => a.date.localeCompare(b.date))
             .map((comments) => {
-              const { _id, user, userId, content, date, commentReplies } =
-                comments;
+              const { _id, user, content, date, commentReplies } = comments;
               return (
                 <CommentWrapper key={_id}>
                   <CommentUser>
-                    {user} / <CommentDate>{dateFormat(date)}</CommentDate>
+                    {user.username} /{" "}
+                    <CommentDate>{dateFormat(date)}</CommentDate>
                   </CommentUser>
                   <CommentContent>{ReactHtmlParser(content)}</CommentContent>
 
@@ -158,7 +160,7 @@ const Comment = ({ post }) => {
                       </ReplyButton>
                       {session && (
                         <>
-                          {userId === session.user._id && (
+                          {user._id === session.user._id && (
                             <DeleteButton
                               onClick={() => handleDeleteComment(_id)}
                             >

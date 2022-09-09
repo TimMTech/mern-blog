@@ -1,6 +1,5 @@
 import dbConnect from "../../../../database/connectDB";
 const UserTemplate = require("../../../../models/UserModel");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 import { getToken } from "next-auth/jwt";
 
@@ -47,6 +46,7 @@ const dashboard = async (req, res) => {
         .then((data) => {
           return res.status(200).json(data);
         })
+
         .catch((error) => {
           return res.status(400).json({ error: "FAILED TO UPDATE PROFILE" });
         });

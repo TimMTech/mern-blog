@@ -25,11 +25,10 @@ const CommentForm = ({
   const { data: session } = useSession();
   const contentType = "application/json";
   const [commentValue, setCommentValue] = useState({
-    user: session.user?.username,
+    user: session.user?._id,
     content: "",
     postId: query._id,
     commentId: commentId,
-    userId: session.user?._id,
   });
 
   const validationSchema = Yup.object({
@@ -57,26 +56,24 @@ const CommentForm = ({
         body: JSON.stringify(commentValue),
       })
         .then((response) => {
-          if (!response.ok) console.log("Server Error Occured")
+          if (!response.ok) console.log("Server Error Occured");
           return response.json();
         })
         .then((data) => {
-          
           const mostRecent = data.slice(-1)[0];
 
           setCommentReply((prevState) => [...prevState, mostRecent]);
           setCommentValue({
+            user: session.user?._id,
             content: "",
             postId: query._id,
             commentId: commentId,
-            userId: session.user?._id
           });
 
           toast.success("Comment Reply Successful");
         })
         .catch((error) => {
           console.log(error);
-          
         });
     } else {
       fetch("/api/comment", {
@@ -87,22 +84,21 @@ const CommentForm = ({
         body: JSON.stringify(commentValue),
       })
         .then((response) => {
-          if (!response.ok) console.log("Server Error Occured")
+          if (!response.ok) console.log("Server Error Occured");
           return response.json();
         })
         .then((data) => {
           setInfinite((prevState) => [...prevState, data]);
           setCommentValue({
+            user: session.user?._id,
             content: "",
             postId: query._id,
             commentId: commentId,
-            userId: session.user?._id
           });
           toast.success("Comment Successful");
         })
         .catch((error) => {
           console.log(error);
-       
         });
     }
   };

@@ -1,6 +1,7 @@
 import dbConnect from "../../../database/connectDB";
 const CommentTemplate = require("../../../models/CommentModel");
 const Post = require("../../../models/PostModel");
+const User = require("../../../models/UserModel");
 import { getToken } from "next-auth/jwt";
 
 await dbConnect();
@@ -19,17 +20,16 @@ const comment = async (req, res) => {
       secret: secret,
     });
     if (token) {
-      
       const comment = await new CommentTemplate({
         user: req.body.user,
         email: token.email,
-        userId: req.body.userId,
         content: req.body.content,
         postId: req.body.postId,
       });
       comment
         .save()
         .then(async (data) => {
+          comment.populate({ path: "user", model: User });
           const post = await Post.findByIdAndUpdate(
             { _id: req.body.postId },
             { $push: { comments: data } }
@@ -47,13 +47,18 @@ const comment = async (req, res) => {
 
   if (method === "GET") {
     const comment = CommentTemplate.find();
+    if (!comment) {
+      return res.status(400).json({ error: "COMMENT NOT FOUND" });
+    }
     comment
-      .then((data) => {
-        
-        return res.status(200).json(data);
+      .populate({
+        path: "user",
+        model: User,
       })
-      .catch((error) => {
-        return res.status(400).json(error);
+      .exec((error, comment) => {
+        if (error)
+          return res.status(400).json({ error: "FAILED POPULATE" + error });
+        return res.status(200).json(comment);
       });
   }
 };

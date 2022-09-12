@@ -17,8 +17,8 @@ export default NextAuth({
   providers: [
     GoogleProvider({
       clientId:
-        "95837275647-feg9uv6bok35fedb4eq2ppc2ugun5c67.apps.googleusercontent.com",
-      clientSecret: "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",
+        process.env.NEXTAUTH_GOOGLE_PROVIDER_CLIENT_ID,
+      clientSecret: process.env.NEXTAUTH_GOOGLE_PROVIDER_CLIENT_SECRET,
       authorization: {
         params: {
           prompt: "consent",

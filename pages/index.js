@@ -3,7 +3,9 @@ import Blog from "../components/Blog/Blog";
 import NextImage from "next/image";
 import heroBG from "/public/static/images/heroBG.png";
 
-const home = ({ posts }) => {
+
+
+const home = ({ posts}) => {
   return (
     <HomeContainer>
       <HeaderContainer>
@@ -12,6 +14,8 @@ const home = ({ posts }) => {
         </ImageWrapper>
         <Title>TECHNOLOGY FOR INOVATORS</Title>
         <SubTitle>Where Developers Push Limits</SubTitle>
+        
+        
       </HeaderContainer>
       <Blog posts={posts} />
     </HomeContainer>
@@ -19,13 +23,10 @@ const home = ({ posts }) => {
 };
 
 export const getStaticProps = async () => {
-  const res = await fetch("https://mern-blog-jet.vercel.app/api/post", {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      "User-Agent": "*",
-    },
-  });
+ 
+  const res = await fetch("https://mern-blog-jet.vercel.app/api/post", 
+  
+  );
   const posts = await res.json();
 
   return {
@@ -70,3 +71,9 @@ const SubTitle = styled.h2`
   font-weight: 300;
   font-style: italic;
 `;
+
+
+
+
+
+

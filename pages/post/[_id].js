@@ -12,7 +12,7 @@ const post = ({post}) => {
 export default post
 
 export const getStaticPaths = async() => {
-    const res = await fetch("https://mern-blog-zeta.vercel.app/api/post");
+    const res = await fetch("https://mern-blog-jet.vercel.app/api/post");
     const data = await res.json()
 
     const paths = data.map((post) => {
@@ -29,9 +29,7 @@ export const getStaticPaths = async() => {
 export const getStaticProps = async(context) => {
     const _id = context.params._id;
 
-    const res = await fetch(
-      `https://mern-blog-zeta.vercel.app/api/post/${_id}`
-    );
+    const res = await fetch(`https://mern-blog-jet.vercel.app/api/post/${_id}`);
     const data = await res.json()
 
     return {

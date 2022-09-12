@@ -24,7 +24,7 @@ const home = ({ posts}) => {
 
 export const getStaticProps = async () => {
  
-  const res = await fetch("https://etechblog.io/api/post");
+  const res = await fetch("http://etechblog.io/api/post");
   const posts = await res.json();
 
   return {

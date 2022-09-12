@@ -24,20 +24,7 @@ const home = ({ posts}) => {
 
 export const getStaticProps = async () => {
  
-  const res = await fetch("https://mern-blog-jet.vercel.app/api/post", {
-    method: "GET",
-    headers: {
-      // update with your user-agent
-      "User-Agent":
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36",
-      Accept: "application/json; charset=UTF-8",
-    },
-  });
-  if (res.status !== 200) {
-    throw String(
-      `Invalid Server Response, ${res.status}, ${res.statusText} `
-    );
-  }
+  const res = await fetch("https://localhost:3000/api/post");
   const posts = await res.json();
 
   return {

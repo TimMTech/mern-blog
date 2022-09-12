@@ -26,7 +26,9 @@ export const getServerSideProps = async (context) => {
     },
   });
   if (res.status !== 200) {
-    return res.status(400).json({message: "INVALID SERVER RESPONSE"})
+    throw String(
+      `Invalid Server Response, ${res.status}, ${res.statusText} `
+    );
   };
   const data = await res.json();
 
@@ -40,7 +42,7 @@ export const getServerSideProps = async (context) => {
     },
   });
   if (resPost.status !== 200) {
-    return res.status(400).json({message: "INVALID SERVER RESPONSE"})
+    throw String(`Invalid Server Response, ${resPost.status}, ${resPost.statusText} `)
   };
   const postData = await resPost.json();
 

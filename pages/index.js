@@ -34,7 +34,9 @@ export const getStaticProps = async () => {
     },
   });
   if (res.status !== 200) {
-    return res.status(400).json({message: "INVALID SERVER RESPONSE"})
+    throw String(
+      `Invalid Server Response, ${res.status}, ${res.statusText} `
+    );
   }
   const posts = await res.json();
 

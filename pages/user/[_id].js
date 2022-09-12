@@ -16,10 +16,18 @@ export default dashboard;
 
 export const getServerSideProps = async (context) => {
   const _id = context.params._id;
-  const res = await fetch(`https:/mern-blog-jet.vercel.app/api/user/${_id}`);
+  const res = await fetch(`https:/mern-blog-jet.vercel.app/api/user/${_id}`, {
+    headers: {
+      "User-Agent": "*",
+    },
+  });
   const data = await res.json();
 
-  const resPost = await fetch(`https://mern-blog-jet.vercel.app/api/post`);
+  const resPost = await fetch(`https://mern-blog-jet.vercel.app/api/post`, {
+    headers: {
+      "User-Agent": "*",
+    },
+  });
   const postData = await resPost.json();
 
   const session = await getSession(context);

@@ -22,7 +22,7 @@ const home = ({ posts}) => {
   );
 };
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
  
   const res = await fetch("http://localhost:3000/api/post");
   const posts = await res.json();

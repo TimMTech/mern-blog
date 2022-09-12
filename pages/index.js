@@ -24,7 +24,7 @@ const home = ({ posts}) => {
 
 export const getStaticProps = async () => {
  
-  const res = await fetch("http://mern-blog-jet.vercel.app/api/post");
+  const res = await fetch("https://mern-blog-jet.vercel.app/api/post");
   const posts = await res.json();
 
   return {

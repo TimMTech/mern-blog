@@ -109,6 +109,8 @@ const CommentForm = ({
       validationSchema={validationSchema}
       enableReinitialize
       onSubmit={handleCommentSubmit}
+      validateOnBlur={false}
+      validateOnChange={false}
     >
       <FormContainer>
         <StyledForm method="POST" commentform="true">

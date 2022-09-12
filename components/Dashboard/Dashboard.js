@@ -253,9 +253,9 @@ const Dashboard = ({ user, posts }) => {
           <MenuContainer>
             <Filter value={option} handleBlogOptions={handleBlogOptions} />
 
-            <NextLink href={"/post"}>
+            <NextLink href={"/post/create"}>
               <IconWrapper>
-                <AiOutlinePlus size={44} />
+                <AiOutlinePlus size={48} />
               </IconWrapper>
             </NextLink>
           </MenuContainer>

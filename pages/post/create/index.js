@@ -1,6 +1,6 @@
 import { getSession } from "next-auth/react";
 import styled from "styled-components";
-import PostForm from "../../components/Forms/PostForm/PostForm";
+import PostForm from "../../../components/Forms/PostForm/PostForm";
 
 const postform = () => {
   return (

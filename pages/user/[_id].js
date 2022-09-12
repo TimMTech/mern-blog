@@ -16,10 +16,12 @@ export default dashboard;
 
 export const getServerSideProps = async (context) => {
   const _id = context.params._id;
-  const res = await fetch(`http://localhost:3000/api/user/${_id}`);
+  const res =
+    await fetch(`https://mern-blog-clkkoqjae-tmukhamedov97-gmailcom.vercel.app/api/user/${_id}`);
   const data = await res.json();
 
-  const resPost = await fetch(`http://localhost:3000/api/post`);
+  const resPost =
+    await fetch(`https://mern-blog-clkkoqjae-tmukhamedov97-gmailcom.vercel.app/api/post`);
   const postData = await resPost.json();
 
   const session = await getSession(context);

@@ -56,6 +56,7 @@ const Post = ({ post }) => {
           return response.json();
         })
         .then((data) => {
+          
           if (data && data.error) {
             toast.info("Please Login to Like Posts");
           } else {

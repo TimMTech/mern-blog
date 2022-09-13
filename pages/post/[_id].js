@@ -13,6 +13,9 @@ export default post;
 
 export const getStaticPaths = async () => {
   const res = await fetch("http://mern-blog-five.vercel.app/api/post");
+  if (res.status !== 200) {
+    throw String(`${res.status}, ${res.statusText}`);
+  }
   const data = await res.json();
 
   const paths = data.map((post) => {

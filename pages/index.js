@@ -28,7 +28,7 @@ export const getStaticProps = async () => {
 
   if (res.status !== 200) {
     
-    throw String(res)
+    throw String(`Error, ${res.status}, ${res.statusText}`)
   }
 
   const posts = await res.json();

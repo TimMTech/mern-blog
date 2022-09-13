@@ -17,9 +17,15 @@ export default dashboard;
 export const getServerSideProps = async (context) => {
   const _id = context.params._id;
   const res = await fetch(`http://mern-blog-five.vercel.app/api/user/${_id}`);
+  if (res.status !==200) {
+    throw String(`Error, ${res.status}, ${res.statusText}`);
+  }
   const data = await res.json();
 
   const resPost = await fetch(`http://mern-blog-five.vercel.app/api/post`);
+  if (resPost.status !== 200) {
+    throw String(`Error, ${res.status}, ${res.statusText}`);
+  }
   const postData = await resPost.json();
 
   const session = await getSession(context);

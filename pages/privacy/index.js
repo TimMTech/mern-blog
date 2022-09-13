@@ -7,7 +7,7 @@ const privacy = () => {
       <Title>Privacy Policy of EBLOG</Title>
 
       <Paragraph>
-        EBLOG operates the http://www.eblog.io website, which provides the
+        EBLOG operates the http://www.etechblog.io website, which provides the
         SERVICE. This page is used to inform website visitors regarding our
         policies with the collection, use, and disclosure of Personal
         Information if anyone decided to use our Service, the www.eblog.io
@@ -25,7 +25,7 @@ const privacy = () => {
 
       <Paragraph>
         The terms used in this Privacy Policy have the same meanings as in our
-        Terms and Conditions, which is accessible at http://www.eblog.io, unless
+        Terms and Conditions, which is accessible at http://www.etechblog.io, unless
         otherwise defined in this Privacy Policy.
       </Paragraph>
 

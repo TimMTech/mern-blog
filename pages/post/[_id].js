@@ -18,7 +18,7 @@ export const getServerSideProps = async (context) => {
   if (res.status !== 200) {
     throw String(`Error, ${res.status}, ${res.statusText}`);
   }
-  console.log(res)
+  
   const data = await res.json();
 
   return {

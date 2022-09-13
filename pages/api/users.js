@@ -12,6 +12,7 @@ const signup = async (req, res) => {
       email: req.body.email
     })
     if (!users) {
+      console.log(users)
       const saltPassword = await bcrypt.genSalt(10);
       const securePassword = await bcrypt.hash(req.body.password, saltPassword);
       const user = await new UserTemplate({

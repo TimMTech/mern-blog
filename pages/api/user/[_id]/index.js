@@ -23,7 +23,7 @@ const dashboard = async (req, res) => {
     return res.status(200).json({ success: true, data: user });
   }
   if (method === "PUT") {
-    if (!("next-auth.session-token" in req.cookies)) {
+    if (!("__Secure-next-auth.session-token" in req.cookies)) {
       return res.status(401).json({ error: "TOKEN NOT FOUND" });
     }
     const token = await getToken({

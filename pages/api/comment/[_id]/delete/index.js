@@ -15,7 +15,7 @@ const deleteComment = async (req, res) => {
   } = req;
 
   if (method === "DELETE") {
-    if (!("next-auth.session-token" in req.cookies)) {
+    if (!("__Secure-next-auth.session-token" in req.cookies)) {
       return res.status(401).json({ error: "TOKEN NOT FOUND" });
     }
     const token = await getToken({

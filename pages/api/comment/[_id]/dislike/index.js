@@ -14,7 +14,7 @@ const dislikes = async (req, res) => {
   } = req;
 
   if (method === "PUT") {
-    if (!("next-auth.session-token" in req.cookies)) {
+    if (!("__Secure-next-auth.session-token" in req.cookies)) {
       return res.status(401).json({ error: "TOKEN NOT FOUND" });
     }
     const token = await getToken({
@@ -40,7 +40,7 @@ const dislikes = async (req, res) => {
     }
   }
   if (method === "GET") {
-    if (!("next-auth.session-token" in req.cookies)) {
+    if (!("__Secure-next-auth.session-token" in req.cookies)) {
       return res.status(401).json({ error: "TOKEN NOT FOUND" });
     }
 

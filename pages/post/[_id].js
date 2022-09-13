@@ -12,7 +12,7 @@ const post = ({ post }) => {
 export default post;
 
 export const getStaticPaths = async () => {
-  const res = await fetch("http://mern-blog-five.vercel.app/api/post");
+  const res = await fetch("https://mern-blog-five.vercel.app/api/post");
   if (res.status !== 200) {
     throw String(`${res.status}, ${res.statusText}`);
   }
@@ -32,7 +32,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   const _id = context.params._id;
 
-  const res = await fetch(`http://localhost:3000/api/post/${_id}`);
+  const res = await fetch(`http://mern-blog-five.vercel.app/api/post/${_id}`);
   const data = await res.json();
 
   return {

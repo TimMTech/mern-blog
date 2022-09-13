@@ -13,7 +13,7 @@ export default post;
 
 export const getServerSideProps = async (context) => {
   const _id = context.params._id;
-  const res = await fetch(`http://mern-blog-five.vercel.app/api/post/${_id}`);
+  const res = await fetch(`https://www.etechblog.io/api/post/${_id}`);
 
   if (res.status !== 200) {
     throw String(`Error, ${res.status}, ${res.statusText}`);

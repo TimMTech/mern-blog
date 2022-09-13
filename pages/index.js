@@ -24,7 +24,7 @@ const home = ({ posts}) => {
 
 export const getServerSideProps = async () => {
  
-  const res = await fetch("https://mern-blog-five.vercel.app/api/post");
+  const res = await fetch("https://www.etechblog.io/api/post");
 
   if (res.status !== 200) {
     

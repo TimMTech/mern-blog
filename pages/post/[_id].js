@@ -12,7 +12,7 @@ const post = ({ post }) => {
 export default post;
 
 export const getStaticPaths = async () => {
-  const res = await fetch("http://localhost:3000/api/post");
+  const res = await fetch("http://mern-blog-five.vercel.app/api/post");
   const data = await res.json();
 
   const paths = data.map((post) => {

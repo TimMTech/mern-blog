@@ -24,7 +24,12 @@ const home = ({ posts}) => {
 
 export const getStaticProps = async () => {
  
-  const res = await fetch("http://localhost:3000/api/post");
+  const res = await fetch("http://mern-blog-five.vercel.app/api/post");
+
+  if (res.status !== 200) {
+    throw String(`${res.status}, ${res.statusText}`)
+  }
+
   const posts = await res.json();
   
   return {

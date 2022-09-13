@@ -33,6 +33,7 @@ export default NextAuth({
           username: credentials.username,
         });
         if (!user) {
+          console.log(user)
           return null;
         }
         const isPasswordValid = await bcrypt.compare(

@@ -11,28 +11,14 @@ const post = ({ post }) => {
 
 export default post;
 
-export const getStaticPaths = async () => {
-  const res = await fetch("https://mern-blog-five.vercel.app/api/post");
-  if (res.status !== 200) {
-    throw String(res);
-  }
-  const data = await res.json();
-
-  const paths = data.map((post) => {
-    return {
-      params: { _id: post._id.toString() },
-    };
-  });
-  return {
-    paths,
-    fallback: false,
-  };
-};
-
-export const getStaticProps = async (context) => {
+export const getServerSideProps = async (context) => {
   const _id = context.params._id;
-
   const res = await fetch(`http://mern-blog-five.vercel.app/api/post/${_id}`);
+
+  if (res.status !== 200) {
+    throw String("ERROR");
+  }
+
   const data = await res.json();
 
   return {

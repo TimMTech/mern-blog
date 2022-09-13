@@ -27,7 +27,7 @@ export const getServerSideProps = async () => {
   const res = await fetch("https://mern-blog-five.vercel.app/api/post");
 
   if (res.status !== 200) {
-    console.log(res.status)
+    
     throw String(`Error, ${res.status}, ${res.statusText}`)
   }
 

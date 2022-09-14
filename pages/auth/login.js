@@ -29,7 +29,7 @@ const login = () => {
           layout="fill"
           objectFit="cover"
           quality={100}
-          priority
+          priority={true}
         />
         <OverlayContainer>
           <Title>Connect With People All Over The World!</Title>

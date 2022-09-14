@@ -20,7 +20,7 @@ const signup = () => {
         </NextLink>
       </LinkWrapper>
       <ImageWrapper>
-        <NextImage src={formBG} layout="fill" objectFit="cover" quality={100} />
+        <NextImage src={formBG} layout="fill" objectFit="cover" quality={100} priority={true} />
       </ImageWrapper>
       <FormContainer>
         <SignUpForm />

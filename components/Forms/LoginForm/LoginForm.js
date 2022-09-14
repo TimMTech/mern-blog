@@ -37,12 +37,7 @@ const LoginForm = () => {
     
   };
 
-  const handleSignOut = async () => {
-    const signedOut = await signOut()
-    if (signedOut) {
-      toast.success("Logged Out")
-    }
-  }
+  
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -92,7 +87,7 @@ const LoginForm = () => {
       )}
       {session && (
         <>
-          <LogoutButton onClick={handleSignOut}>
+          <LogoutButton onClick={() => signOut()}>
             Log out {session.user.email}
           </LogoutButton>
           <NextLink href={`/user/${session.user._id}`}>

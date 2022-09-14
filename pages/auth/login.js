@@ -30,6 +30,7 @@ const login = () => {
           objectFit="cover"
           quality={100}
           priority={true}
+          loading="eager"
         />
         <OverlayContainer>
           <Title>Connect With People All Over The World!</Title>

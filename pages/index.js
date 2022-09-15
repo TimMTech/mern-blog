@@ -2,7 +2,6 @@ import styled from "styled-components";
 import Blog from "../components/Blog/Blog";
 import NextImage from "next/image";
 import heroBG from "/public/static/images/heroBG.png";
-import { NODE_ENV_FETCH_URL } from "../utils/fetchUrl";
 
 
 
@@ -25,7 +24,7 @@ const home = ({ posts}) => {
 
 export const getServerSideProps = async () => {
  
-  const res = await fetch(`https://${NODE_ENV_FETCH_URL}/api/post`);
+  const res = await fetch("https://www.etechblog.io/api/post");
 
   if (res.status !== 200) {
     

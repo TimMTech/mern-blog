@@ -10,5 +10,6 @@ const PRODUCTION_URL = process.env.NEXT_PUBLIC_PRODUCTION_URL;
 const NODE_ENV = process.env.NODE_ENV
 
 
+
 export const NODE_ENV_FETCH_URL = NODE_ENV === "production" ? PRODUCTION_URL : DEVELOPMENT_URL
 
